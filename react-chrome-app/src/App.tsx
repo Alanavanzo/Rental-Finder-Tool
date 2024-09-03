@@ -3,6 +3,7 @@ function App() {
     <div>
       <header>
         <h2>Welcome to the Rental Finder Tool👋</h2>
+        <h3>We hope we can help you find an awesome rental</h3>
       </header>
     </div>
   );
