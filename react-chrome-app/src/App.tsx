@@ -1,3 +1,15 @@
+function App() {
+  return (
+    <div>
+      <header>
+        <h2>Welcome to the Rental Finder Tool👋</h2>
+      </header>
+    </div>
+  );
+}
+
+export default App;
+/*
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
@@ -24,3 +36,4 @@ function App() {
 }
 
 export default App;
+*/
