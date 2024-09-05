@@ -7,14 +7,14 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        use: [
+        use: //['raw-loader' , // I added this 
           {
             loader: "ts-loader",
             options: {
               compilerOptions: { noEmit: false },
             },
           },
-        ],
+        //],
         exclude: /node_modules/,
       },
     ],

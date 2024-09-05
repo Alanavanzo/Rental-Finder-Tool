@@ -1,10 +1,15 @@
+import sayHello from "./views/Test.js";
+import WelcomeUser from "./views/Homepage.js";
+import Hello from './views/Hello.js'; // Adjust path as needed
+import UserInputTest1 from "./views/UserInputTest.js";
+
 function App() {
   return (
     <div>
-      <header>
-        <h2>Welcome to the Rental Finder Tool👋</h2>
-        <h3>We hope we can help you find an awesome rental</h3>
-      </header>
+        <WelcomeUser/>
+        {/*<h1>{sayHello()}</h1>*/}
+        {/*<Hello />*/}
+        <UserInputTest1 />
     </div>
   );
 }
