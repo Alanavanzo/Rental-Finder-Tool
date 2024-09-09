@@ -2,14 +2,16 @@ import sayHello from "./views/Test.js";
 import WelcomeUser from "./views/Homepage.js";
 import Hello from './views/Hello.js'; // Adjust path as needed
 import UserInputTest1 from "./views/UserInputTest.js";
+import React from "react";
+import { ReactDOM } from "react";
 
 function App() {
   return (
     <div>
-        {/*<WelcomeUser/>*/}
-        <h1>{sayHello()}</h1>
+        <WelcomeUser/>
+        {/*<h1>{sayHello()}</h1>*/}
         {/*<Hello />*/}
-        {/*<UserInputTest1 />*/}
+        <UserInputTest1 />
     </div>
   );
 }

@@ -16,7 +16,10 @@ const UserInputTest1 = () => {
 
   const handleSave = () => {
     localStorage.setItem('userInput', inputValue);
+    window.location.reload(false); // reloads page when user saves their name --> set false so server doesn't do full reload 
   };
+
+
 
   return (
     <div>
