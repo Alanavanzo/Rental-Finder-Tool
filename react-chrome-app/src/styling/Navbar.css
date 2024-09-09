@@ -1,0 +1,30 @@
+.tabs {
+    font-family: Arial, sans-serif;
+  }
+  
+  .tab-nav {
+    margin-bottom: 1rem;
+  }
+  
+  .tab-list {
+    list-style: none;
+    padding: 0;
+    display: flex; /* This makes the tabs horizontal */
+    justify-content: space-between; /* This distributes the tabs evenly */
+  }
+  
+  .tab-list li {
+    flex: 1; /* This makes each tab take up an equal amount of space */
+  }
+  
+  .tab-list button {
+    width: 100%; /* This makes the button take up the full width of the li */
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+  }
+  
+  .tab-content {
+    border: 1px solid #ccc;
+    padding: 1rem;
+  }
+  
