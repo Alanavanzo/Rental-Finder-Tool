@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import "../styling/Navbar.css"
-import WelcomeUser from "../views/Homepage.js";
-import UserInputTest1 from "../views/UserInputTest.js";
+import Homepage from "./Homepage.js";  // homepage is tab 1 
+import Quiz from './Quiz';
 
 const Navbar = () => {
   const [activeTab, setActiveTab] = useState('tab1');
@@ -35,7 +35,7 @@ const Navbar = () => {
               aria-selected={activeTab === 'tab2'}
               onClick={() => handleTabClick('tab2')}
             >
-              Chatbot
+              Quiz
             </button>
           </li>
           <li>
@@ -53,9 +53,9 @@ const Navbar = () => {
         </ul>
       </nav>
       <div className="tab-content">
-        {activeTab === 'tab1' && <div id="panel-1"><WelcomeUser/><UserInputTest1 /></div>}
-        {activeTab === 'tab2' && <div id="panel-2">Content for Tab 2</div>}
-        {activeTab === 'tab3' && <div id="panel-3">Content for Tab 3</div>}
+        {activeTab === 'tab1' && <div id="panel-1"><Homepage/></div>}
+        {activeTab === 'tab2' && <div id="panel-2"><Quiz/></div>}
+        {activeTab === 'tab3' && <div id="panel-2">Stay tuned .. this window will enable you to access all your favourite properties from multiple platforms in the one place!</div>}
       </div>
     </div>
   );

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
-const UserInputTest1 = () => {
-  const [inputValue, setInputValue] = useState('');
+const GetUsersName = () => {
+  const [userNameInputValue, setInputValue] = useState('');
 
   useEffect(() => {
-    const savedValue = localStorage.getItem('userInput');
+    const savedValue = localStorage.getItem('userName');
     if (savedValue) {
       setInputValue(savedValue);
     }
@@ -15,23 +15,20 @@ const UserInputTest1 = () => {
   };
 
   const handleSave = () => {
-    localStorage.setItem('userInput', inputValue);
+    localStorage.setItem('userName', userNameInputValue);
     window.location.reload(false); // reloads page when user saves their name --> set false so server doesn't do full reload 
   };
-
-
 
   return (
     <div>
       <p>What is your name?</p>
       <input 
         type="text" 
-        value={inputValue} 
+        value={userNameInputValue} 
         onChange={handleChange} 
       />
       <button className="buttonStyle" onClick={handleSave}>Save</button>
-      {/*<p>Current Input: {inputValue}</p>*/}
     </div>
   );
 };
-export default UserInputTest1;
+export default GetUsersName;

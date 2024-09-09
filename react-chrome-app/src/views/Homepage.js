@@ -1,39 +1,31 @@
 import React, { useEffect, useState } from 'react';
+import GetUsersName from "../components/UserInput.js";
+import Quiz from './Quiz.js';
 
+// note that this file is tab 1 
 
-// Define the functional component
-const WelcomeUser = () => {
-    const [inputValue, setInputValue] = useState('');
+const Homepage = () => {
+  // this constant simply adds a variable in this page --> the value we want is retrieved from local storage as it is called 'userName'
+  // logic and functions to create and save variables can be found in ../components/UserInput 
+    const [userNameValue, setInputValue] = useState('');
 
     useEffect(() => {
-        const savedValue = localStorage.getItem('userInput');
+        const savedValue = localStorage.getItem('userName');
         if (savedValue) {
           setInputValue(savedValue);
         }
       }, []);
-    
-      const handleChange = (e) => {
-        setInputValue(e.target.value);
-      };
-    
-      /* not needed here 
-      const handleSave = () => {
-        localStorage.setItem('userInput', inputValue);
-      };
-      */
-    
 
-  // currently only returns new saved name if page is refreshed .. probably need to change UserInputTest to refresh the page or reload values when save is clicked 
   return (
     <div>
       <header>
-         {/*<h2>Welcome to the Rental Finder Tool</h2>*/}
-        <h2>Welcome to the Rental Finder Tool {inputValue}👋</h2>
-        <h3>We hope we can help you find an awesome rental</h3>
+        <h1>Welcome to the Rental Finder Tool {userNameValue}👋</h1>
+        <h2>We hope we can help you find an awesome rental</h2>
+        <GetUsersName />
       </header>
     </div>
   );
 };
 
 // Export the component
-export default WelcomeUser;
+export default Homepage;

@@ -1,24 +1,17 @@
-import sayHello from "./views/Test.js";
-import WelcomeUser from "./views/Homepage.js";
-import Hello from './views/Hello.js'; // Adjust path as needed
-import UserInputTest1 from "./views/UserInputTest.js";
 import React from "react";
-import Navbar from "./components/Navbar.js";
+import Navbar from "./views/Navbar.js";
 import { ReactDOM } from "react";
-import Condense from "./components/Condense.js";
 import "./App.css"
 import "./styling/Styles.css"
 
 function App() {
+  // add routing info 
   return (
     <div>
         {/* TODO: we need two scenarios here: if is minimized and if is not minimized --> the below only shows if is not minimzied */}
         {/*<Condense/>*/}
         <Navbar/> 
         {/*<WelcomeUser/>*/}
-        {/*<h1>{sayHello()}</h1>*/}
-        {/*<Hello />*/}
-        {/*<UserInputTest1 />*/}
     </div>
   );
 }

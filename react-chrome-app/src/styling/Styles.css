@@ -1,25 +1,38 @@
 h1 {
-    color: blue;
+  font-family: 'Monaco', Monospace; 
+  color: rgb(2, 2, 71); /* Navy blue color */
+  font-size: 2rem; 
+  font-weight: bold; /* Makes the font bold */
+  text-align: center; /* Centers the text */
   }
   
   h2 {
-    font-family: 'Monaco', Monospace; /* You can change this to any font you prefer */
-    color: navy; /* Navy blue color */
-    font-size: 1.5rem; /* Adjust the size as needed */
-    font-weight: bold; /* Makes the font bold */
+    font-family: 'Monaco', Monospace; 
+    color: rgb(0, 0, 128); /* Navy blue color */
+    font-size: 1.5rem; 
     text-align: center; /* Centers the text */
   }
   
   h3 {
-    font-family: 'Monaco', Monospace; /* You can change this to any font you prefer */
+    font-family: 'Monaco', Monospace; 
     color: rgb(74, 74, 162); /* Navy blue color */
-    font-size: 1rem; /* Adjust the size as needed */
+    font-size: 1rem; 
     text-align: center; /* Centers the text */
   }
+
   .buttonStyle {
     outline-width: medium;
     outline-color: navy;
     font-family: 'Monaco', Monospace;
     text-align: center;
   }
+
+  .quizField {
+    color: rgb(0, 0, 0); 
+    font-family: 'Arial', sans-serif;
+    text-align: center; 
+    margin-bottom: 10px;
+  }
+
+
   
