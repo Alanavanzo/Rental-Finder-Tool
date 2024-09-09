@@ -25,6 +25,6 @@ Option 1 - view changes as extension
 Option 2 - view changes as react app
 1. Run "npm start"
 2. Save changes locally 
-
+** note that changes that are built correctly here may not correctly link with chrome extension .. would recommend going with option 1 for this reason 
 
 
