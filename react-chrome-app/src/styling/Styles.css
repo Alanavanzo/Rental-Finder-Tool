@@ -1,0 +1,25 @@
+h1 {
+    color: blue;
+  }
+  
+  h2 {
+    font-family: 'Monaco', Monospace; /* You can change this to any font you prefer */
+    color: navy; /* Navy blue color */
+    font-size: 1.5rem; /* Adjust the size as needed */
+    font-weight: bold; /* Makes the font bold */
+    text-align: center; /* Centers the text */
+  }
+  
+  h3 {
+    font-family: 'Monaco', Monospace; /* You can change this to any font you prefer */
+    color: rgb(74, 74, 162); /* Navy blue color */
+    font-size: 1rem; /* Adjust the size as needed */
+    text-align: center; /* Centers the text */
+  }
+  .buttonStyle {
+    outline-width: medium;
+    outline-color: navy;
+    font-family: 'Monaco', Monospace;
+    text-align: center;
+  }
+  

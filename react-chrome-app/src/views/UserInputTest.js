@@ -29,7 +29,7 @@ const UserInputTest1 = () => {
         value={inputValue} 
         onChange={handleChange} 
       />
-      <button onClick={handleSave}>Save</button>
+      <button className="buttonStyle" onClick={handleSave}>Save</button>
       {/*<p>Current Input: {inputValue}</p>*/}
     </div>
   );

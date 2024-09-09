@@ -18,33 +18,36 @@ const Navbar = () => {
             <button
               role="tab"
               id="tab-1"
+              className="tabStyle"
               aria-controls="panel-1"
               aria-selected={activeTab === 'tab1'}
               onClick={() => handleTabClick('tab1')}
             >
-              Tab 1
+              Homepage
             </button>
           </li>
           <li>
             <button
               role="tab"
               id="tab-2"
+              className="tabStyle"
               aria-controls="panel-2"
               aria-selected={activeTab === 'tab2'}
               onClick={() => handleTabClick('tab2')}
             >
-              Tab 2
+              Chatbot
             </button>
           </li>
           <li>
             <button
               role="tab"
               id="tab-3"
+              className="tabStyle"
               aria-controls="panel-3"
               aria-selected={activeTab === 'tab3'}
               onClick={() => handleTabClick('tab3')}
             >
-              Tab 3
+              Favourites
             </button>
           </li>
         </ul>

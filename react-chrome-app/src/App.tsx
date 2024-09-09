@@ -5,15 +5,20 @@ import UserInputTest1 from "./views/UserInputTest.js";
 import React from "react";
 import Navbar from "./components/Navbar.js";
 import { ReactDOM } from "react";
+import Condense from "./components/Condense.js";
+import "./App.css"
+import "./styling/Styles.css"
 
 function App() {
   return (
     <div>
-        <Navbar/>
-        <WelcomeUser/>
+        {/* TODO: we need two scenarios here: if is minimized and if is not minimized --> the below only shows if is not minimzied */}
+        {/*<Condense/>*/}
+        <Navbar/> 
+        {/*<WelcomeUser/>*/}
         {/*<h1>{sayHello()}</h1>*/}
         {/*<Hello />*/}
-        <UserInputTest1 />
+        {/*<UserInputTest1 />*/}
     </div>
   );
 }

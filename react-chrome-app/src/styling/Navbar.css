@@ -1,5 +1,7 @@
 .tabs {
-    font-family: Arial, sans-serif;
+    font-family:'Monaco', Monospace;
+    color: DodgerBlue;
+    text-align: center;
   }
   
   .tab-nav {
@@ -24,7 +26,14 @@
   }
   
   .tab-content {
-    border: 1px solid #ccc;
+    border: 1px solid #a0d3d1;
     padding: 1rem;
+  }
+
+  .tabStyle {
+    outline-width: thick;
+    outline-color: navy;
+    font-family: 'Monaco', Monospace;
+    text-align: center;
   }
   
