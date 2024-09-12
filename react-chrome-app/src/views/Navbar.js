@@ -4,7 +4,7 @@ import Homepage from "./Homepage.js";  // homepage is tab 1
 import Quiz from './Quiz';
 
 const Navbar = () => {
-  const [activeTab, setActiveTab] = useState('tab1');
+  const [activeTab, setActiveTab] = useState('tab1'); // default to homepage
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
