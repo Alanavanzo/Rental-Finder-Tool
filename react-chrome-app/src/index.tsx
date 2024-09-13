@@ -6,18 +6,32 @@ const rootElement = document.createElement("div");
 rootElement.id = "react-chrome-app";
 
 const globalStyles = document.createElement("style");
+/* this is what is currently making it look like an extension */
 globalStyles.innerHTML = `
   #${rootElement.id} {
   position: fixed;
   left: 0;
   top: 0;
-  width: 300px;
+  background: 'none';
+  z-index: 999999999;
+  }
+`;
+
+/* original code
+globalStyles.innerHTML = `
+  #${rootElement.id} {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 300px; 
   height: 100vh;
   background: #ffffff;
   border-right: 1px solid #c2c2c2;
   z-index: 999999999;
   }
 `;
+*/
+
 document.body.appendChild(rootElement);
 document.body.appendChild(globalStyles);
 

@@ -63,7 +63,7 @@ function QuizInput () {
   const handleSave = () => {
     localStorage.setItem('userBudgetMinStored', userBudgetMin);
     localStorage.setItem('userBudgetMaxStored', userBudgetMax);
-    localStorage.setItem('userWalkingStored', userWalking);
+    localStorage.setItem('userWalkingStored', userWalking); // TODO user walking not currently showing correctly on update
     localStorage.setItem('userNumBedsStored', userNumBeds);
   };
 

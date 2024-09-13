@@ -36,3 +36,27 @@
     transform: rotate(360deg);
   }
 }
+
+.minimized {
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: 'none';
+  display: block;
+  /*
+  width: 30px; 
+  height: 1vh;
+  background: #ffffff;
+  border-right: 1px solid #c2c2c2;
+  */
+}
+
+.sidebar{
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 300px; 
+  height: 100vh;
+  background: #ffffff;
+  border-right: 1px solid #c2c2c2;
+}

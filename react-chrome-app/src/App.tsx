@@ -1,16 +1,43 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import Navbar from "./views/Navbar.js";
+import Minimize from "./components/Minimize.js";
+import Minimized_view from './views/Minimized_view.js';
 import { ReactDOM } from "react";
 import "./App.css"
 import "./styling/Styles.css"
 
 function App() {
+  const [screenMinimize, setMinimize] = useState('');
+
+  useEffect(() => {
+
+    const savedMinimize = 'yes'; // default to minimized
+    if (savedMinimize) {
+      setMinimize(savedMinimize);
+    }
+
+  }, []);
+
+  const handleClick = async () => {
+    if(screenMinimize == 'no'){
+      setMinimize('yes');
+    }
+    else{
+      setMinimize('no');
+    }
+  };
   // add routing info 
   return (
-    <div>
+    <div className={screenMinimize == 'yes' ? 'minimized' : 'sidebar'}>
+      <button onClick={handleClick} style={{ fontSize: '18px' }}>
+      {screenMinimize == 'yes' ? '➡️' : '⬅️'}
+      </button>
+      {screenMinimize =='no' ? <Navbar/> : <Minimized_view/>}
+        {/*<Minimize/>*/} 
         {/* TODO: we need two scenarios here: if is minimized and if is not minimized --> the below only shows if is not minimzied */}
         {/*<Condense/>*/}
-        <Navbar/> 
+
+
         {/*<WelcomeUser/>*/}
     </div>
   );
