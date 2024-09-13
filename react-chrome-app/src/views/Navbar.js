@@ -5,12 +5,13 @@ import Quiz from './Quiz';
 
 // TODO for whatever reason home button needs to be clicked twice to go to home .. will fix 
 function Navbar ( {goHome} ) {
-  const [activeTab, setActiveTab] = useState('tab1'); // default to homepage
-  const [goHomeVal, setHome] = useState(''); // default to homepage
+  const [activeTab, setActiveTab] = useState(''); // useState('tab1');
+  const [goHomeVal, setHome] = useState('yes'); // default to homepage
 
   useEffect(() => {
-    setHome(goHome);
-  }, []);
+    setActiveTab('')
+    setHome('yes');
+  }, [goHome]);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -54,17 +55,35 @@ function Navbar ( {goHome} ) {
                 aria-selected={activeTab === 'tab3'}
                 onClick={() => handleTabClick('tab3')}
               >
-                Favourites
+                Favs
               </button>
             </li>
+            {/*} TO CONSIDER -- could potentially add settings and home here as well
+            <li>
+              <button
+                role="tab"
+                id="tab-4"
+                className="tabStyle"
+                aria-controls="panel-4"
+                aria-selected={activeTab === 'tab4'}
+                onClick={() => handleTabClick('tab4')}
+              >
+                ⚙️
+              </button>
+            </li>
+            */}
           </ul>
         </nav>
         <div className="tab-content">
           {/* pass go home in as variable to give option as active tab */}
-          {goHomeVal == 'yes' && <Homepage/>}
-          {goHomeVal == 'no' && activeTab === 'tab1' && <div id="panel-1"><Quiz/></div>} {/* goHome == 'no' and active tab */}
-          {goHomeVal == 'no' && activeTab === 'tab2' && <div id="panel-2">Stay tuned .. chatbot coming soon</div>}
-          {goHomeVal == 'no' && activeTab === 'tab3' && <div id="panel-2">Stay tuned .. this window will enable you to access all your favourite properties from multiple platforms in the one place!</div>}
+          {goHomeVal=='yes' && <Homepage/>}
+          {/* originally had a check that go home == no but now page opens defaulting to home screen and 
+          activeTab initialized to empty ... as soon as tabs are clicked goHomeVal becomes no so homepage won't be shown 
+          if home button is clicked, the useEffect will be called and we are bacm to start where homepage is default anf activeTab is empty 
+          */}
+          {activeTab === 'tab1' && <div id="panel-1"><Quiz/></div>} {/* goHome == 'no' and active tab */}
+          {activeTab === 'tab2' && <div id="panel-2">Stay tuned .. chatbot coming soon</div>}
+          {activeTab === 'tab3' && <div id="panel-2">Stay tuned .. this window will enable you to access all your favourite properties from multiple platforms in the one place!</div>}
         </div>
       </div>
   );

@@ -12,17 +12,8 @@ function App() {
   const [goHome, setHome] = useState('');
 
   useEffect(() => {
-
-    const savedMinimize = 'yes'; // default to minimized
-    if (savedMinimize) {
-      setMinimize(savedMinimize);
-    }
-
-    const savedHome = 'yes'; // default to homescreen
-    if (savedHome) {
-      setHome(savedHome);
-    }
-
+    setMinimize('yes'); // default to minimized
+    setHome('yes'); // default to homescreen)
   }, []);
 
   const handleClick = async () => {
@@ -35,32 +26,26 @@ function App() {
   };
 
   const handleHomeClick = async () => {
-    if(goHome == 'no'){
-      setHome('yes');
-      //window.location.reload();
+    if(goHome == 'yes'){
+      setHome('yes2');
     }
     else{
-      setHome('no');
+      setHome('yes');
     }
-    localStorage.setItem('homeScreen', goHome);
   };
 
   // add routing info 
   return (
     <div className={screenMinimize == 'yes' ? 'minimized' : 'sidebar'}>
-      {screenMinimize == 'no' && <button onClick={handleHomeClick} style={{ fontSize: '18px' }}>🏠</button>} 
-      <button onClick={handleClick} style={{ fontSize: '18px' }}>
-      {screenMinimize == 'yes' ? '➡️' : '⬅️'}
+      <button onClick={handleClick} style={{ fontSize: '18px', float: 'right' }}>
+        {screenMinimize == 'yes' ? '➡️' : '⬅️'}
       </button>
       {screenMinimize =='yes' && <Minimized_view/>}
-      {screenMinimize =='no' && goHome == 'yes' && <Navbar goHome={'yes'}/>}
-      {screenMinimize =='no' && goHome == 'no' && <Navbar goHome={'no'}/>}
-        {/*<Minimize/>*/} 
-        {/* TODO: we need two scenarios here: if is minimized and if is not minimized --> the below only shows if is not minimzied */}
-        {/*<Condense/>*/}
-
-
-        {/*<WelcomeUser/>*/}
+      {screenMinimize == 'no' && <button style={{ fontSize: '18px', float: 'right' }}>⚙️</button>} 
+      {screenMinimize == 'no' && <button onClick={handleHomeClick} style={{ fontSize: '18px' , float: 'right'}}>🏠</button>} 
+      <br></br>
+      <br></br>
+      {screenMinimize =='no' &&  <Navbar goHome={goHome}/>}
     </div>
   );
 }

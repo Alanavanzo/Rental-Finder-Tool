@@ -77,6 +77,7 @@ function QuizInput () {
         value={userBudgetMin} 
         onChange={handleChangeMinBudget} 
       />
+      <br></br>
       <span className = "quizField">Max Budget: </span>
       <input 
         type="number" 
@@ -84,6 +85,7 @@ function QuizInput () {
         value={userBudgetMax} 
         onChange={handleChangeMaxBudget} 
       />
+      <br></br>
       <span className = "quizField">Do you like to walk?  </span>
       <button onClick={handleYesWalk} style={{ backgroundColor: userWalking ? 'blue' : 'gray' , marginRight: '10px'}}>Yes
       </button>
