@@ -1,21 +1,29 @@
 import React, { useState, useEffect } from 'react';
+import "../styling/Styles.css"
 
 function QuizInput () {
-  // pets
+
   // kids 
   // prefer apartment or house 
   // gardening / time outdoors --> will impact outdoor areas 
   // cooking --> will impact kitchen size 
   // restaurants and cafes
   // activities 
+  // pets should probably be a requirement 
+  // TODO maybe it is a good idea to split up Requirements and quiz 
 
   const [userBudgetMax, setInputValue] = useState('');
 
   const [userBudgetMin, setBudgetMin] = useState('');
 
+  const [userNumBeds, setNumBeds] = useState('');
+
   const [userWalking, setWalking] = useState('');
 
-  const [userNumBeds, setNumBeds] = useState('');
+  const [userPets, setPets] = useState('');
+
+  const [userCook, setCook] = useState('');
+
 
   useEffect(() => {
     const savedMinBudget = localStorage.getItem('userBudgetMinStored');
@@ -38,7 +46,15 @@ function QuizInput () {
       setNumBeds(savedUserNumBeds);
     }
 
+    const savedPets = localStorage.getItem('userPetsStored');
+    if (savedPets) {
+      setPets(savedPets);
+    }
 
+    const savedCook = localStorage.getItem('userCookStored');
+    if (savedCook) {
+      setPets(savedCook);
+    }
 
   }, []);
 
@@ -49,58 +65,91 @@ function QuizInput () {
   const handleChangeMaxBudget = (e) => {
     setInputValue(e.target.value);
   };
-  const handleYesWalk = () => {
-    setWalking(true);
-  };
-  const handleNoWalk = () => {
-    setWalking(false);
-  };
 
   const handleChangeBeds = (e) => {
     setNumBeds(e.target.value);
   };
 
+  const handleYesWalk = () => {
+    setWalking('true');
+  };
+  const handleNoWalk = () => {
+    setWalking('false');
+  };
+
+  const handleYesPets = () => {
+    setPets('true');
+  };
+  const handleNoPets = () => {
+    setPets('false');
+  };
+
+  const handleYesCook = () => {
+    setCook('true');
+  };
+  const handleNoCook = () => {
+    setCook('false');
+  };
+
   const handleSave = () => {
     localStorage.setItem('userBudgetMinStored', userBudgetMin);
     localStorage.setItem('userBudgetMaxStored', userBudgetMax);
-    localStorage.setItem('userWalkingStored', userWalking); // TODO user walking not currently showing correctly on update
     localStorage.setItem('userNumBedsStored', userNumBeds);
+    localStorage.setItem('userWalkingStored', userWalking); 
+    localStorage.setItem('userPetsStored', userPets);
+    localStorage.setItem('userCookStored', userCook);
   };
 
   return (
     <div>
       {/* TODO Put budgets on same line and add check that Min is less than max */}
-      <span className = "quizField">Min Budget: </span>
+      <h2>Requirements </h2>
+      <span className = "quizField">Budget: </span>
       <input 
         type="number" 
-        placeholder={"min budget"}
+        className="quizNumInput"
+        style={{ width: '50px', padding: '1px' , marginRight: '10px'}}
+        placeholder={"min"}
         value={userBudgetMin} 
         onChange={handleChangeMinBudget} 
       />
-      <br></br>
-      <span className = "quizField">Max Budget: </span>
       <input 
         type="number" 
-        placeholder={"max budget"}
+        className="quizInlineInput"
+        style={{ width: '50px', padding: '1px' }}
+        placeholder={"max"}
         value={userBudgetMax} 
         onChange={handleChangeMaxBudget} 
       />
       <br></br>
-      <span className = "quizField">Do you like to walk?  </span>
-      <button onClick={handleYesWalk} style={{ backgroundColor: userWalking ? 'blue' : 'gray' , marginRight: '10px'}}>Yes
-      </button>
-      <button onClick={handleNoWalk} style={{ backgroundColor: userWalking ? 'gray' : 'blue' }} >No
-      </button>
-      <br></br>
-      <span className = "quizField">Num bedrooms: </span>
-      <input 
+      <span className = "quizField">Min # bedrooms: </span>
+      <input
         type="number" 
+        className="quizNumInput" 
         style={{ width: '50px', padding: '1px' }}
         value={userNumBeds} 
         onChange={handleChangeBeds} 
       />
+      <h2>Quiz </h2>
+      <span className = "quizField">Do you like to walk?  </span>
+      <button onClick={handleYesWalk} style={{ backgroundColor: userWalking == 'true' ? 'blue' : 'gray' , marginRight: '10px'}}>Yes
+      </button>
+      <button className = "quizBoxInput" onClick={handleNoWalk} style={{ backgroundColor: userWalking == 'true' ? 'gray' : 'blue' }} >No
+      </button>
       <br></br>
-      <button className="buttonStyle" onClick={handleSave}>Update Preferences</button>
+      <span className = "quizField">Do you have pets?  </span>
+      <button onClick={handleYesPets} style={{ backgroundColor: userPets == 'true' ? 'blue' : 'gray' , marginRight: '10px'}}>Yes
+      </button>
+      <button className = "quizBoxInput" onClick={handleNoPets} style={{ backgroundColor: userPets == 'true' ? 'gray' : 'blue' }} >No
+      </button>
+      <br></br>
+      <span className = "quizField">Do you like to cook?  </span>
+      <button onClick={handleYesCook} style={{ backgroundColor: userCook == 'true' ? 'blue' : 'gray' , marginRight: '10px'}}>Yes
+      </button>
+      <button className = "quizBoxInput" onClick={handleNoCook} style={{ backgroundColor: userCook == 'true' ? 'gray' : 'blue' }} >No
+      </button>
+      <br></br>
+      <button className = "quizBoxInput" onClick={handleSave}>Update Preferences</button>
     </div>
   );
 };

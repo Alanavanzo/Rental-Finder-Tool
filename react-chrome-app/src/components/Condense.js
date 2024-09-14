@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-// this is the code responsible for MINIMIZING, it is NOT the condensed view, hence why it is in components 
+// NOT currently in use 
 const Condense = () => {
   const minimizeExtension = () => {
     if (chrome && chrome.windows) {

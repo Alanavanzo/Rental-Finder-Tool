@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 // Moving to App.tsx as we want on-click to trigger the new screenMinimize value to be updated in App so we know to close 
 
+// NOT currently in use 
+
 function Minimize () {
 
   const [screenMinimize, setMinimize] = useState('');

@@ -7,7 +7,8 @@ const Quiz = () => {
   return (
     <div>
       <header>
-        <h3>This quiz will help us understand your preferences and requirements for rental property</h3>
+        <h3>This data will help us understand your unique preferences and requirements, so that we can help evaluate whether properties are suitable for you 😊</h3>
+        <br></br>
       </header>
       <QuizInput />
     </div>

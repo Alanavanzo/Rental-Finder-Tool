@@ -3,6 +3,8 @@ import "../styling/Navbar.css"
 import Homepage from "./Homepage.js";  // homepage is tab 1 
 import Quiz from './Quiz';
 
+// NOT currently in use 
+
 const Tabs = () => {
   const [activeTab, setActiveTab] = useState('tab1'); // default to homepage
 

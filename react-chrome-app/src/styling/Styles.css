@@ -31,10 +31,22 @@ h1 {
     color: rgb(0, 0, 0); 
     font-family: 'Arial', sans-serif;
     text-align: center; 
-    margin-bottom: 10px;
+    margin-top: 20px;
   }
 
   /* TODO add class for quiz text and quiz number input so we can ensure they are spaced out*/
+.quizNumInput{
+  width: '60px';
+  padding: '1px'; 
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+.quizBoxInput{
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
 
 
   
