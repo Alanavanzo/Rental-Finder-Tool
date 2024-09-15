@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import "../styling/Navbar.css"
 import Homepage from "./Homepage.js";  // homepage is tab 1 
 import Quiz from './Quiz';
+import Rate from './Rate';
 
 // TODO for whatever reason home button needs to be clicked twice to go to home .. will fix 
 function Navbar ( {goHome} ) {
@@ -43,7 +44,7 @@ function Navbar ( {goHome} ) {
                 aria-selected={activeTab === 'tab2'}
                 onClick={() => handleTabClick('tab2')}
               >
-                Chatbot
+                Rate
               </button>
             </li>
             <li>
@@ -54,6 +55,18 @@ function Navbar ( {goHome} ) {
                 aria-controls="panel-3"
                 aria-selected={activeTab === 'tab3'}
                 onClick={() => handleTabClick('tab3')}
+              >
+                Chatbot
+              </button>
+            </li>
+            <li>
+              <button
+                role="tab"
+                id="tab-4"
+                className="tabStyle"
+                aria-controls="panel-4"
+                aria-selected={activeTab === 'tab4'}
+                onClick={() => handleTabClick('tab4')}
               >
                 Favs
               </button>
@@ -82,8 +95,9 @@ function Navbar ( {goHome} ) {
           if home button is clicked, the useEffect will be called and we are bacm to start where homepage is default anf activeTab is empty 
           */}
           {activeTab === 'tab1' && <div id="panel-1"><Quiz/></div>} {/* goHome == 'no' and active tab */}
-          {activeTab === 'tab2' && <div id="panel-2">Stay tuned .. chatbot coming soon</div>}
-          {activeTab === 'tab3' && <div id="panel-2">Stay tuned .. this window will enable you to access all your favourite properties from multiple platforms in the one place!</div>}
+          {activeTab === 'tab2' && <div id="panel-2"><Rate/></div>}
+          {activeTab === 'tab3' && <div id="panel-3">Stay tuned .. chatbot coming soon</div>}
+          {activeTab === 'tab4' && <div id="panel-4">Stay tuned .. this window will enable you to access all your favourite properties from multiple platforms in the one place!</div>}
         </div>
       </div>
   );
