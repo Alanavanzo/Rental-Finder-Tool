@@ -21,6 +21,7 @@ const Rate = () => {
       />
       <br></br>
       <button className="buttonStyle">Generate Rating</button>
+      <h3>☆☆☆☆☆</h3>
     </div>
   );
 };
