@@ -21,11 +21,11 @@ function QuizInput () {
 
   const [userCook, setCook] = useState('');   // property features     
 
-  const [userActivities, setActivities] = useState(1);  // impacts location 
+  const [userActivities, setActivities] = useState(3);  // impacts location 
 
-  const [userSchools, setSchools] = useState(1);  // impacts location 
+  const [userSchools, setSchools] = useState(3);  // impacts location 
 
-  const [userRestaurants, setRestaurants] = useState(1);  // impacts location 
+  const [userRestaurants, setRestaurants] = useState(3);  // impacts location 
 
 
   useEffect(() => {
@@ -140,11 +140,13 @@ function QuizInput () {
               <br></br>
               <br></br>
             <h3>Rating Questions</h3>
-              <p className="quizField">For the below components, rate them on a scale of 1 to 10 - 1 indicating that you don't want that feature, 5 being neutral and 10 being that you do want it</p>
+              <p className="quizField">For the below components, rate them on a scale of 1 to 5 - 1 indicating that you don't want that feature,3 being neutral and 5 being that you do want it</p>
               <span className = "quizField">Activities Nearby:  </span>
               <input
                 type="number" 
                 className="quizNumInput" 
+                min={1}
+                max={5}
                 style={{ width: '50px', padding: '1px' }}
                 value={userActivities} 
                 onChange={handleActivities} 
@@ -154,6 +156,8 @@ function QuizInput () {
               <input
                 type="number" 
                 className="quizNumInput" 
+                min={1}
+                max={5}
                 style={{ width: '50px', padding: '1px' }}
                 value={userSchools} 
                 onChange={handleSchools} 
@@ -163,6 +167,8 @@ function QuizInput () {
               <input
                 type="number" 
                 className="quizNumInput" 
+                min={1}
+                max={5}
                 style={{ width: '50px', padding: '1px' }}
                 value={userRestaurants} 
                 onChange={handleRestaurants} 

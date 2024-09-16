@@ -26,15 +26,32 @@
   }
   
   .tab-content {
-    border: 1px solid #a0d3d1;
+    border: none /*1px solid #a0d3d1;*/
     /*padding: 1rem;*/
   }
 
   .tabStyle {
     outline-width: thick;
-    outline-color: navy;
+    outline-color: rgb(99, 108, 112);
     font-family: 'Monaco', Monospace;
     text-align: center;
     font-size: '18px';
+    font-weight: 200;
+    border-width: 2px;
+    color: rgb(14, 24, 156);
+    border-radius: 20%;
+  }
+
+  .activeTabStyle{
+    outline-width: thick;
+    outline-color: rgb(99, 108, 112);
+    font-family: 'Monaco', Monospace;
+    text-align: center;
+    font-size: '18px';
+    font-weight: 200;
+    border-width: 3px;
+    background-color: aqua;
+    color: rgb(14, 24, 156);
+    border-radius: 20%;
   }
   

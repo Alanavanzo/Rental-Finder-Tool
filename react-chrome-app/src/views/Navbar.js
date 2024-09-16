@@ -29,7 +29,7 @@ function Navbar ( {goHome} ) {
               <button
                 role="tab"
                 id="tab-1"
-                className="tabStyle"
+                className={activeTab==='tab1' ? "activeTabStyle" : "tabStyle"}
                 aria-controls="panel-1"
                 aria-selected={activeTab === 'tab1'}
                 onClick={() => handleTabClick('tab1')}
@@ -41,7 +41,7 @@ function Navbar ( {goHome} ) {
               <button
                 role="tab"
                 id="tab-2"
-                className="tabStyle"
+                className={activeTab==='tab2' ? "activeTabStyle" : "tabStyle"}
                 aria-controls="panel-2"
                 aria-selected={activeTab === 'tab2'}
                 onClick={() => handleTabClick('tab2')}
@@ -53,7 +53,7 @@ function Navbar ( {goHome} ) {
               <button
                 role="tab"
                 id="tab-3"
-                className="tabStyle"
+                className={activeTab==='tab3' ? "activeTabStyle" : "tabStyle"}
                 aria-controls="panel-3"
                 aria-selected={activeTab === 'tab3'}
                 onClick={() => handleTabClick('tab3')}
@@ -65,7 +65,7 @@ function Navbar ( {goHome} ) {
               <button
                 role="tab"
                 id="tab-4"
-                className="tabStyle"
+                className={activeTab==='tab4' ? "activeTabStyle" : "tabStyle"}
                 aria-controls="panel-4"
                 aria-selected={activeTab === 'tab4'}
                 onClick={() => handleTabClick('tab4')}
