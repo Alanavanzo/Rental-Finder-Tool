@@ -3,6 +3,8 @@ import "../styling/Navbar.css"
 import Homepage from "./Homepage.js";  // homepage is tab 1 
 import Quiz from './Quiz';
 import Rate from './Rate';
+import Chatbot from './Chatbot';
+import Favourite from './Favourite';
 
 // TODO for whatever reason home button needs to be clicked twice to go to home .. will fix 
 function Navbar ( {goHome} ) {
@@ -96,8 +98,8 @@ function Navbar ( {goHome} ) {
           */}
           {activeTab === 'tab1' && <div id="panel-1"><Quiz/></div>} {/* goHome == 'no' and active tab */}
           {activeTab === 'tab2' && <div id="panel-2"><Rate/></div>}
-          {activeTab === 'tab3' && <div id="panel-3">Stay tuned .. chatbot coming soon</div>}
-          {activeTab === 'tab4' && <div id="panel-4">Stay tuned .. this window will enable you to access all your favourite properties from multiple platforms in the one place!</div>}
+          {activeTab === 'tab3' && <div id="panel-3"><Chatbot/></div>}
+          {activeTab === 'tab4' && <div id="panel-4"><Favourite/></div>}
         </div>
       </div>
   );

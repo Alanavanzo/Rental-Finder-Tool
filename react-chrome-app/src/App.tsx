@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from "./views/Navbar.js";
-import Minimize from "./components/Minimize.js";
 import Minimized_view from './views/Minimized_view.js';
 import { ReactDOM } from "react";
 import "./App.css"

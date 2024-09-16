@@ -91,7 +91,7 @@ function Requirements () {
         value={userNumBeds} 
         onChange={handleChangeBeds} 
       />
-      <button className = "quizBoxInput" onClick={handleSave}>Update Requirements</button>
+      <button className = "saveButton" onClick={handleSave}>Update Requirements</button>
         </div>;
       }
     })()}

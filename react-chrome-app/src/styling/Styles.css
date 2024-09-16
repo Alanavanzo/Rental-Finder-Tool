@@ -48,18 +48,42 @@ h1 {
 }
 
 .goToButton{
-  background-color: #4CAF50; /* Green background */
-  border: none; /* Remove borders */
+  background-color: #5e7ec4; /* Green background */
+  font-family: 'Monaco', Monospace; 
+  border: navy; /* Remove borders */
   color: white; /* White text */
-  padding: 15px 32px; /* Some padding */
   text-align: center; /* Centered text */
   text-decoration: none; /* Remove underline */
+  padding: 15px;
   display: inline-block; /* Make the button inline */
-  font-size: 16px; /* Increase font size */
-  margin: 4px 2px; /* Some margin */
+  font-size: 14px; /* Increase font size */
+  margin: 4px 2px; 
   cursor: pointer; /* Pointer/hand icon */
-  border-radius: 50%; /* Rounded corners */
+  border-radius: 30%; /* Rounded corners */
 }
+
+.saveButton{
+  background-color: rgb(239, 13, 13); /* Green background */
+  font-family: 'Monaco', Monospace; 
+  border: 2px rgb(128, 0, 0); /* Remove borders */
+  color: white; /* White text */
+  text-align: center; /* Centered text */
+  text-decoration: none; /* Remove underline */
+  padding: 10px;
+  display: inline-block; /* Make the button inline */
+  font-size: 12px; /* Increase font size */
+  margin: 3px 1px; 
+  cursor: pointer; /* Pointer/hand icon */
+  border-radius: 20%; /* Rounded corners */
+}
+
+.emojiButton{
+  border: none;
+  padding: 2px;
+  margin-bottom: 3px;
+}
+
+
 
 
 
