@@ -1,11 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
+function Individual_favourite({id, link, name, deleteFavourite}) {
+    const [visitLink, setVisitLink] = useState(false)
 
-function Individual_favourite({id, link, deleteFavourite}) {
+    useEffect(() => {
+        if (visitLink) {
+            window.location.href = link;
+        }
+    
+      }, [visitLink]);
+
+      const goToLink = () => {
+        setVisitLink(true)
+      }
+
     return (
         <div>
             <div>
-                <span>{link}</span>
+                <button onClick={goToLink}>{name}</button>
                 <button className = "emojiButton" onClick={() => deleteFavourite(id)}>     🗑️</button>
             </div>
         </div>

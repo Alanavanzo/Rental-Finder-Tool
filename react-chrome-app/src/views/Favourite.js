@@ -17,13 +17,13 @@ const Favourite = () => {
     }, [favouriteList]);
 
     // TODO add ability for users to name the properties
-    function addFavourite(link_input) {
+    function addFavourite(link_input, name_input) {
         const isFoundInThisList = favouriteList.some(ing => ing.link === link_input); // will be true if link is already in list  
         if(!isFoundInThisList){
         setFavouriteList((currentFavourites) => {
             return [
                 ...currentFavourites,
-                {id: crypto.randomUUID(), link: link_input}
+                {id: crypto.randomUUID(), name: name_input, link: link_input}
             ]
         })
     }
@@ -55,6 +55,8 @@ const Favourite = () => {
                         <Individual_favourite
                         {...favourite}
                     key={favourite.id}
+                    link = {favourite.link}
+                    name = {favourite.name}
                     deleteFavourite={deleteFavourite}
                         />
                             )
