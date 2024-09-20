@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import "../styling/Styles.css"
 
-function QuizInput () {
+// TODO --> change yes/no to true and false 
+function QuizInput () {  
 
   // kids 
   // prefer apartment or house 
@@ -11,7 +12,6 @@ function QuizInput () {
   // activities 
   // exercise --> can look into parks, gyms, pools, etc. 
   // pets should probably be a requirement 
-  // TODO maybe it is a good idea to split up Requirements and quiz 
 
   const [quizOnOff, setQuiz] = useState('false');
 
@@ -27,6 +27,7 @@ function QuizInput () {
 
   const [userRestaurants, setRestaurants] = useState(3);  // impacts location 
 
+  const [userPT, setPT] = useState(3);  // impacts location 
 
   useEffect(() => {
 
@@ -58,6 +59,11 @@ function QuizInput () {
     const savedRestaurants = localStorage.getItem('userRestaurantsStored');
     if (savedRestaurants) {
       setRestaurants(savedRestaurants);
+    }
+
+    const savedPT = localStorage.getItem('userPTStored');
+    if (savedPT) {
+      setPT(savedPT);
     }
 
   }, []);
@@ -100,6 +106,10 @@ function QuizInput () {
     setRestaurants(e.target.value);
   };
 
+  const handlePT = (e) => {
+    setPT(e.target.value);
+  };
+
 
   const handleSave = () => {
     localStorage.setItem('userWalkingStored', userWalking); 
@@ -108,6 +118,7 @@ function QuizInput () {
     localStorage.setItem('userActivitiesStored', userActivities);
     localStorage.setItem('userSchoolsStored', userSchools);
     localStorage.setItem('userRestaurantsStored', userRestaurants);
+    localStorage.setItem('userPTStored', userPT);
     setQuiz('false');
   };
 
@@ -172,6 +183,17 @@ function QuizInput () {
                 style={{ width: '50px', padding: '1px' }}
                 value={userRestaurants} 
                 onChange={handleRestaurants} 
+              />
+            <br></br>
+            <span className = "quizField">Public Transport: </span>
+              <input
+                type="number" 
+                className="quizNumInput" 
+                min={1}
+                max={5}
+                style={{ width: '50px', padding: '1px' }}
+                value={userPT} 
+                onChange={handlePT} 
               />
             <br></br>
             <button className = "saveButton" onClick={handleSave}>Save Quiz</button>

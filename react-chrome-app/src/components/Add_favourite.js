@@ -32,7 +32,8 @@ function Add_favourite({addFavourite}) {
                     <input 
                         type="text" 
                         placeholder={"Enter property name ... "}
-                    value = {userNewFavouriteName}
+                        value = {userNewFavouriteName}
+                        style={{ width: '170px', padding: '1px' , marginRight: '5px'}}
                         onChange={handleNewFavouriteName} 
                     />
                     <button onClick={handleNewName}>next</button>
@@ -44,6 +45,7 @@ function Add_favourite({addFavourite}) {
                     type="text" 
                     placeholder={"Enter property link ... "}
                     value = {userNewFavouriteLink}
+                    style={{ width: '170px', height: '120px', padding: '1px' , marginRight: '5px'}}
                     onChange={handleNewFavourite} 
                 />
                 <button onClick={handleNewFavSave}>Add</button>
