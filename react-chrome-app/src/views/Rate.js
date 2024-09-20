@@ -1,10 +1,23 @@
 import React, { useEffect, useState } from 'react';
+import PropertyInformation from '../components/PropertyInformation';
+import RatingGenerator from '../components/RatingGenerator';
 
 const Rate = () => {
-    const [propertyInput, setPropertyInput] = useState('');
-  
-    const handleChange = (e) => {
-      setPropertyInput(e.target.value);
+
+  /*
+    Add the below as input into PropertyInformation 
+  */
+
+  const [propertyInput, setPropertyInput] = useState('');
+
+  const [pricePW, setPricePW] = useState(0);
+
+  const handleDescChange = (e) => {
+    setPricePW(e.target.value);
+  };
+
+  const changePricePW = (e) => {
+      setPricePW(e.target.value);
     };
   
   return (
@@ -13,15 +26,9 @@ const Rate = () => {
         <h3>Here, you can enter property info and based off of your preferences a rating will be generated!</h3>
         <br></br>
       </header>
-      <textarea
-        type="text" 
-        placeholder={"enter property info"}
-        value={propertyInput} 
-        onChange={handleChange} 
-      />
-      <br></br>
+      <div><PropertyInformation/></div>
       <button className="buttonStyle">Generate Rating</button>
-      <h3>☆☆☆☆☆</h3>
+      <div><RatingGenerator pricePW ={0} location={"Clayton"}/></div>
     </div>
   );
 };

@@ -25,6 +25,7 @@ const GetUsersName = () => {
       <input 
         type="text" 
         value={userNameInputValue} 
+        style={{ width: '170px', padding: '1px' , marginRight: '5px'}}
         onChange={handleChange} 
       />
       <button className="buttonStyle" onClick={handleSave}>Save</button>

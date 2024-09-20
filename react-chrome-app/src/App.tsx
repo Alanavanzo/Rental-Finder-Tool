@@ -6,22 +6,33 @@ import "./App.css"
 import "./styling/Styles.css"
 import Homepage from './views/Homepage.js';
 
+// TODO --> change to true/false .. not yet/no 
 function App() {
-  const [screenMinimize, setMinimize] = useState('');
+  const [screenMinimize, setMinimize] = useState(true);
   const [goHome, setHome] = useState('');
 
+  const [activeTab, setActiveTab] = useState('');
+
   useEffect(() => {
-    setMinimize('yes'); // default to minimized
+    // TODO --> change the default to whatever was last on out of homescreen and navbar 
+    // when a button is clicked (home or a tab) save to local storage and retreive the last value 
+    // do the same with minimize 
+
+    /* can't do this with local storage
+    const savedMinimize = localStorage.getItem('minimizedStored');
+    if (savedMinimize) {
+      setMinimize(savedMinimize);
+    }
+      */
+
+    
+    //setMinimize('yes'); // default to minimized
     setHome('yes'); // default to homescreen --> TODO create variable to store the last page that was selected (not including minimize)
   }, []);
 
   const handleClick = async () => {
-    if(screenMinimize == 'no'){
-      setMinimize('yes');
-    }
-    else{
-      setMinimize('no');
-    }
+      setMinimize(!screenMinimize);
+      //localStorage.setItem('minimizedStored', screenMinimize);
   };
 
   const handleHomeClick = async () => {
@@ -35,16 +46,16 @@ function App() {
 
   // add routing info 
   return (
-    <div className={screenMinimize == 'yes' ? 'minimized' : 'sidebar'}>
+    <div className={screenMinimize ? 'minimized' : 'sidebar'}>
       <button onClick={handleClick} style={{ fontSize: '18px', float: 'right' }}>
-        {screenMinimize == 'yes' ? '➡️' : '⬅️'}
+        {screenMinimize ? '➡️' : '⬅️'}
       </button>
-      {screenMinimize =='yes' && <Minimized_view/>}
-      {screenMinimize == 'no' && <button style={{ fontSize: '18px', float: 'right' }}>⚙️</button>} 
-      {screenMinimize == 'no' && <button onClick={handleHomeClick} style={{ fontSize: '18px' , float: 'right'}}>🏠</button>} 
+      {screenMinimize && <Minimized_view/>}
+      {!screenMinimize && <button style={{ fontSize: '18px', float: 'right' }}>⚙️</button>} 
+      {!screenMinimize && <button onClick={handleHomeClick} style={{ fontSize: '18px' , float: 'right'}}>🏠</button>} 
       <br></br>
       <br></br>
-      {screenMinimize =='no' &&  <Navbar goHome={goHome}/>}
+      {!screenMinimize &&  <Navbar goHome={goHome}/>}
     </div>
   );
 }
