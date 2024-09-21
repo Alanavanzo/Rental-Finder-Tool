@@ -6,28 +6,17 @@ import "./App.css"
 import "./styling/Styles.css"
 import Homepage from './views/Homepage.js';
 
-// TODO --> change to true/false .. not yet/no 
 function App() {
   const [screenMinimize, setMinimize] = useState(true);
-  const [goHome, setHome] = useState('');
-
-  const [activeTab, setActiveTab] = useState('');
+  const [goHomeTrigger, pullHomeTrigger] = useState(true);  // default to home if nothing in local storage 
 
   useEffect(() => {
-    // TODO --> change the default to whatever was last on out of homescreen and navbar 
-    // when a button is clicked (home or a tab) save to local storage and retreive the last value 
-    // do the same with minimize 
-
     /* can't do this with local storage
     const savedMinimize = localStorage.getItem('minimizedStored');
     if (savedMinimize) {
       setMinimize(savedMinimize);
     }
       */
-
-    
-    //setMinimize('yes'); // default to minimized
-    setHome('yes'); // default to homescreen --> TODO create variable to store the last page that was selected (not including minimize)
   }, []);
 
   const handleClick = async () => {
@@ -36,12 +25,8 @@ function App() {
   };
 
   const handleHomeClick = async () => {
-    if(goHome == 'yes'){
-      setHome('yes2');
-    }
-    else{
-      setHome('yes');
-    }
+    pullHomeTrigger(!goHomeTrigger);   // doesn't matter what the value is, as we just need this to trigger useEffect in Navbar 
+    localStorage.setItem('mostRecentView', 'home');  // set the most recent view to home
   };
 
   // add routing info 
@@ -55,7 +40,7 @@ function App() {
       {!screenMinimize && <button onClick={handleHomeClick} style={{ fontSize: '18px' , float: 'right'}}>🏠</button>} 
       <br></br>
       <br></br>
-      {!screenMinimize &&  <Navbar goHome={goHome}/>}
+      {!screenMinimize &&  <Navbar goHomeTrigger={goHomeTrigger}/>}
     </div>
   );
 }

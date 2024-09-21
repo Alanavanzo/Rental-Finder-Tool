@@ -6,19 +6,28 @@ import Rate from './Rate';
 import Chatbot from './Chatbot';
 import Favourite from './Favourite';
 
-// TODO for whatever reason home button needs to be clicked twice to go to home .. will fix 
-function Navbar ( {goHome} ) {
+// TODO set activeTab in local storage 
+function Navbar ( {goHomeTrigger} ) {
   const [activeTab, setActiveTab] = useState(''); // useState('tab1');
-  const [goHomeVal, setHome] = useState('yes'); // default to homepage
+  const [goHomeVal, setHome] = useState(true); // default to homepage
 
   useEffect(() => {
-    setActiveTab('')
-    setHome('yes');
-  }, [goHome]);
+    // on reload, grab the most recent view 
+    const savedMostRecentView = localStorage.getItem('mostRecentView');
+    if (savedMostRecentView == null || savedMostRecentView == 'home') { // defaults to home if nothing in local storage 
+      setActiveTab('')
+      setHome(true);
+    }
+    else{
+      setHome(false)
+      setActiveTab(savedMostRecentView);
+    }
+  }, [goHomeTrigger]);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
-    setHome('no')
+    setHome(false)
+    localStorage.setItem('mostRecentView', tab);  // set the most recent view to the tab 
   };
 
   return (
@@ -91,12 +100,12 @@ function Navbar ( {goHome} ) {
         </nav>
         <div className="tab-content">
           {/* pass go home in as variable to give option as active tab */}
-          {goHomeVal=='yes' && <Homepage/>}
+          {goHomeVal && <Homepage/>}
           {/* originally had a check that go home == no but now page opens defaulting to home screen and 
           activeTab initialized to empty ... as soon as tabs are clicked goHomeVal becomes no so homepage won't be shown 
           if home button is clicked, the useEffect will be called and we are bacm to start where homepage is default anf activeTab is empty 
           */}
-          {activeTab === 'tab1' && <div id="panel-1"><Quiz/></div>} {/* goHome == 'no' and active tab */}
+          {activeTab === 'tab1' && <div id="panel-1"><Quiz/></div>} 
           {activeTab === 'tab2' && <div id="panel-2"><Rate/></div>}
           {activeTab === 'tab3' && <div id="panel-3"><Chatbot/></div>}
           {activeTab === 'tab4' && <div id="panel-4"><Favourite/></div>}
