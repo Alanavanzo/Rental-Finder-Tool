@@ -1,21 +1,35 @@
 import React, { useEffect, useState } from 'react';
 
-const PropertyInformation = () => {
+const PropertyInformation = ({trigger}) => {
     const [propertyInput, setPropertyInput] = useState('');
 
+    const [location, setLocation] = useState('');
+
     const [pricePW, setPricePW] = useState(0);
+
+    useEffect(() => {
+      // store all values in local storage 
+      // currently called everytime page reloads so will reset .. can change if needed to only occur if there are values for the variables 
+        localStorage.setItem('pricePWStored', pricePW);
+        localStorage.setItem('propertyLocationStored', location);
+        localStorage.setItem('propertyInputStored', propertyInput);
+    }, [trigger]);
   
     const handleDescChange = (e) => {
-      setPricePW(e.target.value);
+      setPropertyInput(e.target.value);
     };
 
     const changePricePW = (e) => {
         setPricePW(e.target.value);
       };
+
+    const changeLocation = (e) => {
+      setLocation(e.target.value);
+    };
+
   
   return (
     <div>
-
         <span className = "quizField"> Price per Week:  </span>
         <input
             type="number" 
@@ -25,6 +39,14 @@ const PropertyInformation = () => {
             style={{ width: '50px', padding: '1px' }}
             value={pricePW} 
             onChange={changePricePW} 
+        />
+        <br></br>
+        <span className = "quizField"> Location:  </span>
+        <input
+            type="text" 
+            style={{ width: '50px', padding: '1px' }}
+            value={location} 
+            onChange={changeLocation} 
         />
         <br></br>
         <span className = "quizField"> Property Description:  </span>

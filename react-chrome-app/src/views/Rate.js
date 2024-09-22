@@ -4,21 +4,12 @@ import RatingGenerator from '../components/RatingGenerator';
 
 const Rate = () => {
 
-  /*
-    Add the below as input into PropertyInformation 
-  */
-
-  const [propertyInput, setPropertyInput] = useState('');
-
-  const [pricePW, setPricePW] = useState(0);
-
-  const handleDescChange = (e) => {
-    setPricePW(e.target.value);
+  const [trigger, setTrigger] = useState(false);
+  
+  // currently PI and RG and storing and retrieiving values simultaneously so you need to click twice .. need to fix .. not a big deal rn 
+  const pullRatingTrigger = () => {
+    setTrigger(!trigger);
   };
-
-  const changePricePW = (e) => {
-      setPricePW(e.target.value);
-    };
   
   return (
     <div>
@@ -26,9 +17,9 @@ const Rate = () => {
         <h3>Here, you can enter property info and based off of your preferences a rating will be generated!</h3>
         <br></br>
       </header>
-      <div><PropertyInformation/></div>
-      <button className="buttonStyle">Generate Rating</button>
-      <div><RatingGenerator pricePW ={0} location={"Clayton"}/></div>
+      <div><PropertyInformation trigger ={trigger}/></div>
+      <button className="buttonStyle" onClick={pullRatingTrigger}>Generate Rating</button>
+      <div><RatingGenerator trigger ={trigger}/></div>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import "../styling/Navbar.css"
-import Homepage from "./Homepage.js";  // homepage is tab 1 
+import Homepage from "./Homepage.js";  
 import Quiz from './Quiz';
 import Rate from './Rate';
 import Chatbot from './Chatbot';
@@ -8,8 +8,9 @@ import Favourite from './Favourite';
 
 // TODO set activeTab in local storage 
 function Navbar ( {goHomeTrigger} ) {
-  const [activeTab, setActiveTab] = useState(''); // useState('tab1');
-  const [goHomeVal, setHome] = useState(true); // default to homepage
+  // no automatic default --> captured from local storage 'mostRecentView'
+  const [activeTab, setActiveTab] = useState(''); 
+  const [goHomeVal, setHome] = useState(); 
 
   useEffect(() => {
     // on reload, grab the most recent view 
