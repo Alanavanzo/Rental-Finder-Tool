@@ -1,17 +1,24 @@
 import React, { useEffect, useState } from 'react';
 
 const PropertyInformation = ({trigger}) => {
+
+    // these values reset to their initial state every time the user exits out of the window .. instead set like the 
+    // quiz input and add a reset button to clear local storage and revert values back to original as below 
     const [propertyInput, setPropertyInput] = useState('');
 
     const [location, setLocation] = useState('');
 
     const [pricePW, setPricePW] = useState(0);
+    
+    const [numBedsPI, setNumBedsPI] = useState(1);
 
     const [petFriendly, setPetFriendly] = useState('');
 
     useEffect(() => {
       // store all values in local storage 
       // currently called everytime page reloads so will reset .. can change if needed to only occur if there are values for the variables 
+        localStorage.setItem('pricePWStored', pricePW);
+        localStorage.setItem('numBedsPIStored',numBedsPI);
         localStorage.setItem('pricePWStored', pricePW);
         localStorage.setItem('propertyLocationStored', location);
         localStorage.setItem('propertyInputStored', propertyInput);
@@ -25,6 +32,11 @@ const PropertyInformation = ({trigger}) => {
     const changePricePW = (e) => {
         setPricePW(e.target.value);
       };
+
+
+    const changeNumBedsPI = (e) => {
+      setNumBedsPI(e.target.value);
+    };
 
     const changeLocation = (e) => {
       setLocation(e.target.value);
@@ -46,6 +58,17 @@ const PropertyInformation = ({trigger}) => {
             style={{ width: '50px', padding: '1px' }}
             value={pricePW} 
             onChange={changePricePW} 
+        />
+        <br></br>
+        <span className = "quizField"> Number of Bedrooms:  </span>
+        <input
+            type="number" 
+            className="quizNumInput" 
+            min={0}
+            max={20}
+            style={{ width: '50px', padding: '1px' }}
+            value={numBedsPI} 
+            onChange={changeNumBedsPI} 
         />
         <br></br>
         <span className = "quizField"> Location:  </span>

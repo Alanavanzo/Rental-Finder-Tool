@@ -52,7 +52,12 @@ const RatingGenerator = ({trigger}) => {
       const budget = localStorage.getItem('userBudgetMaxStored')
       console.log("inside generate rating function")
 
-      /* Requirements .. if all good return 3 stars OR just do thumbs up for these */ 
+      /* Requirements .. if all good return 3 stars OR just do thumbs up 
+         Firm requirements include:
+          - Max Budget
+          - Min number bedrooms 
+          - If they definitely have a pet 
+      */ 
       if (pricePW > budget){
         setThumbsUp(false);
         setRating('☆☆☆☆☆')
