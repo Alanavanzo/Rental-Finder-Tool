@@ -12,6 +12,7 @@ function QuizInput () {
   // activities 
   // exercise --> can look into parks, gyms, pools, etc. 
   // pets should probably be a requirement 
+  // proximity to work 
 
   const [quizOnOff, setQuiz] = useState('false');
 

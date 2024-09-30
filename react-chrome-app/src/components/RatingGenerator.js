@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import LocationInfo from './LocationInfo';
 
 const RatingGenerator = ({trigger}) => {
     const [rating, setRating] = useState('☆☆☆☆☆');
@@ -76,6 +77,7 @@ const RatingGenerator = ({trigger}) => {
     <div>
       <h2>{thumbsUp ? '👍' : '👎'}</h2>
       <h2>{rating}</h2>
+      <LocationInfo/>
       {/*rating != '☆☆☆☆☆' && <button>Save Rating</button>*/}
     </div>
   );
