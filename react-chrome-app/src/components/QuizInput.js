@@ -12,6 +12,7 @@ function QuizInput () {
   // activities 
   // exercise --> can look into parks, gyms, pools, etc. 
   // pets should probably be a requirement 
+  // proximity to work 
 
   const [quizOnOff, setQuiz] = useState('false');
 
@@ -21,6 +22,8 @@ function QuizInput () {
 
   const [userCook, setCook] = useState('');   // property features     
 
+  const [userParking, setParking] = useState('');  // location and property features  
+
   const [userActivities, setActivities] = useState(3);  // impacts location 
 
   const [userSchools, setSchools] = useState(3);  // impacts location 
@@ -28,6 +31,8 @@ function QuizInput () {
   const [userRestaurants, setRestaurants] = useState(3);  // impacts location 
 
   const [userPT, setPT] = useState(3);  // impacts location 
+
+  const [userModern, setModern] = useState(3);  // building age and renovated features 
 
   useEffect(() => {
 
@@ -44,6 +49,11 @@ function QuizInput () {
     const savedCook = localStorage.getItem('userCookStored');
     if (savedCook) {
       setCook(savedCook);
+    }
+
+    const savedParking = localStorage.getItem('userParkingStored');
+    if (savedParking) {
+      setParking(savedParking);
     }
 
     const savedActivities = localStorage.getItem('userActivitiesStored');
@@ -64,6 +74,11 @@ function QuizInput () {
     const savedPT = localStorage.getItem('userPTStored');
     if (savedPT) {
       setPT(savedPT);
+    }
+
+    const savedModern = localStorage.getItem('userModernStored');
+    if (savedModern) {
+      setModern(savedModern);
     }
 
   }, []);
@@ -94,6 +109,14 @@ function QuizInput () {
     setCook('false');
   };
 
+  const handleYesPark = () => {
+    setParking('true');
+  };
+
+  const handleNoPark = () => {
+    setParking('false');
+  };
+
   const handleActivities = (e) => {
     setActivities(e.target.value);
   };
@@ -110,15 +133,21 @@ function QuizInput () {
     setPT(e.target.value);
   };
 
+  const handleModern = (e) => {
+    setModern(e.target.value);
+  };
+
 
   const handleSave = () => {
     localStorage.setItem('userWalkingStored', userWalking); 
     localStorage.setItem('userPetsStored', userPets);
     localStorage.setItem('userCookStored', userCook);
+    localStorage.setItem('userParkingStored', userParking);
     localStorage.setItem('userActivitiesStored', userActivities);
     localStorage.setItem('userSchoolsStored', userSchools);
     localStorage.setItem('userRestaurantsStored', userRestaurants);
     localStorage.setItem('userPTStored', userPT);
+    localStorage.setItem('userModernStored', userModern);
     setQuiz('false');
   };
 
@@ -147,6 +176,12 @@ function QuizInput () {
               <button onClick={handleYesCook} style={{ backgroundColor: userCook == 'true' ? 'blue' : 'gray' , marginRight: '10px'}}>Yes
               </button>
               <button className = "quizBoxInput" onClick={handleNoCook} style={{ backgroundColor: userCook == 'true' ? 'gray' : 'blue' }} >No
+              </button>
+              <br></br>
+              <span className = "quizField">Do you have a car?  </span>
+              <button onClick={handleYesPark} style={{ backgroundColor: userParking== 'true' ? 'blue' : 'gray' , marginRight: '10px'}}>Yes
+              </button>
+              <button className = "quizBoxInput" onClick={handleNoPark} style={{ backgroundColor: userParking == 'true' ? 'gray' : 'blue' }} >No
               </button>
               <br></br>
               <br></br>
@@ -194,6 +229,17 @@ function QuizInput () {
                 style={{ width: '50px', padding: '1px' }}
                 value={userPT} 
                 onChange={handlePT} 
+              />
+            <br></br>
+            <span className = "quizField">Modern: </span>
+              <input
+                type="number" 
+                className="quizNumInput" 
+                min={1}
+                max={5}
+                style={{ width: '50px', padding: '1px' }}
+                value={userModern} 
+                onChange={handleModern} 
               />
             <br></br>
             <button className = "saveButton" onClick={handleSave}>Save Quiz</button>
