@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
-const PropertyInformation = ({trigger}) => {
+const PropertyInformation = ({trigger, desc, beds}) => {
 
     // these values reset to their initial state every time the user exits out of the window .. instead set like the 
     // quiz input and add a reset button to clear local storage and revert values back to original as below 
-    const [propertyInput, setPropertyInput] = useState('');
+    const [propertyInput, setPropertyInput] = useState();
 
     const [location, setLocation] = useState('');
 
@@ -15,6 +15,11 @@ const PropertyInformation = ({trigger}) => {
     const [petFriendly, setPetFriendly] = useState('');
 
     useEffect(() => {
+      setPropertyInput(desc);
+      setNumBedsPI(beds);
+    })
+
+    useEffect(() => {
       // store all values in local storage 
       // currently called everytime page reloads so will reset .. can change if needed to only occur if there are values for the variables 
         localStorage.setItem('pricePWStored', pricePW);
@@ -23,6 +28,8 @@ const PropertyInformation = ({trigger}) => {
         localStorage.setItem('propertyLocationStored', location);
         localStorage.setItem('propertyInputStored', propertyInput);
         localStorage.setItem('petFriendlyStored', petFriendly);
+        console.log("property info");
+        console.log(propertyInput);
     }, [trigger]);
   
     const handleDescChange = (e) => {
@@ -74,7 +81,8 @@ const PropertyInformation = ({trigger}) => {
         <span className = "quizField"> Location:  </span>
         <input
             type="text" 
-            style={{ width: '50px', padding: '1px' }}
+            style={{ width: '80px', padding: '1px' }}
+            placeholder='Suburb'
             value={location} 
             onChange={changeLocation} 
         />

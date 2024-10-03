@@ -4,7 +4,7 @@ import {useState, useEffect} from "react";
 // TODO --> add parameters for API call as inputs 
 function LocationInfo() {
 
-    const [resultVar, setResultVar] = useState(null);
+    const [resultVar, setResultVar] = useState(null);   // resultVar stores the API result 
 
     // TODO --> break this up so parameters can be added seperately 
     useEffect(() => {
@@ -21,10 +21,10 @@ function LocationInfo() {
             try {
                 const response = await fetch(url, options);
                 const result = await response.text();
-                console.log(result);
+                //console.log(result);
                 setResultVar(result)
             } catch (error) {
-                console.error(error);
+                //console.error(error);
             }
         };
 
