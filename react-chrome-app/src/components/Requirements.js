@@ -4,7 +4,8 @@ import "../styling/Styles.css"
 function Requirements () {
 
     // TO-DO .. eventually, it would be great if requirements are dynamic so that users can control what are hard deal breakers for themselves 
-    // requirements will be treated as such 
+    // requirements will be treated as such --> requirements could be stored in the same way that the favourites list is currently stores
+    // but there would just be a set list of possible requirements 
 
   const [requirementsOnOff, setRequirements] = useState('false');
 
