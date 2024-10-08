@@ -49,6 +49,7 @@ const Rate = () => {
   
   // currently PI and RG and storing and retrieiving values simultaneously so you need to click twice .. need to fix .. not a big deal rn 
   const pullRatingTrigger = () => {
+    // TODO --> download all variables here and pass into RatingGenerator !!!
     setTrigger(!trigger);
   };
   

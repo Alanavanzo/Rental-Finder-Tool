@@ -6,7 +6,6 @@ import Rate from './Rate';
 import Chatbot from './Chatbot';
 import Favourite from './Favourite';
 
-// TODO set activeTab in local storage 
 function Navbar ( {goHomeTrigger} ) {
   // no automatic default --> captured from local storage 'mostRecentView'
   const [activeTab, setActiveTab] = useState(''); 
