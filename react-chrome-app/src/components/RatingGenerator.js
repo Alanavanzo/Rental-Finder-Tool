@@ -12,6 +12,8 @@ const RatingGenerator = ({trigger}) => {
 
     const [location, setLocation] = useState('');
 
+    const [propertyNumBeds, setPropertyNumBeds] = useState(0);
+
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
     useEffect(() => {
@@ -22,6 +24,7 @@ const RatingGenerator = ({trigger}) => {
         const savedPricePW = localStorage.getItem('pricePWStored');
         const savedLocation = localStorage.getItem('propertyLocationStored');
         const savedPI = localStorage.getItem('propertyInputStored');
+        const savedPropertyNumBeds = localStorage.getItem('numBedsPIStored')
         if (savedPricePW) {
           setPricePW(savedPricePW);
         }
@@ -32,6 +35,10 @@ const RatingGenerator = ({trigger}) => {
 
         if (savedPI){
           setPropertyInput(savedPI);
+        }
+
+        if (savedPropertyNumBeds){
+          setPropertyNumBeds(savedPropertyNumBeds);
         }
 
         console.log(pricePW);
@@ -50,8 +57,10 @@ const RatingGenerator = ({trigger}) => {
     */
 
     function generateRating(){
-      const budget = localStorage.getItem('userBudgetMaxStored')
-      console.log("inside generate rating function")
+      const budget = localStorage.getItem('userBudgetMaxStored');
+      const numBeds = localStorage.getItem('userNumBedsStored');
+      console.log("inside generate rating function");
+      const rating_points = 0; 
 
       /* Requirements .. if all good return 3 stars OR just do thumbs up 
          Firm requirements include:
@@ -61,12 +70,22 @@ const RatingGenerator = ({trigger}) => {
       */ 
       if (pricePW > budget){
         setThumbsUp(false);
-        setRating('☆☆☆☆☆')
+        setRating('☆☆☆☆☆');
+        //rating_points = 0;
       }
+      else if (numBeds > propertyNumBeds){ 
+        setThumbsUp(false);
+        setRating('☆☆☆☆☆'); 
+      }
+      // TODO add pets 
       else{
         setRating('★★★★★')
         setThumbsUp(true)
       }
+
+      // If it's a thumbs up, they have rating points to lose based on preferences, at a minimum of 2.5 points 
+      // if thumbs down, they have rating points to gain at a maximum of 2.5 points 
+      // may be better to do percentage rather than stars 
 
       /* Use a location API to implement rating based on the rest of the preferences being treated equally */
       
@@ -77,7 +96,7 @@ const RatingGenerator = ({trigger}) => {
     <div>
       <h2>{thumbsUp ? '👍' : '👎'}</h2>
       <h2>{rating}</h2>
-      <LocationInfo/>
+      <LocationInfo/> {/* this is just for testing purposes .. will remove later */}
       {/*rating != '☆☆☆☆☆' && <button>Save Rating</button>*/}
     </div>
   );

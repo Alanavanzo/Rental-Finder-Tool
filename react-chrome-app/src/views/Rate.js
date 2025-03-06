@@ -15,7 +15,11 @@ const Rate = () => {
 
   const [propertyDescription, setDescription] = useState();
 
-  const [trigger, setTrigger] = useState(false);
+  const [propertyPrice, setPrice] = useState(0);
+
+  const [PItrigger, setPITrigger] = useState(false);
+
+  const [rateTrigger, setRateTrigger] = useState(false);
 
   useEffect(() => {
     const current_domain = window.location.hostname;  // get hostname 
@@ -45,11 +49,21 @@ const Rate = () => {
     //setBeds(document.querySelector("#__next > div > div.css-1ktrj7 > div > div.css-4bd6g2 > div > div > div.css-2anoks > div.css-s4rjyl > div > div.css-1dtnjt5 > div.css-ghc6s4 > div > span:nth-child(1) > span").innerHTML);
     setBeds(document.querySelector("#__next > div > div.css-1ktrj7 > div > div.css-4bd6g2 > div > div > div.css-2anoks > div.css-s4rjyl > div > div.css-1dtnjt5 > div.css-ghc6s4 > div > span:nth-child(1) > span").childNodes[0].nodeValue.trim());
     //setBeds(document.querySelector("#__next > div > div.css-1ktrj7 > div > div.css-4bd6g2 > div > div > div.css-2anoks > div.css-s4rjyl > div > div.css-1dtnjt5 > div.css-ghc6s4 > div > span:nth-child(1) > span").innerHTML)
+  
+    console.log("PRICE")
+    console.log(document.querySelector("#__next > div > div.css-1ktrj7 > div > div.css-4bd6g2 > div > div > div.css-2anoks > div.css-s4rjyl > div > div.css-gg4vpm > div.css-i9gxme > div > span").innerHTML);
+    const price = document.querySelector("#__next > div > div.css-1ktrj7 > div > div.css-4bd6g2 > div > div > div.css-2anoks > div.css-s4rjyl > div > div.css-gg4vpm > div.css-i9gxme > div > span").innerHTML;
+    console.log(price);
+    if (price){
+      setPrice(price.substring(1,price.length));
+    }
   };
   
   // currently PI and RG and storing and retrieiving values simultaneously so you need to click twice .. need to fix .. not a big deal rn 
   const pullRatingTrigger = () => {
-    setTrigger(!trigger);
+    setPITrigger(!PItrigger);
+    // TODO --> download all variables here and pass into RatingGenerator !!!
+    setRateTrigger(!rateTrigger);
   };
   
   return (
@@ -59,9 +73,9 @@ const Rate = () => {
         <br></br>
         <h2>{propertyTitle != '' && propertyTitle}</h2>
       </header>
-      <div><PropertyInformation trigger ={trigger} desc = {propertyDescription} beds = {numBeds}/></div>
+      <div><PropertyInformation trigger ={PItrigger} desc = {propertyDescription} beds = {numBeds} price = {propertyPrice}/></div>
       <button className="buttonStyle" onClick={pullRatingTrigger}>Generate Rating</button>
-      <div><RatingGenerator trigger ={trigger}/></div>
+      <div><RatingGenerator trigger ={rateTrigger}/></div>
     </div>
   );
 };

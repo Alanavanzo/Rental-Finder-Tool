@@ -1,3 +1,5 @@
 /new-build
 
+**/node_modules/
+
 ToDoList.md

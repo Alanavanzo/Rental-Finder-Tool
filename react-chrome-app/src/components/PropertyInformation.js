@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const PropertyInformation = ({trigger, desc, beds}) => {
+const PropertyInformation = ({trigger, desc, beds, price}) => {
 
     // these values reset to their initial state every time the user exits out of the window .. instead set like the 
     // quiz input and add a reset button to clear local storage and revert values back to original as below 
@@ -17,6 +17,7 @@ const PropertyInformation = ({trigger, desc, beds}) => {
     useEffect(() => {
       setPropertyInput(desc);
       setNumBedsPI(beds);
+      setPricePW(price);
     })
 
     useEffect(() => {
