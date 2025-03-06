@@ -4,37 +4,22 @@ import { getChatResponse } from "../api/openai";
 const ChatComponent = () => {
   const [userInput, setUserInput] = useState("");
   const [response, setResponse] = useState(null);
-  /*
-  React.useEffect(() => {
-    fetch("http://localhost:3001/api/chat")
-      .then((res) => res.json())
-      .then((response) => setResponse(response.message));
-  }, []);
-
-  return (
-    <div className="App">
-      <header className="App-header">
-        <p>{!response ? "Loading..." : response}</p>
-      </header>
-    </div>
-  );
-  */
+  const [loading, setLoading] = useState(false);
   
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("Sending request to backend ...")
+    console.log("Sending request to backend ...");
+    setLoading(true)
 
     try {
-      const messages = [
-        { role: "user", content: userInput },
-      ];
-      fetch("http://localhost:3001/api/chat")
-      .then((res) => res.json())
-      .then((response) => setResponse(response.message));
-      //const data = await getChatResponse(messages);
-      //setResponse(data.message);
+      // Call the API via getChatResponse with the userInput
+      const data = await getChatResponse(userInput);  // Pass userInput directly
+      setResponse(data); // Set the response message from the API
+
     } catch (error) {
       setResponse("Error getting response from backend.");
+    } finally {
+      setLoading(false);  // Set loading to false once the response is received
     }
   };
 
@@ -49,8 +34,19 @@ const ChatComponent = () => {
         />
         <button type="submit">Submit</button>
       </form>
-      {/*
-      <p>{!response ? "Loading..." : response}</p>*/}
+    
+      {loading && (
+        <div style={{ width: '100%', backgroundColor: '#f3f3f3', padding: '5px', marginTop: '10px' }}>
+          <div
+            style={{
+              width: '100%',
+              height: '10px',
+              backgroundColor: '#4caf50',
+              animation: 'loading 2s infinite',
+            }}
+          ></div>
+        </div>
+      )}
         
       {response && <div>Response: {response}</div>}
     </div>
