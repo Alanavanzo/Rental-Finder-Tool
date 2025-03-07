@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropertyInformation from '../components/PropertyInformation';
 import RatingGenerator from '../components/RatingGenerator';
+import { add } from 'cheerio/dist/commonjs/api/traversing';
 
 const Rate = () => {
 
@@ -8,6 +9,7 @@ const Rate = () => {
   const [numBeds, setNumBeds] = useState(1);
   const [numBath, setNumBath] = useState(1);
   const [propertyDescription, setDescription] = useState();
+  const [address, setAddress] = useState();
   const [pricePW, setPricePW] = useState(0);
   const [PItrigger, setPITrigger] = useState(false);
   const [rateTrigger, setRateTrigger] = useState(false);
@@ -61,6 +63,11 @@ const Rate = () => {
     if (bath) {
       setNumBath(bath)
     }
+
+    const propertyAddress = document.querySelector("#__next > div > div.css-117u70y > div > div.css-4bd6g2 > div > div > div.css-2anoks > div.css-s4rjyl > div > div.css-1tpe8dy > h1").innerHTML
+    if (propertyAddress){
+      setAddress(propertyAddress)
+    }
   };
 
   useEffect(() => {
@@ -68,9 +75,10 @@ const Rate = () => {
     console.log("Price: " + pricePW)
     console.log("Number of beds: " + numBeds)
     console.log("Number of baths: " + numBath)
+    console.log("Property address: " + address)
     console.log("completed printing")
     setLoading(false)
-  }, [propertyTitle, pricePW, currentURL, numBeds, numBath]); // This will run when propertyTitle changes
+  }, [propertyTitle, pricePW, currentURL, numBeds, numBath, address]); // This will run when propertyTitle changes
   
   // currently PI and RG and storing and retrieiving values simultaneously so you need to click twice .. need to fix .. not a big deal rn 
   const pullRatingTrigger = () => {
@@ -114,7 +122,7 @@ const Rate = () => {
         <br></br>
         <h2>{propertyTitle != '' && propertyTitle}</h2>
       </header>
-      <div><PropertyInformation trigger ={PItrigger} desc = {propertyDescription} beds = {numBeds} price = {pricePW} bath={numBath}/></div>
+      <div><PropertyInformation trigger ={PItrigger} desc = {propertyDescription} beds = {numBeds} price = {pricePW} bath={numBath} propertyAddress={address}/></div>
       <button className="buttonStyle" onClick={pullRatingTrigger}>Generate Rating</button>
       <div><RatingGenerator trigger ={rateTrigger} pricePW={pricePW} propertyNumBeds={numBeds} numBath={numBath} propertyURL={currentURL}/></div>
     </div>

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-const PropertyInformation = ({trigger, desc, beds, price, bath}) => {
+const PropertyInformation = ({trigger, desc, beds, price, bath, propertyAddress}) => {
     // these values reset to their initial state every time the user exits out of the window .. instead set like the 
     // quiz input and add a reset button to clear local storage and revert values back to original as below 
     // Initialize state with props if available, otherwise fallback to default values
     const [propertyInput, setPropertyInput] = useState(desc || '');
+    const [address, setAddress] = useState(propertyAddress || '');
     const [location, setLocation] = useState('');
     const [pricePW, setPricePW] = useState(price || 0);
     const [numBedsPI, setNumBedsPI] = useState(beds || 1);
@@ -16,6 +17,7 @@ const PropertyInformation = ({trigger, desc, beds, price, bath}) => {
     // Effect to store the values in localStorage whenever they change
     useEffect(() => {
       localStorage.setItem('pricePWStored', pricePW);
+      localStorage.setItem('addressStored', address);
       localStorage.setItem('numBedsPIStored', numBedsPI);
       localStorage.setItem('propertyLocationStored', location);
       localStorage.setItem('propertyInputStored', propertyInput);
@@ -27,6 +29,7 @@ const PropertyInformation = ({trigger, desc, beds, price, bath}) => {
     useEffect(() => {
       // store all values in local storage --> currently called everytime page reloads so will reset
         localStorage.setItem('pricePWStored', pricePW);
+        localStorage.setItem('addressStored', address);
         localStorage.setItem('numBedsPIStored',numBedsPI);
         localStorage.setItem('pricePWStored', pricePW);
         localStorage.setItem('propertyLocationStored', location);
@@ -40,6 +43,10 @@ const PropertyInformation = ({trigger, desc, beds, price, bath}) => {
   
     const handleDescChange = (e) => {
       setPropertyInput(e.target.value);
+    };
+
+    const handleAddressChange = (e) => {
+      setAddress(e.target.value);
     };
 
     const changePricePW = (e) => {
@@ -66,6 +73,14 @@ const PropertyInformation = ({trigger, desc, beds, price, bath}) => {
   
   return (
     <div>
+        <span className = "quizField"> Address:  </span>
+          <textarea
+            type="text" 
+            placeholder={"enter property address"}
+            value={address} 
+            onChange={handleAddressChange} 
+          />
+        <br></br>
         <span className = "quizField"> Price per Week:  </span>
         <input
             type="number" 
@@ -117,12 +132,12 @@ const PropertyInformation = ({trigger, desc, beds, price, bath}) => {
         />
         <br></br>
         <span className = "quizField"> Property Description:  </span>
-      <textarea
-        type="text" 
-        placeholder={"enter property info"}
-        value={propertyInput} 
-        onChange={handleDescChange} 
-      />
+          <textarea
+            type="text" 
+            placeholder={"enter property info"}
+            value={propertyInput} 
+            onChange={handleDescChange} 
+          />
       <br></br>
     </div>
   );
