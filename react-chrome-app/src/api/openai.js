@@ -24,6 +24,36 @@ export const getChatResponse = async (userInput) => {
   }
 };
 
+export const getRatingValues = async (userInput) => {
+  console.log(userInput)
+  //const prompt = `Check out this link and let me know what you think: ${String(userInput)}`;
+  // TODO add address in the input - along with core logic data 
+  const prompt = 'Give me ratings out of 10 for each of the following aspects for this property: 320 Macarther avenue hamilton and let me know what you think. Each rating shpould be out of 10 and reflect the properties alignment with that aspect. Please do this for cooking, garden, nearby schools, etc.'
+  console.log("PROMPT: " + prompt)
+  try {
+    // Make a POST request to your backend with the userInput in the body
+    const response = await fetch(`${API_URL}/chatpost`, {
+      method: "POST", 
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userInput: prompt }), // Send the userInput as part of the body
+    });
+
+    if (!response.ok) {
+      throw new Error("Error fetching data from backend");
+    }
+
+    const data = await response.json();
+    return data.message; // Assuming the response from backend contains a 'message'
+  } catch (error) {
+    console.error("Error in getChatResponse:", error);
+    throw error; // Propagate the error to be handled by the caller
+  }
+};
+
+
+/*
 // TODO - this is a WIP and is not currently being used anywhere 
 // Function to interact with the backend to get a property rating response with separate scores for each aspect
 // TODO also take in array of what we care about
@@ -69,3 +99,4 @@ export const getRatingValues = async (propertyLink) => {
     throw error; // Propagate the error to be handled by the caller
   }
 };
+*/

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import LocationInfo from './LocationInfo';
-import { getChatResponse } from "../api/openai";
+import { getRatingValues } from "../api/openai";
 
 const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyURL}) => {
     const [ratingPoints, setRatingPoints] = useState(0);  // start ff with 0 rating points 
@@ -68,7 +68,7 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyUR
 
       try {
         // Call the API via getChatResponse with the userInput
-        const data = await getChatResponse(propertyURL);  // Pass userInput directly
+        const data = await getRatingValues(propertyURL);  // Pass userInput directly
         setPropertyDetailResponse(data); // Set the response message from the API
 
       } catch (error) {
