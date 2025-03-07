@@ -1,22 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import LocationInfo from './LocationInfo';
 
-const RatingGenerator = ({trigger}) => {
+const RatingGenerator = ({trigger, pricePW, propertyNumBeds}) => {
+    const [ratingPoints, setRatingPoints] = useState(0);  // start ff with 0 rating points 
+
     const [rating, setRating] = useState('☆☆☆☆☆');
     
     const [thumbsUp, setThumbsUp] = useState();
 
-    const [propertyInput, setPropertyInput] = useState('');
+    //const [propertyInput, setPropertyInput] = useState('');
 
-    const [pricePW, setPricePW] = useState(0);
+    //const [pricePW, setPricePW] = useState(0);
 
-    const [location, setLocation] = useState('');
+    //const [location, setLocation] = useState('');
 
-    const [propertyNumBeds, setPropertyNumBeds] = useState(0);
+    //const [propertyNumBeds, setPropertyNumBeds] = useState(0);
 
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
     useEffect(() => {
+      /*
       // retrieve local storage values
       //const executeAfterDelay = async () => {
         //await delay(3);  // waits 3 seconds for values in PI to be stored.. ideally would trigger automatically once these values are stored but this should be fine for now as it is only a temporary solution
@@ -41,12 +44,13 @@ const RatingGenerator = ({trigger}) => {
           setPropertyNumBeds(savedPropertyNumBeds);
         }
 
-        console.log(pricePW);
-        console.log(propertyInput);
-        console.log(location);
+        console.log("Price: " + pricePW);
+        console.log("Property: " + propertyInput);
+        console.log("Location: " + location);
       //};
-      
+
       //executeAfterDelay;
+      */
         generateRating();
 
       // generate a rating 
@@ -57,10 +61,12 @@ const RatingGenerator = ({trigger}) => {
     */
 
     function generateRating(){
+      console.log("inside rating function")
+      console.log("retrieved price is: " + pricePW)
+      console.log("retrieved beds is: " + propertyNumBeds)
       const budget = localStorage.getItem('userBudgetMaxStored');
       const numBeds = localStorage.getItem('userNumBedsStored');
       console.log("inside generate rating function");
-      const rating_points = 0; 
 
       /* Requirements .. if all good return 3 stars OR just do thumbs up 
          Firm requirements include:
@@ -77,7 +83,9 @@ const RatingGenerator = ({trigger}) => {
         setThumbsUp(false);
         setRating('☆☆☆☆☆'); 
       }
+
       // TODO add pets 
+
       else{
         setRating('★★★★★')
         setThumbsUp(true)

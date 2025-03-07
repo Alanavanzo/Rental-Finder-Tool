@@ -4,34 +4,35 @@ const PropertyInformation = ({trigger, desc, beds, price}) => {
 
     // these values reset to their initial state every time the user exits out of the window .. instead set like the 
     // quiz input and add a reset button to clear local storage and revert values back to original as below 
-    const [propertyInput, setPropertyInput] = useState();
-
+    // Initialize state with props if available, otherwise fallback to default values
+    const [propertyInput, setPropertyInput] = useState(desc || '');
     const [location, setLocation] = useState('');
-
-    const [pricePW, setPricePW] = useState(0);
-    
-    const [numBedsPI, setNumBedsPI] = useState(1);
-
+    const [pricePW, setPricePW] = useState(price || 0);
+    const [numBedsPI, setNumBedsPI] = useState(beds || 1);
     const [petFriendly, setPetFriendly] = useState('');
 
+    // Effect to store the values in localStorage whenever they change
     useEffect(() => {
-      setPropertyInput(desc);
-      setNumBedsPI(beds);
-      setPricePW(price);
-    })
+      localStorage.setItem('pricePWStored', pricePW);
+      localStorage.setItem('numBedsPIStored', numBedsPI);
+      localStorage.setItem('propertyLocationStored', location);
+      localStorage.setItem('propertyInputStored', propertyInput);
+      localStorage.setItem('petFriendlyStored', petFriendly);
+      console.log("property info has been updated in local storage");
+    }, [pricePW, numBedsPI, location, propertyInput, petFriendly]);
 
     useEffect(() => {
-      // store all values in local storage 
-      // currently called everytime page reloads so will reset .. can change if needed to only occur if there are values for the variables 
+      // store all values in local storage --> currently called everytime page reloads so will reset
         localStorage.setItem('pricePWStored', pricePW);
         localStorage.setItem('numBedsPIStored',numBedsPI);
         localStorage.setItem('pricePWStored', pricePW);
         localStorage.setItem('propertyLocationStored', location);
         localStorage.setItem('propertyInputStored', propertyInput);
         localStorage.setItem('petFriendlyStored', petFriendly);
-        console.log("property info");
-        console.log(propertyInput);
+        console.log("property info has been updated in local storage");
     }, [trigger]);
+
+    // handle changes to inputs 
   
     const handleDescChange = (e) => {
       setPropertyInput(e.target.value);
