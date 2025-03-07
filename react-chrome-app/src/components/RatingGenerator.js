@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import LocationInfo from './LocationInfo';
+import { getChatResponse } from "../api/openai";
 
-const RatingGenerator = ({trigger, pricePW, propertyNumBeds}) => {
+const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyURL}) => {
     const [ratingPoints, setRatingPoints] = useState(0);  // start ff with 0 rating points 
 
     const [rating, setRating] = useState('☆☆☆☆☆');
     
     const [thumbsUp, setThumbsUp] = useState();
+
+    const [propertyDetailResponse, setPropertyDetailResponse] = useState();
 
     //const [propertyInput, setPropertyInput] = useState('');
 
@@ -51,10 +54,27 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds}) => {
 
       //executeAfterDelay;
       */
+
+        getPropertyDetails();
         generateRating();
 
       // generate a rating 
     }, [trigger]);
+
+    
+    const getPropertyDetails = async () => {
+      console.log("HI - getting property details")
+      console.log("Sending request to backend ...");
+
+      try {
+        // Call the API via getChatResponse with the userInput
+        const data = await getChatResponse(propertyURL);  // Pass userInput directly
+        setPropertyDetailResponse(data); // Set the response message from the API
+
+      } catch (error) {
+        setPropertyDetailResponse("Error getting response from backend.");
+      }
+    };
 
     /*
     Generate ratings 
@@ -106,6 +126,7 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds}) => {
       <h2>{rating}</h2>
       <LocationInfo/> {/* this is just for testing purposes .. will remove later */}
       {/*rating != '☆☆☆☆☆' && <button>Save Rating</button>*/}
+      {propertyDetailResponse && <div>Response: {propertyDetailResponse}</div>}
     </div>
   );
 };

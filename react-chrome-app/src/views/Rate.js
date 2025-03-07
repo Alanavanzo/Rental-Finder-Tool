@@ -116,7 +116,7 @@ const Rate = () => {
       </header>
       <div><PropertyInformation trigger ={PItrigger} desc = {propertyDescription} beds = {numBeds} price = {pricePW} bath={numBath}/></div>
       <button className="buttonStyle" onClick={pullRatingTrigger}>Generate Rating</button>
-      <div><RatingGenerator trigger ={rateTrigger} pricePW={pricePW} propertyNumBeds={numBeds}/></div>
+      <div><RatingGenerator trigger ={rateTrigger} pricePW={pricePW} propertyNumBeds={numBeds} numBath={numBath} propertyURL={currentURL}/></div>
     </div>
     )}
     </div>

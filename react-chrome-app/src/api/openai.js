@@ -26,7 +26,8 @@ export const getChatResponse = async (userInput) => {
 
 // TODO - this is a WIP and is not currently being used anywhere 
 // Function to interact with the backend to get a property rating response with separate scores for each aspect
-export const getRatingValues = async (propertyLink, userCareFactors) => {
+// TODO also take in array of what we care about
+export const getRatingValues = async (propertyLink) => {
 
   // todo, loop through what the user cares abour more than a 2 and add to list to pass into API
 
