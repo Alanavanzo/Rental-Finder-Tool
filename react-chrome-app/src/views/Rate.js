@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropertyInformation from '../components/PropertyInformation';
 import RatingGenerator from '../components/RatingGenerator';
-import { add } from 'cheerio/dist/commonjs/api/traversing';
 
 const Rate = () => {
 
