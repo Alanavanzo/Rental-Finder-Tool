@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const PropertyInformation = ({trigger, desc, beds, price}) => {
-
+const PropertyInformation = ({trigger, desc, beds, price, bath}) => {
     // these values reset to their initial state every time the user exits out of the window .. instead set like the 
     // quiz input and add a reset button to clear local storage and revert values back to original as below 
     // Initialize state with props if available, otherwise fallback to default values
@@ -11,6 +10,9 @@ const PropertyInformation = ({trigger, desc, beds, price}) => {
     const [numBedsPI, setNumBedsPI] = useState(beds || 1);
     const [petFriendly, setPetFriendly] = useState('');
 
+    // additional values
+    const [numBath, setNumBath] = useState(bath || 1);
+
     // Effect to store the values in localStorage whenever they change
     useEffect(() => {
       localStorage.setItem('pricePWStored', pricePW);
@@ -18,6 +20,7 @@ const PropertyInformation = ({trigger, desc, beds, price}) => {
       localStorage.setItem('propertyLocationStored', location);
       localStorage.setItem('propertyInputStored', propertyInput);
       localStorage.setItem('petFriendlyStored', petFriendly);
+      localStorage.setItem('numBathStored', numBath);
       console.log("property info has been updated in local storage");
     }, [pricePW, numBedsPI, location, propertyInput, petFriendly]);
 
@@ -29,6 +32,7 @@ const PropertyInformation = ({trigger, desc, beds, price}) => {
         localStorage.setItem('propertyLocationStored', location);
         localStorage.setItem('propertyInputStored', propertyInput);
         localStorage.setItem('petFriendlyStored', petFriendly);
+        localStorage.setItem('numBathStored', numBath);
         console.log("property info has been updated in local storage");
     }, [trigger]);
 
@@ -55,6 +59,10 @@ const PropertyInformation = ({trigger, desc, beds, price}) => {
       setPetFriendly(e.target.value);
     }
 
+    const changeNumBath = (e) => {
+      setNumBath(e.target.value);
+    };
+
   
   return (
     <div>
@@ -78,6 +86,17 @@ const PropertyInformation = ({trigger, desc, beds, price}) => {
             style={{ width: '50px', padding: '1px' }}
             value={numBedsPI} 
             onChange={changeNumBedsPI} 
+        />
+        <br></br>
+        <span className = "quizField"> Number of Bathrooms:  </span>
+        <input
+            type="number" 
+            className="quizNumInput" 
+            min={0}
+            max={20}
+            style={{ width: '50px', padding: '1px' }}
+            value={numBath} 
+            onChange={changeNumBath} 
         />
         <br></br>
         <span className = "quizField"> Location:  </span>
