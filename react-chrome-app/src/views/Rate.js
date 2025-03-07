@@ -12,31 +12,40 @@ const Rate = () => {
   const [rateTrigger, setRateTrigger] = useState(false);
   const [currentURL, setCurrentURL] = useState('');
 
+  const [testValue, setTestValue] = useState('');
+
   useEffect(() => {
+    /// TODO grab url as we will pass this into the AI 
     const current_domain = window.location.hostname;  // get hostname 
     console.log("the current domain is: " + current_domain);
     if(current_domain == 'www.domain.com.au'){      // TODO also check that it is a property page
       inspectDomain();
     }
+    const url = window.location.href
+    setCurrentURL(url)
 
     // check for domain.com (will add real-estate later)
 
   }, []);
 
+  useEffect(() => {
+    console.log("url retrieved")
+    console.log(currentURL)
+
+    // check for domain.com (will add real-estate later)
+
+  }, [currentURL]);
+
   const inspectDomain = async () => {
     console.log("inspecting domain.com")
-    console.log(document.title)
-    console.log(document)
-    console.log(document.querySelector('a'))
-    console.log("troed t print")
     setTitle(document.title);
-    console.log(propertyTitle)
     setDescription(document.title);
-    setNumBeds(document.querySelector("#__next > div > div.css-1ktrj7 > div > div.css-4bd6g2 > div > div > div.css-2anoks > div.css-s4rjyl > div > div.css-1dtnjt5 > div.css-ghc6s4 > div > span:nth-child(1) > span").childNodes[0].nodeValue.trim());
-    const price = document.querySelector("#__next > div > div > div > div.css-4bd6g2 > div > div > div.css-2anoks > div > div > div.css-1eoy87d > div.css-1ff36h2 > div > span")
-    console.log("THis is the address i think -- > " + document.querySelector("#__next > div > div > div > header > div.css-1b510m5 > div.css-b1dmbj > div > div > nav > ul > li:nth-child(7) > span > span"))
-    const addressElement = document.querySelector("#__next > div > div > div > header > div.css-1b510m5 > div.css-b1dmbj > div > div > nav > ul > li:nth-child(7) > span > span");
-    console.log(addressElement); // This will show the element or null if it doesn't exist
+    //setNumBeds(document.querySelector("#__next > div > div.css-1ktrj7 > div > div.css-4bd6g2 > div > div > div.css-2anoks > div.css-s4rjyl > div > div.css-1dtnjt5 > div.css-ghc6s4 > div > span:nth-child(1) > span").childNodes[0].nodeValue.trim());
+    console.log("test print")
+    const parentElement = document.querySelector("#__next > div > div > div > div.css-4bd6g2");
+    console.log(parentElement); // Check if the parent element exists
+
+    const price = document.querySelector("#__next > div > div > div > div.css-4bd6g2 > div > div > div.css-2anoks > div > div > div.css-1eoy87d > div.css-1ff36h2 > div > span").innerHTML
     if (price){
       setPricePW(price.substring(1,price.length));
     }
@@ -45,7 +54,8 @@ const Rate = () => {
 
   useEffect(() => {
     console.log(propertyTitle); // This will log the updated propertyTitle after state changes
-  }, [propertyTitle]); // This will run when propertyTitle changes
+    console.log("Price: " + pricePW)
+  }, [propertyTitle, pricePW]); // This will run when propertyTitle changes
   
   // currently PI and RG and storing and retrieiving values simultaneously so you need to click twice .. need to fix .. not a big deal rn 
   const pullRatingTrigger = () => {
