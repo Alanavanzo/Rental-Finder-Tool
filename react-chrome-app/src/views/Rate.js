@@ -89,6 +89,7 @@ const Rate = () => {
     // download all variables so they can be passed into RatingGenerator
     const savedPricePW = localStorage.getItem('pricePWStored');
     const savedNumBeds = localStorage.getItem('numBedsPIStored')
+    const savedPropertyDesc = localStorage.getItem('propertyInputStored')
 
     if (savedPricePW) {
       setPricePW(savedPricePW);
@@ -103,9 +104,12 @@ const Rate = () => {
     else{
       setNumBeds(0)
     }
-
-    console.log("Price per week: " + pricePW)
-    console.log("Num Beds: " + numBeds)
+    if (savedPropertyDesc){
+      setDescription(savedPropertyDesc)
+    }
+    else{
+      setDescription("")
+    }
 
     setRateTrigger(!rateTrigger);
 
@@ -123,7 +127,7 @@ const Rate = () => {
       </header>
       <div><PropertyInformation trigger ={PItrigger} desc = {propertyDescription} beds = {numBeds} price = {pricePW} bath={numBath} propertyAddress={address}/></div>
       <button className="buttonStyle" onClick={pullRatingTrigger}>Generate Rating</button>
-      <div><RatingGenerator trigger ={rateTrigger} pricePW={pricePW} propertyNumBeds={numBeds} numBath={numBath} propertyURL={currentURL}/></div>
+      <div><RatingGenerator trigger ={rateTrigger} pricePW={pricePW} propertyNumBeds={numBeds} numBath={numBath} propertyURL={currentURL} propertyDescription={propertyDescription}/></div>
     </div>
     )}
     </div>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import LocationInfo from './LocationInfo';
 import { getRatingValues } from "../api/openai";
 
-const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyURL}) => {
+const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDescription, propertyURL}) => {
     const [ratingPoints, setRatingPoints] = useState(0);  // start ff with 0 rating points 
 
     const [rating, setRating] = useState('☆☆☆☆☆');
@@ -63,12 +63,13 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyUR
 
     
     const getPropertyDetails = async () => {
-      console.log("HI - getting property details")
+      console.log("Getting property details inside rating generator .. ")
       console.log("Sending request to backend ...");
 
       try {
         // Call the API via getChatResponse with the userInput
-        const data = await getRatingValues(propertyURL);  // Pass userInput directly
+        const data = await getRatingValues(propertyDescription);
+        //const data = await getRatingValues(propertyURL);  // Pass userInput directly
         setPropertyDetailResponse(data); // Set the response message from the API
 
       } catch (error) {

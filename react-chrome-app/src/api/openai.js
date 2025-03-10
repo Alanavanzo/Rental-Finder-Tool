@@ -28,7 +28,10 @@ export const getRatingValues = async (userInput) => {
   console.log(userInput)
   //const prompt = `Check out this link and let me know what you think: ${String(userInput)}`;
   // TODO add address in the input - along with core logic data 
-  const prompt = 'Give me ratings out of 10 for each of the following aspects for this property: 320 Macarther avenue hamilton and let me know what you think. Each rating shpould be out of 10 and reflect the properties alignment with that aspect. Please do this for cooking, garden, nearby schools, etc.'
+  //const prompt = 'Give me ratings out of 10 for each of the following aspects for the following property details 320 Macarther avenue hamilton and let me know what you think. Each rating shpould be out of 10 and reflect the properties alignment with that aspect. Please do this for cooking, garden, nearby schools, etc.'
+  
+  const prompt = `Here are the details for a property I am looking at: ${String(userInput)}. Based on this property, please give me ratings out of 10 for each of the following factors - the rating should reflect how much the property aligns with that factor: cooking, garden, space, accessibility, comfort, maintenance, privacy, location, aesthetics. Please simply return a list in this format with no other text: [(cooking, 8/10), (garden, x/10), ...]`;
+  
   console.log("PROMPT: " + prompt)
   try {
     // Make a POST request to your backend with the userInput in the body
