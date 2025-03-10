@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import "../styling/Styles.css"
 
+// TODO --> put styles in common CSS file 
 // TODO --> change yes/no to true and false 
 function QuizInput () {  
 
@@ -33,6 +34,8 @@ function QuizInput () {
   const [userPT, setPT] = useState(3);  // impacts location 
 
   const [userModern, setModern] = useState(3);  // building age and renovated features 
+
+  const [userGarden, setGarden] = useState(3);  // outdoor aread attatched to the property 
 
   useEffect(() => {
 
@@ -79,6 +82,11 @@ function QuizInput () {
     const savedModern = localStorage.getItem('userModernStored');
     if (savedModern) {
       setModern(savedModern);
+    }
+
+    const savedGarden = localStorage.getItem('userGardenStored');
+    if (savedGarden) {
+      setGarden(savedGarden);
     }
 
   }, []);
@@ -137,6 +145,10 @@ function QuizInput () {
     setModern(e.target.value);
   };
 
+  const handleGarden = (e) => {
+    setGarden(e.target.value);
+  };
+
 
   const handleSave = () => {
     localStorage.setItem('userWalkingStored', userWalking); 
@@ -148,6 +160,7 @@ function QuizInput () {
     localStorage.setItem('userRestaurantsStored', userRestaurants);
     localStorage.setItem('userPTStored', userPT);
     localStorage.setItem('userModernStored', userModern);
+    localStorage.setItem('userGardenStored', userGarden);
     setQuiz('false');
   };
 
@@ -186,7 +199,7 @@ function QuizInput () {
               <br></br>
               <br></br>
             <h3>Rating Questions</h3>
-              <p className="quizField">For the below components, rate them on a scale of 1 to 5 - 1 indicating that you don't want that feature,3 being neutral and 5 being that you do want it</p>
+              <p className="quizField">For the below components, rate them on a scale of 1 to 5 - 1 indicating how important they are to you, with 1 indicating that you do not care</p>
               <span className = "quizField">Activities Nearby:  </span>
               <input
                 type="number" 
@@ -240,6 +253,17 @@ function QuizInput () {
                 style={{ width: '50px', padding: '1px' }}
                 value={userModern} 
                 onChange={handleModern} 
+              />
+            <br></br>
+            <span className = "quizField">Garden: </span>
+              <input
+                type="number" 
+                className="quizNumInput" 
+                min={1}
+                max={5}
+                style={{ width: '50px', padding: '1px' }}
+                value={userGarden} 
+                onChange={handleGarden} 
               />
             <br></br>
             <button className = "saveButton" onClick={handleSave}>Save Quiz</button>
