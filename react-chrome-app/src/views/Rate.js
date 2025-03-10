@@ -67,6 +67,13 @@ const Rate = () => {
     if (propertyAddress){
       setAddress(propertyAddress)
     }
+
+    const propertyDesc = document.querySelector("#__next > div > div.css-117u70y > div > div.css-4bd6g2 > div > div > div.css-bq4jj8").textContent
+
+    // const propertyDesc = document.querySelector("#collapsible-panel > div > div > div > h3").innerHTML // note that THIS WORKS FOR HEADLINE DESCRIPTION
+    if (propertyDesc){
+      setDescription(propertyDesc)
+    }
   };
 
   useEffect(() => {
@@ -75,9 +82,10 @@ const Rate = () => {
     console.log("Number of beds: " + numBeds)
     console.log("Number of baths: " + numBath)
     console.log("Property address: " + address)
+    console.log("Property Description: " + propertyDescription)
     console.log("completed printing")
     setLoading(false)
-  }, [propertyTitle, pricePW, currentURL, numBeds, numBath, address]); // This will run when propertyTitle changes
+  }, [propertyTitle, pricePW, currentURL, numBeds, numBath, address, propertyDescription]); // This will run when propertyTitle changes
   
   // currently PI and RG and storing and retrieiving values simultaneously so you need to click twice .. need to fix .. not a big deal rn 
   const pullRatingTrigger = () => {
