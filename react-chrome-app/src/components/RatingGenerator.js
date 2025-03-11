@@ -3,7 +3,7 @@ import LocationInfo from './LocationInfo';
 import { getRatingValues } from "../api/openai";
 
 const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDescription, propertyURL}) => {
-    const [ratingPoints, setRatingPoints] = useState(0);  // start ff with 0 rating points 
+    const [ratingPoints, setRatingPoints] = useState(10);  // start ff with 0 rating points 
 
     const [rating, setRating] = useState('☆☆☆☆☆');
     
@@ -56,11 +56,42 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
       */
 
         getPropertyDetails();
-        generateRating();
+        //generateRating(); ---> instead do use effect so it is only called after property details are retrieved 
 
       // generate a rating 
     }, [trigger]);
 
+    
+    useEffect(() => {
+        // TODO transfer response to json and set all variales .. can pass them into generate rating to make things easier and use less storage 
+        if (propertyDetailResponse!== undefined){
+          console.log(propertyDetailResponse)
+          let data = JSON.parse(propertyDetailResponse);
+          //console.log("This is the JSON: " + data)
+          
+          // Now you can access each factor easily
+          let cooking = data.cooking;
+          let garden = data.garden;
+          let space = data.space;
+          let accessibility = data.accessibility;
+          let comfort = data.comfort;
+          let maintenance = data.maintenance;
+          let privacy = data.privacy;
+          let location = data.location;
+          let aesthetics = data.aesthetics;
+          
+          console.log("Cooking Score:", cooking);
+          console.log("Garden Score:", garden);
+          console.log("Space Score:", space);
+          console.log("Accessibility Score:", accessibility);
+          console.log("Comfort Score:", comfort);
+          console.log("Maintenance Score:", maintenance);
+          console.log("Privacy Score:", privacy);
+          console.log("Location Score:", location);
+          console.log("Aesthetics Score:", aesthetics);
+        }
+        generateRating();
+    }, [propertyDetailResponse]);
     
     const getPropertyDetails = async () => {
       console.log("Getting property details inside rating generator .. ")
@@ -95,22 +126,18 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
           - Min number bedrooms 
           - If they definitely have a pet 
       */ 
-      if (pricePW > budget){
+      if (pricePW > budget && numBeds > propertyNumBeds){
         setThumbsUp(false);
         setRating('☆☆☆☆☆');
+        setRatingPoints(5)
         //rating_points = 0;
       }
-      else if (numBeds > propertyNumBeds){ 
-        setThumbsUp(false);
-        setRating('☆☆☆☆☆'); 
-      }
-
-      // TODO add pets 
-
       else{
         setRating('★★★★★')
+        // rating points stays as 10 
         setThumbsUp(true)
       }
+      
 
       // If it's a thumbs up, they have rating points to lose based on preferences, at a minimum of 2.5 points 
       // if thumbs down, they have rating points to gain at a maximum of 2.5 points 

@@ -37,6 +37,10 @@ function QuizInput () {
 
   const [userGarden, setGarden] = useState(3);  // outdoor aread attatched to the property 
 
+  const [userKitchen, setKitchen] = useState(3);  // kitchen and cooking spaces in property
+
+  const [showYesNo, setShowYesNo] = useState(false) // TODO - remove eventually or set to true to show yes/no questions
+
   useEffect(() => {
 
     const savedWalking = localStorage.getItem('userWalkingStored');
@@ -87,6 +91,11 @@ function QuizInput () {
     const savedGarden = localStorage.getItem('userGardenStored');
     if (savedGarden) {
       setGarden(savedGarden);
+    }
+
+    const savedKitchen = localStorage.getItem('userKitchenStored');
+    if (savedKitchen) {
+      setKitchen(savedKitchen);
     }
 
   }, []);
@@ -149,6 +158,10 @@ function QuizInput () {
     setGarden(e.target.value);
   };
 
+  const handleKitchen = (e) => {
+    setKitchen(e.target.value);
+  }
+
 
   const handleSave = () => {
     localStorage.setItem('userWalkingStored', userWalking); 
@@ -161,6 +174,7 @@ function QuizInput () {
     localStorage.setItem('userPTStored', userPT);
     localStorage.setItem('userModernStored', userModern);
     localStorage.setItem('userGardenStored', userGarden);
+    localStorage.setItem('userKitchenStored', userKitchen);
     setQuiz('false');
   };
 
@@ -172,32 +186,36 @@ function QuizInput () {
         } else {
           return <div>
             <h2>Quiz </h2>
-            <h3>Yes / No Questions</h3>
-              <span className = "quizField">Do you like to walk?  </span>
-              <button onClick={handleYesWalk} style={{ backgroundColor: userWalking == 'true' ? 'blue' : 'gray' , marginRight: '10px'}}>Yes
-              </button>
-              <button className = "quizBoxInput" onClick={handleNoWalk} style={{ backgroundColor: userWalking == 'true' ? 'gray' : 'blue' }} >No
-              </button>
-              <br></br>
-              <span className = "quizField">Do you have pets?  </span>
-              <button onClick={handleYesPets} style={{ backgroundColor: userPets == 'true' ? 'blue' : 'gray' , marginRight: '10px'}}>Yes
-              </button>
-              <button className = "quizBoxInput" onClick={handleNoPets} style={{ backgroundColor: userPets == 'true' ? 'gray' : 'blue' }} >No
-              </button>
-              <br></br>
-              <span className = "quizField">Do you like to cook?  </span>
-              <button onClick={handleYesCook} style={{ backgroundColor: userCook == 'true' ? 'blue' : 'gray' , marginRight: '10px'}}>Yes
-              </button>
-              <button className = "quizBoxInput" onClick={handleNoCook} style={{ backgroundColor: userCook == 'true' ? 'gray' : 'blue' }} >No
-              </button>
-              <br></br>
-              <span className = "quizField">Do you have a car?  </span>
-              <button onClick={handleYesPark} style={{ backgroundColor: userParking== 'true' ? 'blue' : 'gray' , marginRight: '10px'}}>Yes
-              </button>
-              <button className = "quizBoxInput" onClick={handleNoPark} style={{ backgroundColor: userParking == 'true' ? 'gray' : 'blue' }} >No
-              </button>
-              <br></br>
-              <br></br>
+            {showYesNo && ( 
+              <div> 
+              <h3>Yes / No Questions</h3>
+                <span className = "quizField">Do you like to walk?  </span>
+                <button onClick={handleYesWalk} style={{ backgroundColor: userWalking == 'true' ? 'blue' : 'gray' , marginRight: '10px'}}>Yes
+                </button>
+                <button className = "quizBoxInput" onClick={handleNoWalk} style={{ backgroundColor: userWalking == 'true' ? 'gray' : 'blue' }} >No
+                </button>
+                <br></br>
+                <span className = "quizField">Do you have pets?  </span>
+                <button onClick={handleYesPets} style={{ backgroundColor: userPets == 'true' ? 'blue' : 'gray' , marginRight: '10px'}}>Yes
+                </button>
+                <button className = "quizBoxInput" onClick={handleNoPets} style={{ backgroundColor: userPets == 'true' ? 'gray' : 'blue' }} >No
+                </button>
+                <br></br>
+                <span className = "quizField">Do you like to cook?  </span>
+                <button onClick={handleYesCook} style={{ backgroundColor: userCook == 'true' ? 'blue' : 'gray' , marginRight: '10px'}}>Yes
+                </button>
+                <button className = "quizBoxInput" onClick={handleNoCook} style={{ backgroundColor: userCook == 'true' ? 'gray' : 'blue' }} >No
+                </button>
+                <br></br>
+                <span className = "quizField">Do you have a car?  </span>
+                <button onClick={handleYesPark} style={{ backgroundColor: userParking== 'true' ? 'blue' : 'gray' , marginRight: '10px'}}>Yes
+                </button>
+                <button className = "quizBoxInput" onClick={handleNoPark} style={{ backgroundColor: userParking == 'true' ? 'gray' : 'blue' }} >No
+                </button>
+                <br></br>
+                <br></br>
+              </div>
+            )}
             <h3>Rating Questions</h3>
               <p className="quizField">For the below components, rate them on a scale of 1 to 5 - 1 indicating how important they are to you, with 1 indicating that you do not care</p>
               <span className = "quizField">Activities Nearby:  </span>
@@ -264,6 +282,17 @@ function QuizInput () {
                 style={{ width: '50px', padding: '1px' }}
                 value={userGarden} 
                 onChange={handleGarden} 
+              />
+            <br></br>
+            <span className = "quizField">Kitchen: </span>
+              <input
+                type="number" 
+                className="quizNumInput" 
+                min={1}
+                max={5}
+                style={{ width: '50px', padding: '1px' }}
+                value={userKitchen} 
+                onChange={handleKitchen} 
               />
             <br></br>
             <button className = "saveButton" onClick={handleSave}>Save Quiz</button>
