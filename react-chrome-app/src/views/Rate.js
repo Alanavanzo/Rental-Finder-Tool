@@ -16,6 +16,20 @@ const Rate = () => {
 
   const [loading, setLoading] = useState(true);
 
+  const [favouriteList, setFavouriteList] = useState(() => {
+
+  const favouriteListLocal = localStorage.getItem("favouriteListStored")
+    if (favouriteListLocal == null) return []
+
+    return JSON.parse(favouriteListLocal)
+  });
+
+  const [isFavourited, setIsFavourited] = useState()
+
+  useEffect(() => {
+    localStorage.setItem("favouriteListStored", JSON.stringify(favouriteList));
+  }, [favouriteList]);
+
   useEffect(() => {
     /// TODO grab url as we will pass this into the AI 
     const current_domain = window.location.hostname;  // get hostname 
@@ -25,7 +39,7 @@ const Rate = () => {
     }
     const url = window.location.href
     setCurrentURL(url)
-
+    setIsFavourited(favouriteList.some(ing => ing.link === url))
     // check for domain.com (will add real-estate later)
 
   }, []);
@@ -37,6 +51,22 @@ const Rate = () => {
     // check for domain.com (will add real-estate later)
 
   }, [currentURL]);
+
+  function addFavourite(link_input, name_input) {
+    const isFoundInThisList = favouriteList.some(ing => ing.link === link_input); // will be true if link is already in list  
+    if(!isFoundInThisList){
+      setFavouriteList((currentFavourites) => {
+          return [
+              ...currentFavourites,
+              {id: crypto.randomUUID(), name: name_input, link: link_input}
+          ]
+      })}
+    }
+  
+  function handleNewFavSave() {
+      addFavourite(currentURL, propertyTitle);
+      setIsFavourited(true)
+  }
 
   const inspectDomain = async () => {
     console.log("inspecting domain.com")
@@ -136,6 +166,7 @@ const Rate = () => {
       <div><PropertyInformation trigger ={PItrigger} desc = {propertyDescription} beds = {numBeds} price = {pricePW} bath={numBath} propertyAddress={address}/></div>
       <button className="buttonStyle" onClick={pullRatingTrigger}>Generate Rating</button>
       <div><RatingGenerator trigger ={rateTrigger} pricePW={pricePW} propertyNumBeds={numBeds} numBath={numBath} propertyURL={currentURL} propertyDescription={propertyDescription}/></div>
+      {!isFavourited && <div> <button className="buttonStyle" onClick={handleNewFavSave}>Save Property</button> </div>}
     </div>
     )}
     </div>

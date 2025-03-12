@@ -56,6 +56,35 @@ export const getRatingValues = async (userInput) => {
 };
 
 
+export const getUserRating = async (propertyInput, userData) => {
+  const prompt = `This is some info about be: ${String(userData)}. Here are the details for a property I am looking at: ${String(propertyInput)}. Based on this property and the info about me, please give a rating out of 5 to signify how much I would like this property. Try to look at the description factually as the write has positive bias towards the property. Please respond only with a rating out of 5 (no additional text), which should be a rating which relfects what I have given you. Note that I only want ratings in increments of 0.5`;
+  
+  console.log("PROMPT: " + prompt)
+  try {
+    // Make a POST request to your backend with the userInput in the body
+    const response = await fetch(`${API_URL}/chatpost`, {
+      method: "POST", 
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userInput: prompt }), // Send the userInput as part of the body
+    });
+
+    if (!response.ok) {
+      throw new Error("Error fetching data from backend");
+    }
+
+    const data = await response.json();
+    return data.message; // Assuming the response from backend contains a 'message'
+  } catch (error) {
+    console.error("Error in getChatResponse:", error);
+    throw error; // Propagate the error to be handled by the caller
+  }
+};
+
+
+
+
 /*
 // TODO - this is a WIP and is not currently being used anywhere 
 // Function to interact with the backend to get a property rating response with separate scores for each aspect

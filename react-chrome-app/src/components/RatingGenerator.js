@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import LocationInfo from './LocationInfo';
-import { getRatingValues } from "../api/openai";
+import { getRatingValues, getUserRating } from "../api/openai";
 
 const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDescription, propertyURL}) => {
     const [ratingPoints, setRatingPoints] = useState(10);  // start ff with 0 rating points 
 
-    const [rating, setRating] = useState('☆☆☆☆☆');
+    const [rating, setRating] = useState();
     
     const [thumbsUp, setThumbsUp] = useState();
 
     const [propertyDetailResponse, setPropertyDetailResponse] = useState();
+
+    const [userRatingResponse, setUserRatingResponse] = useState('')
+
+    const [showRating, setShowRating] = useState(false)
+
+    const [loading, setLoading] = useState(false)
 
     //const [propertyInput, setPropertyInput] = useState('');
 
@@ -55,13 +61,13 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
       //executeAfterDelay;
       */
 
-        getPropertyDetails();
-        //generateRating(); ---> instead do use effect so it is only called after property details are retrieved 
+        //getPropertyDetails();
+        generateRating(); //---> instead do use effect so it is only called after property details are retrieved from google maps API
 
       // generate a rating 
     }, [trigger]);
 
-    
+    /*
     useEffect(() => {
         // TODO transfer response to json and set all variales .. can pass them into generate rating to make things easier and use less storage 
         if (propertyDetailResponse!== undefined){
@@ -92,6 +98,7 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
         }
         generateRating();
     }, [propertyDetailResponse]);
+    */
     
     const getPropertyDetails = async () => {
       console.log("Getting property details inside rating generator .. ")
@@ -112,7 +119,23 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
     Generate ratings 
     */
 
-    function generateRating(){
+    function setRatingStars(score) {
+      // Round the score to the nearest half
+      let fullStars = Math.floor(score);  // Get the full stars (e.g., 3 for 3.5)
+      let halfStar = (score % 1 >= 0.5) ? 1 : 0;  // If score is >= 0.5, add a half star
+  
+      // Generate the rating string with full stars, half stars, and empty stars
+      let rating = '★'.repeat(fullStars) + (halfStar ? '½' : '') + '☆'.repeat(5 - fullStars - halfStar);
+  
+      // Log or use the rating
+      console.log(rating); // For example, log it or use it as needed
+  
+      // Return the rating (if needed)
+      return rating;
+  }
+
+    const generateRating = async () => {
+      setLoading(true)
       console.log("inside rating function")
       console.log("retrieved price is: " + pricePW)
       console.log("retrieved beds is: " + propertyNumBeds)
@@ -128,16 +151,25 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
       */ 
       if (pricePW > budget && numBeds > propertyNumBeds){
         setThumbsUp(false);
-        setRating('☆☆☆☆☆');
-        setRatingPoints(5)
-        //rating_points = 0;
+        //setRating('☆☆☆☆☆');
       }
       else{
-        setRating('★★★★★')
-        // rating points stays as 10 
+        //setRating('★★★★★')
         setThumbsUp(true)
       }
-      
+
+      try {
+        // TODO pass in whethe the property meets requirement sand change API to call to max 2/5 stars if no meets requirements 
+        const data = await getUserRating(propertyDescription, `I like gardens, my budget is $${String(budget)} per week. I require ${String(numBeds)} bedrooms.I love cooking`);
+        setUserRatingResponse(data); // Set the response message from the API
+        setRating(setRatingStars(userRatingResponse))
+
+      } catch (error) {
+        setRating("Error generating rating :( enter more info or try again later");
+      }
+
+      setLoading(false)
+      setShowRating(true)
 
       // If it's a thumbs up, they have rating points to lose based on preferences, at a minimum of 2.5 points 
       // if thumbs down, they have rating points to gain at a maximum of 2.5 points 
@@ -150,11 +182,11 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
   
   return (
     <div>
-      <h2>{thumbsUp ? '👍' : '👎'}</h2>
-      <h2>{rating}</h2>
       <LocationInfo/> {/* this is just for testing purposes .. will remove later */}
-      {/*rating != '☆☆☆☆☆' && <button>Save Rating</button>*/}
-      {propertyDetailResponse && <div>Response: {propertyDetailResponse}</div>}
+      {loading && <div> loading ... </div> }
+      {showRating && <div>
+      <h2>{thumbsUp ? '👍' : '👎'}</h2>
+      <h2>{rating}</h2></div>}
     </div>
   );
 };

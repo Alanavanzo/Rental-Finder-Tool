@@ -59,7 +59,7 @@ function LocationInfo() {
 
     return (
         <div> 
-            <p>This is a test</p>
+            <p>*Placeholder for location info from Google Maps API*</p>
         </div>
     );
 }
