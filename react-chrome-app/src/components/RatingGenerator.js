@@ -3,7 +3,7 @@ import LocationInfo from './LocationInfo';
 import { getRatingValues, getUserRating } from "../api/openai";
 
 const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDescription, propertyURL}) => {
-    const [ratingPoints, setRatingPoints] = useState(10);  // start ff with 0 rating points 
+    const [ratingPoints, setRatingPoints] = useState();  // start ff with 0 rating points 
 
     const [rating, setRating] = useState();
     
@@ -11,7 +11,7 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
 
     const [propertyDetailResponse, setPropertyDetailResponse] = useState();
 
-    const [userRatingResponse, setUserRatingResponse] = useState('')
+    const [userRatingResponse, setUserRatingResponse] = useState()
 
     const [showRating, setShowRating] = useState(false)
 
@@ -24,8 +24,10 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
     //const [location, setLocation] = useState('');
 
     //const [propertyNumBeds, setPropertyNumBeds] = useState(0);
-
-    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+    useEffect(() => {    
+      setLoading(false)
+      setShowRating(true)
+    }, [ratingPoints]);
 
     useEffect(() => {
       /*
@@ -62,8 +64,9 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
       */
 
         //getPropertyDetails();
-        generateRating(); //---> instead do use effect so it is only called after property details are retrieved from google maps API
-
+        if (trigger != null){
+          generateRating(); //---> instead do use effect so it is only called after property details are retrieved from google maps API
+        }
       // generate a rating 
     }, [trigger]);
 
@@ -167,10 +170,6 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
       } catch (error) {
         setRating("Error generating rating :( enter more info or try again later");
       }
-
-      setLoading(false)
-      setShowRating(true)
-
       // If it's a thumbs up, they have rating points to lose based on preferences, at a minimum of 2.5 points 
       // if thumbs down, they have rating points to gain at a maximum of 2.5 points 
       // may be better to do percentage rather than stars 
@@ -183,8 +182,8 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
   return (
     <div>
       <LocationInfo/> {/* this is just for testing purposes .. will remove later */}
-      {loading && <div> loading ... </div> }
-      {showRating && <div>
+      {loading == true && <div> loading ... </div> }
+      {showRating == true && <div>
       <h2>{thumbsUp ? '👍' : '👎'}</h2>
       <h2>{rating}</h2></div>}
     </div>
