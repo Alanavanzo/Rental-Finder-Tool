@@ -16,30 +16,28 @@ function QuizInput () {
   // proximity to work 
 
   const [quizOnOff, setQuiz] = useState('false');
-
   const [userWalking, setWalking] = useState(''); // location 
-
   const [userPets, setPets] = useState(''); // property rules
-
   const [userCook, setCook] = useState('');   // property features     
-
   const [userParking, setParking] = useState('');  // location and property features  
-
   const [userActivities, setActivities] = useState(3);  // impacts location 
-
   const [userSchools, setSchools] = useState(3);  // impacts location 
-
   const [userRestaurants, setRestaurants] = useState(3);  // impacts location 
-
   const [userPT, setPT] = useState(3);  // impacts location 
-
   const [userModern, setModern] = useState(3);  // building age and renovated features 
-
   const [userGarden, setGarden] = useState(3);  // outdoor aread attatched to the property 
-
   const [userKitchen, setKitchen] = useState(3);  // kitchen and cooking spaces in property
+  const [showYesNo, setShowYesNo] = useState(true) // TODO - remove eventually or set to true to show yes/no questions
 
-  const [showYesNo, setShowYesNo] = useState(false) // TODO - remove eventually or set to true to show yes/no questions
+  const [yesNoQandAs, setYesNoQandAs] = useState()
+  // note - eventually all other than rating will be scale questions because we will do a quiz
+  // which allocates importance out of 10 for each factor 
+  const [walkQ, setWalkQ] = useState('Do you like to walk?');
+  const [cookQ, setCookQ] = useState('Do you like to cook?');   // this could potentially be a scale question
+  const [petsQ, setPetsQ] = useState('Do you have pets?');
+  const [parkQ, setParkQ] = useState('Do you have a car?');   // later ask how many parks 
+  const [ratingQandAs, setRatingQandAs] = useState()
+
 
   useEffect(() => {
 
@@ -175,6 +173,31 @@ function QuizInput () {
     localStorage.setItem('userModernStored', userModern);
     localStorage.setItem('userGardenStored', userGarden);
     localStorage.setItem('userKitchenStored', userKitchen);
+
+      // Create an object to store the answers
+      // TODO add all questions and answers
+    console.log(walkQ)
+    const answers = {
+      walkingQuestion: {
+        question: walkQ, // The question itself
+        answer: userWalking // The answer to the question
+      },
+      cookingQuestion: {
+        question: cookQ,
+        answer: userCook
+      },
+      petsQuestion: {
+        question: petsQ,
+        answer: userPets
+      },
+      parkQuestion: {
+        question: parkQ,
+        answer: userParking
+      }
+    };
+      
+    // Store the answers object in localStorage
+    localStorage.setItem('userYesNoAnswers', JSON.stringify(answers));
     setQuiz('false');
   };
 
@@ -189,25 +212,25 @@ function QuizInput () {
             {showYesNo && ( 
               <div> 
               <h3>Yes / No Questions</h3>
-                <span className = "quizField">Do you like to walk?  </span>
+                <span className = "quizField">{walkQ} </span>
                 <button onClick={handleYesWalk} style={{ backgroundColor: userWalking == 'true' ? 'blue' : 'gray' , marginRight: '10px'}}>Yes
                 </button>
                 <button className = "quizBoxInput" onClick={handleNoWalk} style={{ backgroundColor: userWalking == 'true' ? 'gray' : 'blue' }} >No
                 </button>
                 <br></br>
-                <span className = "quizField">Do you have pets?  </span>
+                <span className = "quizField">{petsQ} </span>
                 <button onClick={handleYesPets} style={{ backgroundColor: userPets == 'true' ? 'blue' : 'gray' , marginRight: '10px'}}>Yes
                 </button>
                 <button className = "quizBoxInput" onClick={handleNoPets} style={{ backgroundColor: userPets == 'true' ? 'gray' : 'blue' }} >No
                 </button>
                 <br></br>
-                <span className = "quizField">Do you like to cook?  </span>
+                <span className = "quizField">{cookQ} </span>
                 <button onClick={handleYesCook} style={{ backgroundColor: userCook == 'true' ? 'blue' : 'gray' , marginRight: '10px'}}>Yes
                 </button>
                 <button className = "quizBoxInput" onClick={handleNoCook} style={{ backgroundColor: userCook == 'true' ? 'gray' : 'blue' }} >No
                 </button>
                 <br></br>
-                <span className = "quizField">Do you have a car?  </span>
+                <span className = "quizField">{parkQ} </span>
                 <button onClick={handleYesPark} style={{ backgroundColor: userParking== 'true' ? 'blue' : 'gray' , marginRight: '10px'}}>Yes
                 </button>
                 <button className = "quizBoxInput" onClick={handleNoPark} style={{ backgroundColor: userParking == 'true' ? 'gray' : 'blue' }} >No

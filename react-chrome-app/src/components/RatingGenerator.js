@@ -163,7 +163,9 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
 
       try {
         // TODO pass in whethe the property meets requirement sand change API to call to max 2/5 stars if no meets requirements 
-        const data = await getUserRating(propertyDescription, `I like gardens, my budget is $${String(budget)} per week. I require ${String(numBeds)} bedrooms.I love cooking`);
+        const userYesNoAnswers = localStorage.getItem('userYesNoAnswers');
+        console.log(userYesNoAnswers)
+        const data = await getUserRating(propertyDescription, `I like gardens, my budget is $${String(budget)} per week. Here are my answers to a survey, they should tell you more about my preferences: ${String(userYesNoAnswers)}. I require ${String(numBeds)} bedrooms.I love cooking`);
         setUserRatingResponse(data); // Set the response message from the API
         setRating(setRatingStars(userRatingResponse))
 
