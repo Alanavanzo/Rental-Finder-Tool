@@ -62,7 +62,7 @@ export const getUserRating = async (propertyInput, userData) => {
   console.log("PROMPT: " + prompt)
   try {
     // Make a POST request to your backend with the userInput in the body
-    const response = await fetch(`${API_URL}/chatpost`, {
+    const response = await fetch(`${API_URL}/ratingpost`, {
       method: "POST", 
       headers: {
         "Content-Type": "application/json",
