@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import LocationInfo from './LocationInfo';
 import { getRatingValues, getUserRating } from "../api/openai";
-//import halfStar from '../styling/images/halfStar.png';  // Adjust the path as needed
+import halfStar from '../styling/images/halfStar.png';
+import fullStar from '../styling/images/fullStar.png';
+import emptyStar from '../styling/images/emptyStar.png';
 
 const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDescription, propertyURL}) => {
-    const halfStar = chrome.runtime.getURL('assets/images/halfStar.c2ad59ae6c05240fc71ac233d79ccc2e.png');
+    //const halfStarHardcoded = chrome.runtime.getURL('assets/images/halfStar.c2ad59ae6c05240fc71ac233d79ccc2e.png');
+    const halfStarURL = chrome.runtime.getURL(halfStar);
+    const fullStarURL = chrome.runtime.getURL(fullStar);
+    const emptyStarURL = chrome.runtime.getURL(emptyStar);
     const [ratingPoints, setRatingPoints] = useState();  // start ff with 0 rating points 
 
     const [rating, setRating] = useState();
@@ -127,19 +132,30 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
     */
 
     function setRatingStars(score) {
-      // Round the score to the nearest half
-      let fullStars = Math.floor(score);  // Get the full stars (e.g., 3 for 3.5)
-      let halfStar = (score % 1 >= 0.5) ? 1 : 0;  // If score is >= 0.5, add a half star
+      let fullStars = Math.floor(score);  // Get the full stars
+      let halfStar = (score % 1 >= 0.5) ? 1 : 0;  // Add a half star if score >= 0.5
+      let emptyStars = 5 - fullStars - halfStar;
   
-      // Generate the rating string with full stars, half stars, and empty stars
-      let rating = '★'.repeat(fullStars) + (halfStar ? '½' : '') + '☆'.repeat(5 - fullStars - halfStar);
+      // Create an array of image elements for each star
+      let stars = [];
   
-      // Log or use the rating
-      console.log(rating); // For example, log it or use it as needed
+      // Add full stars
+      for (let i = 0; i < fullStars; i++) {
+        stars.push(<img key={`full-${i}`} src={fullStarURL} alt="Full Star" />);
+      }
   
-      // Return the rating (if needed)
-      return rating;
-  }
+      // Add half star
+      if (halfStar) {
+        stars.push(<img key="half" src={halfStarURL} alt="Half Star" />);
+      }
+  
+      // Add empty stars
+      for (let i = 0; i < emptyStars; i++) {
+        stars.push(<img key={`empty-${i}`} src={emptyStarURL} alt="Empty Star" />);
+      }
+  
+      return stars;
+    }
 
     const generateRating = async () => {
       setLoading(true)
@@ -171,6 +187,7 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
         console.log(userYesNoAnswers)
         const data = await getUserRating(propertyDescription, `I like gardens, my budget is $${String(budget)} per week. Here are my answers to a survey, they should tell you more about my preferences: ${String(userYesNoAnswers)}. I require ${String(numBeds)} bedrooms.I love cooking`);
         setUserRatingResponse(data); // Set the response message from the API
+        console.log("The score is: " + userRatingResponse)
         setRating(setRatingStars(userRatingResponse))
 
       } catch (error) {
@@ -191,15 +208,8 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
       {loading == true && <div> loading ... </div> }
       {showRating == true && <div>
       <h2>{thumbsUp ? '👍' : '👎'}</h2>
-      <h2>{rating}</h2></div>}
-      <img src={halfStar} alt="Half Star" />
-      {/*< img src="https://bobbyhadz.com/images/blog/react-prevent-multiple-button-clicks/thumbnail.webp"></img>
-      {/*<img src="/assets/images/halfStar.c2ad59ae6c05240fc71ac233d79ccc2e.png" alt="Half Star" />
-      <img src="../styling/images/halfStar.c2ad59ae6c05240fc71ac233d79ccc2e.png" alt="Half Star" />
-      <img src={require('../styling/images/halfStar.c2ad59ae6c05240fc71ac233d79ccc2e.png')} alt="Half Star" />
-      {/*<img src={halfStar} alt="Half Star" />
-      <img src="/extension/images/halfStar.png" alt="Half Star" /> 
-      */}
+      <h2>{rating}</h2></div>
+      }
     </div>
   );
 };
