@@ -26,7 +26,19 @@ module.exports = {
         test: /\.css$/i,
         use: ['style-loader', 'css-loader'],
       },
-
+      {
+        test: /\.(png|jpe?g|gif|svg)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[hash].[ext]',
+              outputPath: 'assets/images/', // Output folder (relative to build folder)
+              publicPath: '/assets/images/', // Path to access the images
+            },
+          },
+        ],
+      },
     ],
   },
   resolve: {
@@ -34,7 +46,8 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, "..", "extension"),
-    filename: "content.js"
+    filename: "content.js",
+    //publicPath: '/extension/', // Ensure that assets are resolved relative to the root of the build output
   },
   devtool : 'source-map' // I added this 
 };

@@ -6,7 +6,7 @@ Used https://web-highlights.com/blog/how-to-build-a-chrome-extension-using-react
 # Setting up the project 
 Clone repository
 cd to "react-chrome-app" and run "npm install"
-next, run "npm i -D webpack ts-loader webpack-cli"
+next, run "npm i -D webpack ts-loader webpack-cli" and "npm install --save-dev file-loader url-loader"
 next, run "npm run build" 
 cd to "backend" and run "npm install axios"
 next, run "npm start"

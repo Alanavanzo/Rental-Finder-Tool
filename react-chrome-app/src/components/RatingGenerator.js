@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import LocationInfo from './LocationInfo';
 import { getRatingValues, getUserRating } from "../api/openai";
+//import halfStar from '../styling/images/halfStar.png';  // Adjust the path as needed
 
 const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDescription, propertyURL}) => {
+    const halfStar = chrome.runtime.getURL('assets/images/halfStar.c2ad59ae6c05240fc71ac233d79ccc2e.png');
     const [ratingPoints, setRatingPoints] = useState();  // start ff with 0 rating points 
 
     const [rating, setRating] = useState();
@@ -30,6 +32,8 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
     }, [ratingPoints]);
 
     useEffect(() => {
+      console.log(halfStar)
+      console.log("printed half star")
       /*
       // retrieve local storage values
       //const executeAfterDelay = async () => {
@@ -188,6 +192,14 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
       {showRating == true && <div>
       <h2>{thumbsUp ? '👍' : '👎'}</h2>
       <h2>{rating}</h2></div>}
+      <img src={halfStar} alt="Half Star" />
+      {/*< img src="https://bobbyhadz.com/images/blog/react-prevent-multiple-button-clicks/thumbnail.webp"></img>
+      {/*<img src="/assets/images/halfStar.c2ad59ae6c05240fc71ac233d79ccc2e.png" alt="Half Star" />
+      <img src="../styling/images/halfStar.c2ad59ae6c05240fc71ac233d79ccc2e.png" alt="Half Star" />
+      <img src={require('../styling/images/halfStar.c2ad59ae6c05240fc71ac233d79ccc2e.png')} alt="Half Star" />
+      {/*<img src={halfStar} alt="Half Star" />
+      <img src="/extension/images/halfStar.png" alt="Half Star" /> 
+      */}
     </div>
   );
 };
