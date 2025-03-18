@@ -8,6 +8,8 @@ Clone repository
 cd to "react-chrome-app" and run "npm install"
 next, run "npm i -D webpack ts-loader webpack-cli"
 next, run "npm run build" 
+cd to "backend" and run "npm install axios"
+next, run "npm start"
 
 # Installing the Extension 
 1. To install the extension, navigate to chrome://extensions and select "developer mode"

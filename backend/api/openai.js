@@ -36,6 +36,45 @@ export const getOpenAIResponse = async (messages) => {
       console.error("Error retrieving message:", error);
       return "Error occurred while fetching the message";
     }
+  };
+
+
+export const getOpenAIRating = async (messages) => {
+  console.log("INSIDE backend getopenairating")
+  //return messages
+    try {
+      // Request to OpenAI's chat completions API
+      const completion = await openai.chat.completions.create({
+        model: "gpt-4o-mini",
+        store: true,
+        messages: [
+          { 
+            "role": "system", 
+            "content": "Please respond consistently to property rating prompts based on the given details and user input. Always provide a rating on a scale from 0 to 5, with possible increments of 0.5 (e.g., 0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5)."
+          },
+          { 
+            "role": "user", 
+            "content": messages // The variable containing the user input
+          }
+        ],
+        temperature: 0,  // Ensuring deterministic responses
+      });
+  
+      // Log the completion to see what it returns
+      console.log(completion);
+      console.log(completion.choices);
+  
+      // Extract the message content
+      const messageContent = completion.choices[0].message.content;
+  
+      // Return the message content
+      return messageContent;  // Return the message instead of printing it
+  
+    } catch (error) {
+      // Handle any errors
+      console.error("Error retrieving message:", error);
+      return "Error occurred while fetching the message";
+    }
   }
 
   /*

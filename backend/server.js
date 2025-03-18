@@ -2,6 +2,8 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import { getOpenAIResponse } from './api/openai.js';  // Import the function from openai.js
+import { searchText } from './api/googlePlaces.js';
+import { getOpenAIRating } from './api/openai.js'; 
 
 dotenv.config();  // Load environment variables
 
@@ -49,7 +51,30 @@ app.post("/api/chatpost", async (req, res) => {
       const result = await getOpenAIResponse(userInput);  // Assuming userInput is the messages you send
       console.log("Result is", result)
       // Send the result back to the frontend
-      res.json({ message: `Received your message: "${result}"` }); // Respond with the message
+      res.json({ message: result }); // Respond with the message
+    } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Failed to process request' });
+    }
+  } else {
+    res.status(400).json({ error: "Invalid input format" });
+  }
+});
+
+
+app.post("/api/ratingpost", async (req, res) => {
+  const { userInput } = req.body; // Get the messages from the request body
+  console.log("Server received messages:", userInput);
+
+  // Ensure that the userInput is provided
+  if (userInput) {
+    try {
+      // Get response from OpenAI by calling the function defined in openai.js
+      console.log("Fetching result inside openAi rating call")
+      const result = await getOpenAIRating(userInput);  // Assuming userInput is the messages you send
+      console.log("Result is", result)
+      // Send the result back to the frontend
+      res.json({ message: result }); // Respond with the message
     } catch (error) {
       console.error('Error:', error);
       res.status(500).json({ error: 'Failed to process request' });
@@ -61,6 +86,21 @@ app.post("/api/chatpost", async (req, res) => {
 
 app.listen(port, () => {
   console.log(`Backend server running at http://localhost:${port}`);
+});
+
+app.get('/api/search', async (req, res) => {
+  console.log("inside backend search request to google places ")
+  try {
+    console.log("Fetching result")
+    const result = await searchText(); 
+    console.log("Result is", result)
+    // Send the result back to the frontend
+    res.json({ message: result }); 
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Failed to process request' });
+  }
+
 });
 
 /*
