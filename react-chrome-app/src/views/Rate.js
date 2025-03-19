@@ -11,7 +11,7 @@ const Rate = () => {
   const [address, setAddress] = useState();
   const [pricePW, setPricePW] = useState(0);
   const [PItrigger, setPITrigger] = useState(false);
-  const [rateTrigger, setRateTrigger] = useState();
+  const [rateTrigger, setRateTrigger] = useState(null);
   const [currentURL, setCurrentURL] = useState('');
 
   const [loading, setLoading] = useState(true);
