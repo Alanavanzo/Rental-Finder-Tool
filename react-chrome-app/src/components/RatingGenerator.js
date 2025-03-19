@@ -21,13 +21,7 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
     const [userRatingResponse, setUserRatingResponse] = useState()
     const [showRating, setShowRating] = useState(false)
     const [loading, setLoading] = useState(false)
-
-    useEffect(() => {  
-      if (trigger != null){  
-      setLoading(false)
-      setShowRating(true)
-      }
-    }, [rating]);
+    const [sameResponse, setSameResponse] = useState(false)
 
     useEffect(() => {
         if (trigger != null){
@@ -36,6 +30,15 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
         }
     }, [trigger]);
 
+    // this needs to run if the rating changes OR if the generate rating button was selected but the score stays the same
+    useEffect(() => {  
+      if (trigger != null){  
+        setLoading(false)
+        setShowRating(true)
+      }
+    }, [rating, sameResponse]);
+
+    // this only needs to run if the rating score changes 
     useEffect(() => {    
       if (trigger != null){
       console.log("The score is: " + userRatingResponse)
@@ -91,9 +94,14 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
       try {
         // TODO pass in whethe the property meets requirement sand change API to call to max 2/5 stars if no meets requirements 
         const userYesNoAnswers = localStorage.getItem('userYesNoAnswers');
-        console.log(userYesNoAnswers)
-        const data = await getUserRating(propertyDescription, `I like gardens, my budget is $${String(budget)} per week. Here are my answers to a survey, they should tell you more about my preferences: ${String(userYesNoAnswers)}. I require ${String(numBeds)} bedrooms.I love cooking`);
-        setUserRatingResponse(data); // Set the response message from the API
+        const userScaleAnswers = localStorage.getItem('scaleAnswers');
+        const data = await getUserRating(propertyDescription, `I like gardens, my budget is $${String(budget)} per week. Here are my answers to a survey, they should tell you more about my preferences: ${String(userYesNoAnswers)}. And these are more answrs to a survey, indicating how much I care about certain features: ${String(userScaleAnswers)}. I require ${String(numBeds)} bedrooms.I love cooking`);
+        if (data == userRatingResponse){
+          setSameResponse(!sameResponse)
+        }
+        else{
+          setUserRatingResponse(data); // Set the response message from the API
+        }
       } catch (error) {
         setRating("Error generating rating :( enter more info or try again later");
       }

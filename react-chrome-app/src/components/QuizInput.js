@@ -176,7 +176,6 @@ function QuizInput () {
 
       // Create an object to store the answers
       // TODO add all questions and answers
-    console.log(walkQ)
     const answers = {
       walkingQuestion: {
         question: walkQ, // The question itself
@@ -198,6 +197,38 @@ function QuizInput () {
       
     // Store the answers object in localStorage
     localStorage.setItem('userYesNoAnswers', JSON.stringify(answers));
+
+    const scaleAnswers = {
+      activitiesQuestion: {
+        question: "How important are nearby activities on a scale of 1-5?", // The question itself
+        answer: userActivities // The answer to the question
+      },
+      cookingQuestion: {
+        question: "How important are nearby schools on a scale of 1-5?",
+        answer: userSchools
+      },
+      petsQuestion: {
+        question: "How important are nearby restaurants on a scale of 1-5?",
+        answer: userRestaurants
+      },
+      publicTransportQuestion: {
+        question: "How important is public transport on a scale of 1-5?",
+        answer: userPT
+      },
+      modernQuestion: {
+        question: "How important is the house being modern on a scale of 1-5?",
+        answer: userModern
+      },
+      gardenQuestion: {
+        question: "How important is the garden on a scale of 1-5?",
+        answer: userGarden
+      },
+      kitchenQuestion: {
+        question: "How important is the kitchen on a scale of 1-5?",
+        answer: userKitchen
+      }
+    }
+    localStorage.setItem('scaleAnswers', JSON.stringify(scaleAnswers));
     setQuiz('false');
   };
 
