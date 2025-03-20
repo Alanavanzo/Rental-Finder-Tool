@@ -31,27 +31,71 @@
   }
 
   .tabStyle {
-    outline-width: thick;
-    outline-color: rgb(99, 108, 112);
+    position: relative;
     font-family: 'Monaco', Monospace;
     text-align: center;
     font-size: '18px';
     font-weight: 200;
-    border-width: 2px;
     color: rgb(14, 24, 156);
     border-radius: 20%;
+    display: inline-block; /* Ensure the background grows with the text */
   }
 
   .activeTabStyle{
-    outline-width: thick;
-    outline-color: rgb(99, 108, 112);
+    position: relative;
     font-family: 'Monaco', Monospace;
     text-align: center;
+    font-weight: bold;
     font-size: '18px';
     font-weight: 200;
     border-width: 3px;
     background-color: aqua;
     color: rgb(14, 24, 156);
     border-radius: 20%;
+    display: inline-block; /* Ensure the background grows with the text */
   }
+  .hoverText {
+    position: absolute; /* Position the text below the button */
+    top: 100%; /* Place the text directly below */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%) translateY(10px); /* Adjust vertical position */
+    visibility: hidden; /* Initially hidden */
+    opacity: 0; /* Make the text invisible */
+    font-size: 14px;
+    color: rgb(95, 90, 90);
+    padding: 5px;
+    border-radius: 3px;
+    white-space: normal; /* Allow text to wrap */
+    word-wrap: break-word; /* Ensure long words break */
+    display: inline-block; /* Make the background wrap around the text */
+    line-height: 1.5; /* Adjust line height if necessary */
+    width: auto; /* Width adjusts automatically to the content */
+  }
+
+  /*
+  .hoverText {
+    position: absolute; /* Position the text inside the button 
+    top: 100%; /* Place the text below the button 
+    left: 50%; /* Center the text horizontally 
+    transform: translateX(-50%) translateY(10px); /* Move text down from the button 
+    visibility: hidden; /* Initially hide the text 
+    opacity: 0; /* Make the text invisible 
+    font-size: 14px;
+    background-color: #333;
+    color: white;
+    padding: 5px;
+    border-radius: 3px;
+    transition: visibility 0s, opacity 0.3s ease; /* Smooth transition 
+    white-space: normal; /* Allow the text to wrap into multiple lines 
+    word-wrap: break-word; /* Break long words if necessary 
+    display: inline-block; /* Ensure the background grows with the text 
+    overflow: visible; /* Ensure text is not clipped 
+    line-height: 1.5; /* Optional: Increase line spacing if you want 
+  }
+    */
   
+  
+  .tabStyle:hover .hoverText {
+    visibility: visible; /* Show the text when hovering */
+    opacity: 1; /* Make the text visible */
+  }

@@ -236,7 +236,7 @@ function QuizInput () {
     <div>
       {(() => {
         if (quizOnOff == 'false') {
-          return <button className="goToButton" onClick={goToQuiz} >Start Quiz</button>;
+          return <button className="vibrantButton" onClick={goToQuiz} >Start Quiz</button>;
         } else {
           return <div>
             <h2>Quiz </h2>

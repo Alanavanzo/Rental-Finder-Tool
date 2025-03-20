@@ -73,72 +73,77 @@ const PropertyInformation = ({trigger, desc, beds, price, bath, propertyAddress}
   
   return (
     <div>
-        <span className = "quizField"> Address:  </span>
+      <div className="propertyFieldWrapper">
+        <span className = "propertyField"> Address:  </span>
           <textarea
             type="text" 
+            class="propertyInputFieldLong"
             placeholder={"enter property address"}
             value={address} 
             onChange={handleAddressChange} 
           />
-        <br></br>
-        <span className = "quizField"> Price per Week:  </span>
+      </div>
+        <div className="propertyFieldWrapper">
+        <span className = "propertyField"> Price per Week:  </span>
         <input
             type="number" 
-            className="quizNumInput" 
+            className="propertyNumInput" 
             min={0}
             max={10000}
-            style={{ width: '50px', padding: '1px' }}
             value={pricePW} 
             onChange={changePricePW} 
         />
-        <br></br>
-        <span className = "quizField"> Number of Bedrooms:  </span>
+        </div>
+        <div className="propertyFieldWrapper">
+        <span className = "propertyField"> Number of Bedrooms:  </span>
         <input
             type="number" 
-            className="quizNumInput" 
+            className="propertyNumInput" 
             min={0}
             max={20}
-            style={{ width: '50px', padding: '1px' }}
             value={numBedsPI} 
             onChange={changeNumBedsPI} 
         />
-        <br></br>
-        <span className = "quizField"> Number of Bathrooms:  </span>
-        <input
+        </div>
+        <div className="propertyFieldWrapper">
+          <span className = "propertyField"> Number of Bathrooms:  </span>
+          <input
             type="number" 
-            className="quizNumInput" 
+            className="propertyNumInput" 
             min={0}
             max={20}
-            style={{ width: '50px', padding: '1px' }}
             value={numBath} 
             onChange={changeNumBath} 
-        />
-        <br></br>
-        <span className = "quizField"> Location:  </span>
-        <input
-            type="text" 
-            style={{ width: '80px', padding: '1px' }}
-            placeholder='Suburb'
-            value={location} 
-            onChange={changeLocation} 
-        />
-        <br></br>
-        <span className = "quizField"> Pet Friendly:  </span>
-        <input
-            type="text" 
-            style={{ width: '50px', padding: '1px' }}
-            value={petFriendly} 
-            onChange={handlePetFriendly} 
-        />
-        <br></br>
-        <span className = "quizField"> Property Description:  </span>
-          <textarea
-            type="text" 
-            placeholder={"enter property info"}
-            value={propertyInput} 
-            onChange={handleDescChange} 
+            />
+        </div>
+        <div className="propertyFieldWrapper">
+          <span className = "propertyField"> Location:  </span>
+          <input
+              type="text" 
+              className="propertyInputField"
+              placeholder='suburb ...'
+              value={location} 
+              onChange={changeLocation} 
           />
-      <br></br>
+        </div>
+        <div className="propertyFieldWrapper">
+          <span className = "propertyField"> Pet Friendly:  </span>
+          <input
+              type="text" 
+              className="propertyInputField"
+              value={petFriendly} 
+              onChange={handlePetFriendly} 
+          />
+        </div>
+        <div className="propertyFieldWrapper propertyFieldWrapperDescription">
+        <span className="propertyField">Property Description: </span>
+        <textarea
+          className="propertyDescriptionInputField"
+          placeholder="Enter property info ..."
+          value={propertyInput}
+          onChange={handleDescChange}
+        />
+      </div>
     </div>
   );
 };

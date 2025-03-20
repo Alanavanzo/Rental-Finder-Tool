@@ -116,10 +116,11 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
   
   return (
     <div>
+      <br></br>
       {/*<LocationInfo/> {/* this is just for testing purposes .. will remove later */}
       {loading == true && <div> loading ... </div> }
       {showRating == true && <div>
-      <h2>{thumbsUp ? '👍' : '👎'}</h2>
+      {/*<h2>{thumbsUp ? '👍' : '👎'}</h2>*/}
       <h2>{rating}</h2></div>
       }
     </div>
