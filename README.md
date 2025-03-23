@@ -1,6 +1,20 @@
 # Rental-Finder-Tool
-Repository for rental finder chrome extension 
+Repository for rental finder chrome extension.
 
+This browser extension aims to simplify the rental property search process in Australia by automating the assessment of a renter's suitability for properties and helping them manage their favourite listings across multiple rental websites.
+
+# Key Features:
+- Unbiased Property Suitability Ratings: The extension generates property ratings based on a user’s specific preferences, helping renters make informed decisions without the influence of listing bias.
+
+- Centralized Property Management: Save and track favourite listings from different rental platforms all in one place, reducing the time spent browsing multiple websites.
+
+- Streamlined Decision-Making: By cutting through the clutter and presenting only relevant information, the extension helps renters make quicker and more informed choices, saving valuable time in the process.
+
+# Current Status
+This project is currently in development. The MVP (Minimum Viable Product) has been completed, and work is ongoing to enhance property rating algorithms, improve the user interface, and integrate with additional rental platforms to broaden user engagement.
+
+
+# Extension Set-Up
 Used https://web-highlights.com/blog/how-to-build-a-chrome-extension-using-react/#:~:text=How%20To%20Build%20A%20Chrome%20Extension%20Using%20React,the%20beginning%2C%20we%20already%20installed%20our%20extension.%20 to generate base extension with React 
 
 # Setting up the project 

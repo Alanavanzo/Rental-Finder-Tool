@@ -36,16 +36,13 @@ const Rate = () => {
     const url = window.location.href
     setCurrentURL(url)
     setIsFavourited(favouriteList.some(ing => ing.link === url))
-    // check for domain.com (will add real-estate later)
 
   }, []);
 
+  // TODO remove 
   useEffect(() => {
     console.log("url retrieved")
     console.log(currentURL)
-
-    // check for domain.com (will add real-estate later)
-
   }, [currentURL]);
 
   function addFavourite(link_input, name_input) {
