@@ -18,12 +18,13 @@ This project is currently in development. The MVP (Minimum Viable Product) has b
 Used https://web-highlights.com/blog/how-to-build-a-chrome-extension-using-react/#:~:text=How%20To%20Build%20A%20Chrome%20Extension%20Using%20React,the%20beginning%2C%20we%20already%20installed%20our%20extension.%20 to generate base extension with React 
 
 # Setting up the project 
-Clone repository
-cd to "react-chrome-app" and run "npm install"
-next, run "npm i -D webpack ts-loader webpack-cli" and "npm install --save-dev file-loader url-loader"
-next, run "npm run build" 
-cd to "backend" and run "npm install axios"
-next, run "npm start"
+1. Clone repository
+2. cd to "react-chrome-app" and run "npm install"
+3. run "npm i -D webpack ts-loader webpack-cli" and "npm install --save-dev file-loader url-loader"
+4. run "npm run build" 
+5. cd to "backend" and run "npm install axios"
+6. create a .env file in backend, and store open AI and google API keys as OPENAI_API_KEY and GOOGLE_API_KEY respectively
+7. run "npm start"
 
 # Installing the Extension 
 1. To install the extension, navigate to chrome://extensions and select "developer mode"
