@@ -56,6 +56,7 @@ function Navbar ( {goHomeTrigger} ) {
                 onClick={() => handleTabClick('tab2')}
               >
                 Rate
+                <span class="hoverText">Here, you can enter property info and based off of your preferences a rating will be generated!</span>
               </button>
             </li>
             <li>

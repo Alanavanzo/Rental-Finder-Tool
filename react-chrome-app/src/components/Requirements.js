@@ -61,7 +61,7 @@ function Requirements () {
     <div>
     {(() => {
       if (requirementsOnOff == 'false') {
-        return <button className="goToButton" onClick={goToRequirements} >View Requirements</button>;
+        return <button className="vibrantButton" onClick={goToRequirements} >View Requirements</button>;
       } else {
         return <div>
             {/* TODO for budget, check that Min is less than max */}

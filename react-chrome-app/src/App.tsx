@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from "./views/Navbar.js";
 import Minimized_view from './views/Minimized_view.js';
+import LogoComponent from './components/LogoDisplay.js'
 import { ReactDOM } from "react";
 import "./App.css"
 import "./styling/Styles.css"
@@ -36,10 +37,9 @@ function App() {
         {screenMinimize ? '➡️' : '⬅️'}
       </button>
       {screenMinimize && <Minimized_view/>}
+      {!screenMinimize && <LogoComponent/>}
       {!screenMinimize && <button style={{ fontSize: '18px', float: 'right' }}>⚙️</button>} 
       {!screenMinimize && <button onClick={handleHomeClick} style={{ fontSize: '18px' , float: 'right'}}>🏠</button>} 
-      <br></br>
-      <br></br>
       {!screenMinimize &&  <Navbar goHomeTrigger={goHomeTrigger}/>}
     </div>
   );
