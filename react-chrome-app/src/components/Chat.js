@@ -38,13 +38,14 @@ const ChatComponent = () => {
         }
       });
       console.log(response2)
-      setPlacesResponse(response2)
-      if (!response.ok) {
+      if (!response2.ok) {
         throw new Error("Error fetching data from backend");
       }
-  
-      const data = await response.json();
-      return data.message; // Assuming the response from backend contains a 'message'
+      const data = await response2.json();
+      console.log("Google places response received, printing next ...")
+      console.log(data)
+      setPlacesResponse(data)
+      //return data.message; // Assuming the response from backend contains a 'message'
     } catch (error) {
       setPlacesResponse("error getting response")
       console.error("Error in getChatResponse:", error);

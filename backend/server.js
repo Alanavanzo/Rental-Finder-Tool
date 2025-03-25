@@ -2,7 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import { getOpenAIResponse } from './api/openai.js';  
-import { searchText } from './api/googlePlaces.js';
+import { searchText, searchTextQuery } from './api/googlePlaces.js';
 import { getOpenAIRating } from './api/openai.js'; 
 
 dotenv.config();  // Load environment variables
@@ -65,13 +65,41 @@ app.listen(port, () => {
   console.log(`Backend server running at http://localhost:${port}`);
 });
 
-app.get('/api/search', async (req, res) => {
+app.get('/api/searchRequest', async (req, res) => {
+  const request = {
+    textQuery: "Tacos in Mountain View",
+    fields: ["name", "geometry", "formatted_address", "rating"], // Example fields to include
+    includedType: "restaurant",
+    locationBias: { lat: 37.4161493, lng: -122.0812166 },
+    isOpenNow: true,
+    language: "en-US",
+    maxResultCount: 8,
+    minRating: 3.2,
+    region: "us",
+    useStrictTypeFiltering: false,
+  };
   console.log("inside backend search request to google places ")
   try {
     console.log("Fetching result")
-    const result = await searchText(); 
+    const result = await searchText(request); 
     console.log("Result is", result)
     res.json({ message: result }); 
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Failed to process request' });
+  }
+
+});
+
+
+app.get('/api/search', async (req, res) => {
+  const query = "Schools near 320 Macarthur Avenue Hamilton"
+  console.log("inside backend search request to google places ")
+  try {
+    console.log("Fetching result")
+    const result = await searchTextQuery(query); 
+    console.log("Result is", result)
+    res.json(result); 
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ error: 'Failed to process request' });
