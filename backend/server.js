@@ -4,6 +4,7 @@ import cors from 'cors';
 import { getOpenAIResponse } from './api/openai.js';  
 import { searchText, searchTextQuery } from './api/googlePlaces.js';
 import { getOpenAIRating } from './api/openai.js'; 
+import { getListingDetails } from './api/domain.js';
 
 dotenv.config();  // Load environment variables
 
@@ -104,5 +105,18 @@ app.get('/api/search', async (req, res) => {
     console.error('Error:', error);
     res.status(500).json({ error: 'Failed to process request' });
   }
+});
 
+app.get('/api/listingDetails', async (req, res) => {
+  const id = "17236188"
+  console.log("inside backend search request to domain API ")
+  try {
+    console.log("Fetching result")
+    const result = await getListingDetails(id); 
+    console.log("Result is", result)
+    res.json(result); 
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Failed to process request' });
+  }
 });
