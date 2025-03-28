@@ -1,7 +1,9 @@
 import React from 'react';
+import Listings from './DomainListings';
 import IndividualDomainRating from '../components/AutomaticDomainRating';
 
 const Minimized_view = () => {
+  /*
   // Create an empty array to store the listings data
   const listings = [];
 
@@ -40,8 +42,9 @@ const Minimized_view = () => {
     console.log(`Address: ${listing.address}`);
     console.log(`Price: ${listing.price}`);
   });
-
+*/
     // Now add the word "hello" to each corresponding listing div
+    /*
     const listingsOnPage = document.querySelectorAll("#skip-link-content > div.css-e9rrvx > div.css-1vf6p5n > ul > li");
 
     // Loop through each listing and add the word "hello"
@@ -51,9 +54,11 @@ const Minimized_view = () => {
         newElement.textContent = listingId;  // Set the text content to "hello"
         listing.appendChild(newElement);  // Append the new <p> element to the listing
     });
+    */
 
   return (
     <div >
+      <Listings/>
       <IndividualDomainRating propertyID={"17236188"}/>
     </div>
   );
