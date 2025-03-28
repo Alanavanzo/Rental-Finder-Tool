@@ -23,13 +23,16 @@ const Listings = () => {
 
     // Store the extracted data in the state
     setListings(fetchedListings);
-  }, []); // Empty dependency array means it runs once after the component mounts
+  }, []); // Empty dependency array means it runs once after the component mounts 
+
+  const firstTwoListings = listings.slice(0, 2); // TODO - make this visible listings
 
   return (
     <div>
-      {listings.map((listing) => (
+      {firstTwoListings.map((listing) => (
         <div key={listing.id} className="listing">
           {/* Render the image for each listing */}
+          {listing.id}
           <IndividualDomainRating propertyID={listing.id}/>
         </div>
       ))}
