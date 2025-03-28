@@ -6,7 +6,12 @@ import fullStar from '../styling/images/fullStar.png';
 import emptyStar from '../styling/images/emptyStar.png';
 
 /*
-A function which generates a property rating relative the the user
+A function which generates a property rating relative the the user.
+
+This function takes property data as input to ensure that the code is extenable for various methods of retrieiving property data.
+Hence, it is not reliant on an individual rental site to work, but can be leveraged when exten ding to an additional website.
+It is currently being accessed from the rate tab in the sidebar, where users input data, and as a WIP being accessed from domain wider 
+rental search pages.
 
 Note that all use effects require checking trigger is not null, as this indicates it is not page load
 In all other cases, the trigger is pulled when "generate rating" is selected
