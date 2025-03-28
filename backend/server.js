@@ -107,16 +107,19 @@ app.get('/api/search', async (req, res) => {
   }
 });
 
-app.get('/api/listingDetails', async (req, res) => {
-  const id = "17236188"
+app.post('/api/listingDetails', async (req, res) => {
+  const id = req.body.propertyID
+  console.log("Printing ID..:", id)
   console.log("inside backend search request to domain API ")
-  try {
-    console.log("Fetching result")
-    const result = await getListingDetails(id); 
-    console.log("Result is", result)
-    res.json(result); 
-  } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ error: 'Failed to process request' });
+  if (id){
+    try {
+      console.log("Fetching result")
+      const result = await getListingDetails(id); 
+      console.log("Result is", result)
+      res.json(result); 
+    } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Failed to process request' });
+    }
   }
 });

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { getListingData } from "../api/domain.js";
 
 const Minimized_view = () => {
 
@@ -12,6 +13,9 @@ const Minimized_view = () => {
     }, []);
     
   const callDomainForID = async () => {
+    const id = "17236188"
+    getListingData(id);
+    /*
       console.log("inside call Domain for ID")
       try {
         // Make a POST request to your backend with the userInput in the body
@@ -35,6 +39,7 @@ const Minimized_view = () => {
         console.error("Error getting listing details:", error);
         throw error; // Propagate the error to be handled by the caller
       }
+        */
     }
 
 
