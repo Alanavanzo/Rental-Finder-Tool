@@ -28,7 +28,7 @@ export const getListingData = async (propertyID) => {
     //const geolocation = result.geoLocation;
     //const carspaces = result.carspaces;
     //const bathrooms = result.bathrooms;
-    //const propertyType = result.propertyTypes[0]; // Assumes there's at least one property type
+    //const propertyType = result.propertyTypes[0]; // Assumes there's at least one property typ
 
     /*
         console.log("Price per Week:", pricePerWeek);

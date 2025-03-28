@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { getListingData } from "../api/domain.js";
-import RatingGenerator from '../components/RatingGenerator';
+import RatingGenerator from './RatingGenerator';
 
-const Minimized_view = () => {
+const AutomaticDomainRating = (propertyId) => {
 
   const [listingData, setListingData] = useState({});
   const [displayRating, setDisplayRating] = useState(false)
@@ -42,8 +42,8 @@ const Minimized_view = () => {
     }, [listingData])
     
   const callDomainForID = async () => {
-    const id = "17236188"
-    const result = await getListingData(id)
+    //const id = "17236188"
+    const result = await getListingData(propertyId)
     setListingData(JSON.parse(result))
     console.log("set listing data")
     }
@@ -56,4 +56,4 @@ const Minimized_view = () => {
   );
 };
 
-export default Minimized_view;
+export default AutomaticDomainRating;
