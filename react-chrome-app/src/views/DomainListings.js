@@ -25,15 +25,16 @@ const Listings = () => {
     setListings(fetchedListings);
   }, []); // Empty dependency array means it runs once after the component mounts 
 
-  const firstTwoListings = listings.slice(0, 2); // TODO - make this visible listings
+  const firstThreeListings = listings.slice(0, 3); // TODO - make this visible listings
 
   return (
     <div>
-      {firstTwoListings.map((listing) => (
+      {firstThreeListings.map((listing) => (
         <div key={listing.id} className="listing">
           {/* Render the image for each listing */}
           {listing.id}
           <IndividualDomainRating propertyID={listing.id}/>
+          Above is the rating
         </div>
       ))}
     </div>

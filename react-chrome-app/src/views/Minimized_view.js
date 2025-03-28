@@ -59,7 +59,6 @@ const Minimized_view = () => {
   return (
     <div >
       <Listings/>
-      <IndividualDomainRating propertyID={"17236188"}/>
     </div>
   );
 };
