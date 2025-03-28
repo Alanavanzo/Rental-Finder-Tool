@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import IndividualDomainRating from '../components/AutomaticDomainRating';
+import halfStar from '../styling/images/halfStar.png'; // TODO -- remove
 
 const Listings = () => {
   const [listings, setListings] = useState([]);
@@ -16,7 +17,15 @@ const Listings = () => {
     listItems.forEach((listing) => {
       const listingId = listing.getAttribute('data-testid');  // Get the listing ID
       if (listingId && listingId.startsWith('listing-')) {
-        const cleanListingId = listingId.replace('listing-', ''); // Remove the 'listing-' part
+        const cleanListingId = listingId.replace('listing-', ''); // Remove the 'listing-' part    const newImage = document.createElement('img');
+        const halfStarURL = chrome.runtime.getURL(halfStar);
+        const newImage = document.createElement('img');
+        newImage.src = {halfStarURL}; // Replace with your image URL structure
+        newImage.style.width = '60%'; // Optionally style the image
+        
+        // Append the image to the listing element
+        listing.appendChild(newImage);
+
         fetchedListings.push({ id: cleanListingId});  // Push the listing data into the array
       }
     });
@@ -26,15 +35,12 @@ const Listings = () => {
   }, []); // Empty dependency array means it runs once after the component mounts 
 
   const firstThreeListings = listings.slice(0, 3); // TODO - make this visible listings
-
   return (
     <div>
       {firstThreeListings.map((listing) => (
-        <div key={listing.id} className="listing">
-          {/* Render the image for each listing */}
-          {listing.id}
-          <IndividualDomainRating propertyID={listing.id}/>
-          Above is the rating
+        <div key={listing.id} id={`listing-${listing.id}`} className="listing">
+          {/* Render the IndividualDomainRating component */}
+          <IndividualDomainRating propertyID={listing.id} />
         </div>
       ))}
     </div>
