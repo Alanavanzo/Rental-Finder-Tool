@@ -3,6 +3,8 @@ import { getListingData } from "../api/domain.js";
 
 const Minimized_view = () => {
 
+  const [listingData, setListingData] = useState({});
+
     useEffect(() => {
       const current_domain = window.location.hostname;  // get hostname 
       console.log("the current domain is: " + current_domain);
@@ -11,10 +13,20 @@ const Minimized_view = () => {
         callDomainForID();
       }
     }, []);
+
+    useEffect(() => {
+      console.log("got listing data")
+      console.log(listingData)
+      console.log("Type of listingData:", typeof listingData);  // For primitives (e.g., 'object', 'string', etc.)
+
+      console.log("Objective: ", listingData.objective)
+      console.log("Price details: ", listingData.priceDetails)
+    }, [listingData])
     
   const callDomainForID = async () => {
     const id = "17236188"
-    getListingData(id);
+    const result = await getListingData(id)
+    setListingData(result)
     /*
       console.log("inside call Domain for ID")
       try {
