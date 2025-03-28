@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getListingData } from "../api/domain.js";
 import RatingGenerator from './RatingGenerator';
 
-const IndividualDomainRating = () => {
+const IndividualDomainRating = ({propertyID}) => {
 
     console.log("inside individual domain rating")
 
@@ -13,6 +13,8 @@ const IndividualDomainRating = () => {
     const [bathrooms, setBathrooms] = useState();
     const [propertyDescription, setPropertyDescription] = useState();
 
+    // TODO - this check should only be needed from where we end up calling this from
+    // note it will be called in a loop
     useEffect(() => {
       const current_domain = window.location.hostname;  // get hostname 
       console.log("the current domain is: " + current_domain);
@@ -44,8 +46,8 @@ const IndividualDomainRating = () => {
     }, [listingData])
     
   const callDomainForID = async () => {
-    const id = "17236188"
-    const result = await getListingData(id)
+    //const id = "17236188"
+    const result = await getListingData(propertyID)
     setListingData(JSON.parse(result))
     console.log("set listing data")
     }

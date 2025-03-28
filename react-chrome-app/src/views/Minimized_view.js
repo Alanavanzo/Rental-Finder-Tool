@@ -4,7 +4,7 @@ import IndividualDomainRating from '../components/AutomaticDomainRating';
 const Minimized_view = () => {
   return (
     <div >
-      <IndividualDomainRating/>
+      <IndividualDomainRating propertyID={"17236188"}/>
     </div>
   );
 };
