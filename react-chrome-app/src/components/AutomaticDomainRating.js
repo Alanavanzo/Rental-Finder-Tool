@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { getListingData } from "../api/domain.js";
 import RatingGenerator from './RatingGenerator';
 
-const AutomaticDomainRating = (propertyId) => {
+const IndividualDomainRating = () => {
 
-  const [listingData, setListingData] = useState({});
-  const [displayRating, setDisplayRating] = useState(false)
-  const [price, setPrice] = useState();
-  const [bedrooms, setBedrooms] = useState();
-  const [bathrooms, setBathrooms] = useState();
-  const [propertyDescription, setPropertyDescription] = useState();
+    console.log("inside individual domain rating")
+
+    const [listingData, setListingData] = useState({});
+    const [displayRating, setDisplayRating] = useState(false)
+    const [price, setPrice] = useState();
+    const [bedrooms, setBedrooms] = useState();
+    const [bathrooms, setBathrooms] = useState();
+    const [propertyDescription, setPropertyDescription] = useState();
 
     useEffect(() => {
       const current_domain = window.location.hostname;  // get hostname 
@@ -42,8 +44,8 @@ const AutomaticDomainRating = (propertyId) => {
     }, [listingData])
     
   const callDomainForID = async () => {
-    //const id = "17236188"
-    const result = await getListingData(propertyId)
+    const id = "17236188"
+    const result = await getListingData(id)
     setListingData(JSON.parse(result))
     console.log("set listing data")
     }
@@ -56,4 +58,4 @@ const AutomaticDomainRating = (propertyId) => {
   );
 };
 
-export default AutomaticDomainRating;
+export default IndividualDomainRating;
