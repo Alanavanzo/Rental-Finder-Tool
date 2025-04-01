@@ -14,6 +14,7 @@ const IndividualDomainRating = ({propertyID}) => {
     const [propertyDescription, setPropertyDescription] = useState();
 
     const [trigger, setTrigger] = useState(null);
+    const [noRating, setNoRating] = useState(null);
 
     // TODO - this check should only be needed from where we end up calling this from
     // note it will be called in a loop
@@ -51,6 +52,7 @@ const IndividualDomainRating = ({propertyID}) => {
       // If an error occurs, it will be caught here
       console.log('Failed to fetch listing data from Domain API:', error);
       setListingData(null); // You can choose to handle the error by setting the state to null or another fallback
+      setNoRating(true);
     }
   }
 
@@ -58,6 +60,7 @@ const IndividualDomainRating = ({propertyID}) => {
   return (
     <div >
       { displayRating && <div><RatingGenerator trigger ={true} pricePW={price} propertyNumBeds={bedrooms} numBath={bathrooms} propertyDescription={propertyDescription}/></div>}
+      { noRating && <div>Try again later for rating ! </div>}
   </div>
   );
 };
