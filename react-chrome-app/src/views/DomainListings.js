@@ -25,8 +25,16 @@ const Listings = () => {
     setListings(fetchedListings);
   }, []); 
 
+  const showNextThree = () => {
+    setStart(start+3)
+    setFinish(finish+3)
+  };
+
   return (
 <div>
+      <button onClick={showNextThree}>
+        Next 3
+      </button>
       {listings.slice(start, finish).map((listing) => {
         const targetElement = document.querySelector(`[data-testid="listing-${listing.id}"]`);   // Find the DOM element for the current listing
 
