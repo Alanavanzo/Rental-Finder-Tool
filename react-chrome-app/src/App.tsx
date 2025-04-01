@@ -6,6 +6,7 @@ import { ReactDOM } from "react";
 import "./App.css"
 import "./styling/Styles.css"
 import Homepage from './views/Homepage.js';
+import ScrollRatings from './views/ScrollRatings.js';
 
 function App() {
   const [screenMinimize, setMinimize] = useState(true);
@@ -32,15 +33,20 @@ function App() {
 
   // add routing info 
   return (
-    <div className={screenMinimize ? 'minimized' : 'sidebar'}>
-      <button onClick={handleClick} style={{ fontSize: '18px', float: 'right' }}>
-        {screenMinimize ? '➡️' : '⬅️'}
-      </button>
-      {screenMinimize && <Minimized_view/>}
-      {!screenMinimize && <LogoComponent/>}
-      {!screenMinimize && <button style={{ fontSize: '18px', float: 'right' }}>⚙️</button>} 
-      {!screenMinimize && <button onClick={handleHomeClick} style={{ fontSize: '18px' , float: 'right'}}>🏠</button>} 
-      {!screenMinimize &&  <Navbar goHomeTrigger={goHomeTrigger}/>}
+    <div>
+      <div className={screenMinimize ? 'minimized' : 'sidebar'}>
+        <button onClick={handleClick} style={{ fontSize: '18px', float: 'right' }}>
+          {screenMinimize ? '➡️' : '⬅️'}
+        </button>
+        {screenMinimize && <Minimized_view/>}
+        {!screenMinimize && <LogoComponent/>}
+        {!screenMinimize && <button style={{ fontSize: '18px', float: 'right' }}>⚙️</button>} 
+        {!screenMinimize && <button onClick={handleHomeClick} style={{ fontSize: '18px' , float: 'right'}}>🏠</button>} 
+        {!screenMinimize &&  <Navbar goHomeTrigger={goHomeTrigger}/>}
+      </div>
+      <div className='scroll'>
+        <ScrollRatings/>
+      </div>
     </div>
   );
 }

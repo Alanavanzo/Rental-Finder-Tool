@@ -1,26 +1,3 @@
-h1 {
-  font-family: 'Monaco', Monospace; 
-  color: rgb(2, 2, 71); /* Navy blue color */
-  font-size: 2rem; 
-  font-weight: bold; /* Makes the font bold */
-  text-align: center; /* Centers the text */
-  }
-  
-  h2 {
-    font-family: 'Monaco', Monospace; 
-    color: rgb(0, 0, 128); /* Navy blue color */
-    font-size: 1.5rem; 
-    text-align: center; /* Centers the text */
-  }
-  
-  h3 {
-    font-family: 'Monaco', Monospace; 
-    color: rgb(74, 74, 162); /* Navy blue color */
-    font-size: 1rem; 
-    text-align: center; /* Centers the text */
-  }
-
-    
   .propertyTitle {
     color: rgb(0, 0, 128); /* Navy blue color */
     font-size: 1.5rem; 
