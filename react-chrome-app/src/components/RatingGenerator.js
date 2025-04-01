@@ -17,6 +17,7 @@ Note that all use effects require checking trigger is not null, as this indicate
 In all other cases, the trigger is pulled when "generate rating" is selected
 */
 const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDescription, propertyURL}) => {
+    console.log("inside the rating generator")
     const halfStarURL = chrome.runtime.getURL(halfStar);
     const fullStarURL = chrome.runtime.getURL(fullStar);
     const emptyStarURL = chrome.runtime.getURL(emptyStar);
@@ -46,8 +47,14 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
     // this only needs to run if the rating score changes 
     useEffect(() => {    
       if (trigger != null){
-      console.log("The score is: " + userRatingResponse)
-      setRating(setRatingStars(userRatingResponse))}
+        if(userRatingResponse){
+          console.log("The score is: " + userRatingResponse)
+          setRating(setRatingStars(userRatingResponse))}
+        else{
+          console.log("rating couldnt be generated :(")
+          setRating("Error generating rating :( enter more info or try again later");
+        }
+      }
     }, [userRatingResponse]);
 
 
@@ -83,12 +90,6 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
       const budget = localStorage.getItem('userBudgetMaxStored');
       const numBeds = localStorage.getItem('userNumBedsStored');
 
-      /* Requirements .. if all good return 3 stars OR just do thumbs up 
-         Firm requirements include:
-          - Max Budget
-          - Min number bedrooms 
-          - If they definitely have a pet 
-      */ 
       if (pricePW > budget && numBeds > propertyNumBeds){
         setThumbsUp(false);
       }

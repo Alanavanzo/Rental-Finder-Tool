@@ -4,7 +4,7 @@ import RatingGenerator from './RatingGenerator';
 
 const IndividualDomainRating = ({propertyID}) => {
 
-    console.log("inside individual domain rating")
+    console.log("inside individual domain property")
 
     const [listingData, setListingData] = useState({});
     const [displayRating, setDisplayRating] = useState(false)
@@ -12,6 +12,8 @@ const IndividualDomainRating = ({propertyID}) => {
     const [bedrooms, setBedrooms] = useState();
     const [bathrooms, setBathrooms] = useState();
     const [propertyDescription, setPropertyDescription] = useState();
+
+    const [trigger, setTrigger] = useState(null);
 
     // TODO - this check should only be needed from where we end up calling this from
     // note it will be called in a loop
@@ -25,32 +27,32 @@ const IndividualDomainRating = ({propertyID}) => {
     }, []);
 
     useEffect(() => {
-      if(Object.keys(listingData).length > 0){
-        console.log("hey")
-        console.log("got listing data")
-        console.log(listingData)
-        console.log("Type of listingData:", typeof listingData);  // For primitives (e.g., 'object', 'string', etc.)
-
-        console.log("Objective: ", listingData.objective)
-        //console.log("Price details: ", listingData.priceDetails.price)
+      if(listingData && Object.keys(listingData).length > 0){
+        console.log("Retrieved listing data from Domain API")
         setPrice(listingData.priceDetails.price)
         setPropertyDescription(listingData.description);
         setBedrooms(listingData.bedrooms)
         setBathrooms(listingData.bathrooms)
         setDisplayRating(true); 
-          //const address = result.addressParts.displayAddress;
-        //const geolocation = result.geoLocation;
-        //const carspaces = result.carspaces;
-        //const propertyType = result.propertyTypes[0]; 
+        setTrigger(true)
+        //const address = result.addressParts.displayAddress;const geolocation = result.geoLocation;//const carspaces = result.carspaces;//const propertyType = result.propertyTypes[0]; 
       }
     }, [listingData])
     
   const callDomainForID = async () => {
-    //const id = "17236188"
-    const result = await getListingData(propertyID)
-    setListingData(JSON.parse(result))
-    console.log("set listing data")
+    //const result = await getListingData(propertyID)
+    //setListingData(JSON.parse(result))
+
+    try {
+      const result = await getListingData(propertyID);
+      // If no error, proceed with result
+      setListingData(JSON.parse(result));
+    } catch (error) {
+      // If an error occurs, it will be caught here
+      console.log('Failed to fetch listing data from Domain API:', error);
+      setListingData(null); // You can choose to handle the error by setting the state to null or another fallback
     }
+  }
 
 
   return (
