@@ -25,6 +25,7 @@ async function getListingDetails(id) {
       console.log('Listing details:', listingDetails); // Log the fetched listing details
       return JSON.stringify(listingDetails);  // Return data as a string if needed
     } catch (error) {
+      console.log('Error fetching listing details for ', id)
       console.error('Error fetching listing details:', error.response ? error.response.data : error.message);
     }
   }
