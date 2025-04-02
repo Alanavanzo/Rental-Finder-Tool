@@ -43,7 +43,6 @@ const IndividualDomainRating = ({propertyID}) => {
   const callDomainForID = async () => {
     //const result = await getListingData(propertyID)
     //setListingData(JSON.parse(result))
-
     try {
       const result = await getListingData(propertyID);
       // If no error, proceed with result

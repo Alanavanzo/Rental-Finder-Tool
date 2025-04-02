@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react';
 
-const PropertyInformation = ({trigger, desc, beds, price, bath, propertyAddress}) => {
+const PropertyInformation = ({trigger, desc, beds, price, bath, propertyAddress, cars, propType}) => {
     // these values reset to their initial state every time the user exits out of the window .. instead set like the 
     // quiz input and add a reset button to clear local storage and revert values back to original as below 
     // Initialize state with props if available, otherwise fallback to default values
+
+    console.log("inside property info")
+    console.log("price - ", price)
+    console.log("desc", desc)
+    
     const [propertyInput, setPropertyInput] = useState(desc || '');
     const [address, setAddress] = useState(propertyAddress || '');
     const [location, setLocation] = useState('');
@@ -11,8 +16,24 @@ const PropertyInformation = ({trigger, desc, beds, price, bath, propertyAddress}
     const [numBedsPI, setNumBedsPI] = useState(beds || 1);
     const [petFriendly, setPetFriendly] = useState('');
 
+    // TODO
+    const [carSpaces, setCarSpaces] = useState(cars || 0);
+    const [propertyType, setPropertyType] = useState(propType || '');
+
     // additional values
     const [numBath, setNumBath] = useState(bath || 1);
+
+        // Effect to update state when props change
+        useEffect(() => {
+          setPropertyInput(desc || '');
+          setAddress(propertyAddress || '');
+          setPricePW(price || 0);
+          setNumBedsPI(beds || 1);
+          setNumBath(bath || 1);
+          setCarSpaces(cars || 0);
+          setPropertyType(propType || '');
+      }, [desc, price, propertyAddress, beds, bath, cars]); // Only run when any of these props change
+  
 
     // Effect to store the values in localStorage whenever they change
     useEffect(() => {
@@ -24,6 +45,8 @@ const PropertyInformation = ({trigger, desc, beds, price, bath, propertyAddress}
       localStorage.setItem('petFriendlyStored', petFriendly);
       localStorage.setItem('numBathStored', numBath);
       console.log("property info has been updated in local storage");
+
+      // TODO add property type and car spaces
     }, [pricePW, numBedsPI, location, propertyInput, petFriendly]);
 
     useEffect(() => {
@@ -37,6 +60,8 @@ const PropertyInformation = ({trigger, desc, beds, price, bath, propertyAddress}
         localStorage.setItem('petFriendlyStored', petFriendly);
         localStorage.setItem('numBathStored', numBath);
         console.log("property info has been updated in local storage");
+
+              // TODO add property type and car spaces
     }, [trigger]);
 
     // handle changes to inputs 
@@ -70,6 +95,14 @@ const PropertyInformation = ({trigger, desc, beds, price, bath, propertyAddress}
       setNumBath(e.target.value);
     };
 
+    const handlePropertyTypeChange = (e) => {
+      setPropertyType(e.target.value);
+    }
+
+    const handleCarSpaces = (e) => {
+      setCarSpaces(e.target.value);
+    }
+
   
   return (
     <div>
@@ -83,7 +116,7 @@ const PropertyInformation = ({trigger, desc, beds, price, bath, propertyAddress}
             onChange={handleAddressChange} 
           />
       </div>
-        <div className="propertyFieldWrapper">
+      <div className="propertyFieldWrapper">
         <span className = "propertyField"> Price per Week:  </span>
         <input
             type="number" 
@@ -93,8 +126,8 @@ const PropertyInformation = ({trigger, desc, beds, price, bath, propertyAddress}
             value={pricePW} 
             onChange={changePricePW} 
         />
-        </div>
-        <div className="propertyFieldWrapper">
+      </div>
+      <div className="propertyFieldWrapper">
         <span className = "propertyField"> Number of Bedrooms:  </span>
         <input
             type="number" 
@@ -104,8 +137,8 @@ const PropertyInformation = ({trigger, desc, beds, price, bath, propertyAddress}
             value={numBedsPI} 
             onChange={changeNumBedsPI} 
         />
-        </div>
-        <div className="propertyFieldWrapper">
+      </div>
+      <div className="propertyFieldWrapper">
           <span className = "propertyField"> Number of Bathrooms:  </span>
           <input
             type="number" 
@@ -115,8 +148,9 @@ const PropertyInformation = ({trigger, desc, beds, price, bath, propertyAddress}
             value={numBath} 
             onChange={changeNumBath} 
             />
-        </div>
-        <div className="propertyFieldWrapper">
+      </div>
+      {/*
+      <div className="propertyFieldWrapper">
           <span className = "propertyField"> Location:  </span>
           <input
               type="text" 
@@ -125,7 +159,29 @@ const PropertyInformation = ({trigger, desc, beds, price, bath, propertyAddress}
               value={location} 
               onChange={changeLocation} 
           />
-        </div>
+      </div>
+      */}
+      <div className="propertyFieldWrapper">
+        <span className = "propertyField"> Car Spaces:  </span>
+        <input
+            type="number" 
+            className="propertyNumInput" 
+            min={0}
+            max={20}
+            value={carSpaces} 
+            onChange={handleCarSpaces} 
+        />
+      </div>
+      <div className="propertyFieldWrapper">
+        <span className="propertyField">Property Type: </span>
+        <input
+          type="text"
+          className="propertyInputField"
+          placeholder="Enter property type ..."
+          value={propertyType}
+          onChange={handlePropertyTypeChange}
+        />
+      </div>
         <div className="propertyFieldWrapper">
           <span className = "propertyField"> Pet Friendly:  </span>
           <input

@@ -17,7 +17,6 @@ Note that all use effects require checking trigger is not null, as this indicate
 In all other cases, the trigger is pulled when "generate rating" is selected
 */
 const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDescription, propertyURL}) => {
-    console.log("inside the rating generator")
     const halfStarURL = chrome.runtime.getURL(halfStar);
     const fullStarURL = chrome.runtime.getURL(fullStar);
     const emptyStarURL = chrome.runtime.getURL(emptyStar);

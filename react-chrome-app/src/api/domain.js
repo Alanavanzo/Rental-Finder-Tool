@@ -18,6 +18,7 @@ export const getListingData = async (propertyID) => {
     }
     const result = await response.json();
     console.log("Domain response received")
+    console.log(result)
     return result
   } catch (error) {
     console.log("Error in getListingData:", error);
