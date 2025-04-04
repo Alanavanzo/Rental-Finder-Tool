@@ -28,6 +28,40 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
     const [loading, setLoading] = useState(false)
     const [sameResponse, setSameResponse] = useState(false)
 
+
+    // JUST ADDED
+    const [ratingsList, setratingsList] = useState(() => {
+    
+      const ratingsListLocal = localStorage.getItem("ratingsListStored")
+        if (ratingsListLocal == null) return []
+    
+        return JSON.parse(ratingsListLocal)
+    });
+    
+    useEffect(() => {
+      localStorage.setItem("ratingsListStored", JSON.stringify(ratingsList));
+    
+    }, [ratingsList]);
+
+    function storeRating(prop_id, rating) {
+      const isFoundInThisList = ratingsList.some(ing => ing.link === prop_id); // will be true if link is already in list  
+      if(!isFoundInThisList){
+      setFavouriteList((currentRatings) => {
+          return [
+              ...currentRatings,
+              {id: crypto.randomUUID(), name: rating, property: prop_id}
+          ]
+      })
+      }
+      else{
+          return ("cannotAdd")        // cannot add .. return original list 
+      }
+      }
+
+      // Added above .. need to store by ID and also work out how to override existing rating if it there 
+      // TODO -- if a rating already exists just display that instead of generating rating 
+      //function findExistingRating 
+
     useEffect(() => {
         if (trigger != null){
           console.log("Generating rating ...")
