@@ -143,11 +143,6 @@
   border-radius: 20%; /* Rounded corners */
 }
 
-.emojiButton{
-  border: none;
-  padding: 2px;
-  margin-bottom: 3px;
-}
 /* General vibrant button style */
 .vibrantButton {
   background-color: #4CAF50; /* Vibrant green background */
@@ -188,4 +183,35 @@
   color: #888; /* Gray text */
   cursor: not-allowed; /* Show not-allowed cursor */
   transform: none; /* No transformation when disabled */
+}
+
+.individualFavourite {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 10px; /* Adjust this to your desired space */
+}
+
+.nameButton {
+  width: 70%;
+  font-size: 16px; /* Text size */
+  padding: 12px 24px; /* Padding for size */
+  border: none; /* Remove default border */
+  border-radius: 8px; /* Rounded corners for a smooth look */
+  cursor: pointer; /* Pointer cursor on hover */
+  font-family: 'Arial', sans-serif; /* Consistent font for the button */
+  text-align: center; /* Center the text inside the button */
+  display: inline-block; /* Allow the button to be inline */
+  box-sizing: border-box; /* Ensure padding doesn’t affect width/height */
+  background-color: transparent; /* Remove default background */
+  outline: none; /* Remove the outline that appears on focus */
+}
+
+.emojiButton {
+  width: 30%;
+  border: none;
+  padding: 2px;
+  margin-bottom: 3px;
+  background-color: transparent; /* Remove default background */
+  outline: none; /* Remove the outline on focus */
 }

@@ -9,21 +9,23 @@ import Homepage from './views/Homepage.js';
 import ScrollRatings from './views/ScrollRatings.js';
 
 function App() {
-  const [screenMinimize, setMinimize] = useState(true);
   const [goHomeTrigger, pullHomeTrigger] = useState(true);  // default to home if nothing in local storage 
 
-  useEffect(() => {
-    /* can't do this with local storage
+  const [screenMinimize, setMinimize] = useState(() => {
+    // Check if 'minimizedStored' exists in localStorage
     const savedMinimize = localStorage.getItem('minimizedStored');
-    if (savedMinimize) {
-      setMinimize(savedMinimize);
-    }
-      */
-  }, []);
+    console.log(localStorage.getItem('minimizedStored'));
+    
+    // If there is a value in localStorage, return its boolean equivalent, otherwise return true
+    return savedMinimize ? savedMinimize === 'true' : true;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('minimizedStored', String(screenMinimize));
+  }, [screenMinimize]);
 
   const handleClick = async () => {
       setMinimize(!screenMinimize);
-      //localStorage.setItem('minimizedStored', screenMinimize);
   };
 
   const handleHomeClick = async () => {
