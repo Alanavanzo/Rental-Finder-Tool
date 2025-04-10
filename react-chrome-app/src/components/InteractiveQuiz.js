@@ -4,36 +4,30 @@ import quizQuestions from './quizData';
 function InteractiveQuiz() {
   const [userResponses, setUserResponses] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [userAnswer, setUserAnswer] = useState('');
+  const [userAnswer, setUserAnswer] = useState(''); // Initial answer state
   const [quizOn, setQuizOn] = useState(false);
   const [showResult, setShowResult] = useState(false);
 
-  // Load saved preferences on mount
+  // Load saved preferences on mount and set initial user responses
   useEffect(() => {
     const savedResponses = JSON.parse(localStorage.getItem('quizUserPreferences'));
 
     if (savedResponses && savedResponses.length > 0) {
       setUserResponses(savedResponses);
-      setQuizOn(true);
-
-      if (savedResponses.length === quizQuestions.length) {
-        setShowResult(true);
-      } else {
-        const nextIndex = savedResponses.length;
-        setCurrentQuestionIndex(nextIndex);
-        setUserAnswer(savedResponses[nextIndex]?.userAnswer || '');
-      }
+      // Pre-fill the answer for the first question
+      setUserAnswer(savedResponses[currentQuestionIndex]?.userAnswer || '');
     }
-  }, []);
+  }, [currentQuestionIndex]); // Re-run only when currentQuestionIndex changes
 
+  // Start the quiz
   const startQuiz = () => {
     setQuizOn(true);
     setCurrentQuestionIndex(0);
-    setUserAnswer('');
-    setUserResponses([]);
     setShowResult(false);
+    setUserAnswer(''); // Clear any pre-filled answers on start
   };
 
+  // Handle selecting an answer
   const handleAnswer = (option) => {
     setUserAnswer(option);
 
@@ -48,13 +42,23 @@ function InteractiveQuiz() {
     localStorage.setItem('quizUserPreferences', JSON.stringify(updatedResponses));
   };
 
+  // Go to the next question
   const nextQuestion = () => {
     if (currentQuestionIndex + 1 < quizQuestions.length) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
+      // Pre-fill the next answer from saved responses (if available)
       setUserAnswer(userResponses[currentQuestionIndex + 1]?.userAnswer || '');
     } else {
       setShowResult(true);
     }
+  };
+
+  // Reset quiz to close it
+  const resetQuiz = () => {
+    setQuizOn(false);
+    setShowResult(false);
+    setUserResponses([]);
+    setUserAnswer('');
   };
 
   // Ensure quizQuestions[currentQuestionIndex] exists before rendering it
@@ -62,7 +66,8 @@ function InteractiveQuiz() {
 
   return (
     <div>
-      {!quizOn ? (
+      {/* Show the Start Quiz button only if the quiz hasn't been started or is incomplete */}
+      {!quizOn && !showResult ? (
         <button className="vibrantButton" onClick={startQuiz}>
           Start Interactive Quiz
         </button>
@@ -77,7 +82,7 @@ function InteractiveQuiz() {
               </li>
             ))}
           </ul>
-          <button onClick={() => setQuizOn(false)}>Edit Preferences</button>
+          <button onClick={resetQuiz}>Close Quiz</button>
         </div>
       ) : currentQuestion ? (
         <div>
@@ -88,8 +93,8 @@ function InteractiveQuiz() {
                 <button
                   onClick={() => handleAnswer(option)}
                   style={{
-                    backgroundColor: userAnswer === option ? '#d3eafd' : '',
-                    fontWeight: userAnswer === option ? 'bold' : 'normal'
+                    backgroundColor: userAnswer === option ? '#d3eafd' : '', // Highlight if selected
+                    fontWeight: userAnswer === option ? 'bold' : 'normal' // Bold if selected
                   }}
                 >
                   {option}
