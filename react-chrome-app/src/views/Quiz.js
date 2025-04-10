@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Requirements from '../components/Requirements';
 import QuizInput from '../components/QuizInput';
+import InteractiveQuiz from '../components/InteractiveQuiz';
 
 const Quiz = () => {
 
@@ -13,6 +14,8 @@ const Quiz = () => {
       <Requirements/>
       <br></br>
       <QuizInput />
+      <br></br>
+      <InteractiveQuiz/>
     </div>
   );
 };
