@@ -8,10 +8,10 @@ function InteractiveQuiz() {
   const [quizOn, setQuizOn] = useState(false);
   const [showResult, setShowResult] = useState(false);
 
-  // Load saved preferences on mount and set initial user responses
+    // Load saved preferences on mount and set initial user responses
   useEffect(() => {
     const savedResponses = JSON.parse(localStorage.getItem('quizUserPreferences'));
-
+  
     if (savedResponses && savedResponses.length > 0) {
       setUserResponses(savedResponses);
       // Pre-fill the answer for the first question
