@@ -16,7 +16,7 @@ rental search pages.
 Note that all use effects require checking trigger is not null, as this indicates it is not page load
 In all other cases, the trigger is pulled when "generate rating" is selected
 */
-const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDescription, propertyURL}) => {
+const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDescription, propertyURL, propertyAddress}) => {
     const halfStarURL = chrome.runtime.getURL(halfStar);
     const fullStarURL = chrome.runtime.getURL(fullStar);
     const emptyStarURL = chrome.runtime.getURL(emptyStar);
@@ -28,28 +28,57 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
     const [loading, setLoading] = useState(false)
     const [sameResponse, setSameResponse] = useState(false)
 
+    const [checkRatingListCount, setCheckRatingListCount] = useState(0);
+    const [ratingsExists, setRatingExists] = useState(false);
+
 
     // JUST ADDED
-    const [ratingsList, setratingsList] = useState(() => {
+    const [ratingsList, setRatingsList] = useState([]);
+    /*
+    const [ratingsList, setRatingsList] = useState(() => {
     
       const ratingsListLocal = localStorage.getItem("ratingsListStored")
         if (ratingsListLocal == null) return []
     
         return JSON.parse(ratingsListLocal)
     });
-    
+    */
     useEffect(() => {
-      localStorage.setItem("ratingsListStored", JSON.stringify(ratingsList));
-    
+      const ratingsListLocal = localStorage.getItem("ratingsListStored")
+        if (ratingsListLocal != null){
+          setRatingsList(JSON.parse(ratingsListLocal))
+        }
+    }, [propertyAddress]);
+
+    useEffect(() => {
+      if(ratingsList != []){
+        console.log("checking if a rating for this property has been generated")
+        console.log(ratingsList)
+        console.log(propertyAddress)
+        const foundItem = ratingsList.find(ing => ing.property === propertyAddress);
+        if(foundItem){
+          const existingScore = foundItem.score;
+          console.log("Found item with score:", existingScore);
+          setRatingExists(true)
+          setUserRatingResponse(existingScore)
+          }
+        else{
+          console.log("no rating found")
+        }
+        setCheckRatingListCount(checkRatingListCount+1)
+        localStorage.setItem("ratingsListStored", JSON.stringify(ratingsList));
+        console.log("hello - printing ratings list")
+        console.log(ratingsList)
+      }
     }, [ratingsList]);
 
-    function storeRating(prop_id, rating) {
-      const isFoundInThisList = ratingsList.some(ing => ing.link === prop_id); // will be true if link is already in list  
+    function storeRating(propertyAddress, rating) {
+      const isFoundInThisList = ratingsList.some(ing => ing.property === propertyAddress); // will be true if link is already in list  
       if(!isFoundInThisList){
-      setFavouriteList((currentRatings) => {
+      setRatingsList((currentRatings) => {
           return [
               ...currentRatings,
-              {id: crypto.randomUUID(), name: rating, property: prop_id}
+              {id: crypto.randomUUID(), score: rating, property: propertyAddress}
           ]
       })
       }
@@ -62,6 +91,7 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
       // TODO -- if a rating already exists just display that instead of generating rating 
       //function findExistingRating 
 
+      // TODO - only generate rating if not in storage 
     useEffect(() => {
         if (trigger != null){
           console.log("Generating rating ...")
@@ -71,7 +101,8 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
 
     // this needs to run if the rating changes OR if the generate rating button was selected but the score stays the same
     useEffect(() => {  
-      if (trigger != null){  
+      if (trigger != null || ratingsExists){  
+        console.log("show rating is tre")
         setLoading(false)
         setShowRating(true)
       }
@@ -79,10 +110,15 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
 
     // this only needs to run if the rating score changes 
     useEffect(() => {    
-      if (trigger != null){
+      if (trigger != null || ratingsExists){
         if(userRatingResponse){
           console.log("The score is: " + userRatingResponse)
-          setRating(setRatingStars(userRatingResponse))}
+          setRating(setRatingStars(userRatingResponse))
+          console.log(propertyAddress)
+          if(propertyAddress){
+            storeRating(propertyAddress,userRatingResponse)
+          } 
+        }
         else{
           console.log("rating couldnt be generated :(")
           setRating("Error generating rating :( enter more info or try again later");
@@ -134,6 +170,8 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
         // TODO pass in whethe the property meets requirement sand change API to call to max 2/5 stars if no meets requirements 
         const userYesNoAnswers = localStorage.getItem('userYesNoAnswers');
         const userScaleAnswers = localStorage.getItem('scaleAnswers');
+        const interactiveQuizAnswers = JSON.parse(localStorage.getItem('quizUserPreferences'))
+        console.log(JSON.parse(localStorage.getItem('quizUserPreferences')))  // TODO remove -- confirming that they render 
         const data = await getUserRating(propertyDescription, `I like gardens, my budget is $${String(budget)} per week. Here are my answers to a survey, they should tell you more about my preferences: ${String(userYesNoAnswers)}. And these are more answrs to a survey, indicating how much I care about certain features: ${String(userScaleAnswers)}. I require ${String(numBeds)} bedrooms.I love cooking`);
         if (data == userRatingResponse){
           setSameResponse(!sameResponse)

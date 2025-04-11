@@ -24,7 +24,7 @@ const Rate = () => {
 
   const [favouriteList, setFavouriteList] = useState(() => {
 
-    const favouriteListLocal = localStorage.getItem("favouriteListStored")
+  const favouriteListLocal = localStorage.getItem("favouriteListStored")
       if (favouriteListLocal == null) return []
 
       return JSON.parse(favouriteListLocal)
@@ -203,7 +203,7 @@ const Rate = () => {
       </header>
       <div><PropertyInformation trigger ={PItrigger} desc = {propertyDescription} beds = {numBeds} price = {pricePW} bath={numBath} propertyAddress={address} cars={carSpaces} propType={propertyType}/></div>
       <button className="vibrantButton" onClick={pullRatingTrigger}>Generate Rating</button>
-      <div><RatingGenerator trigger ={rateTrigger} pricePW={pricePW} propertyNumBeds={numBeds} numBath={numBath} propertyURL={currentURL} propertyDescription={propertyDescription}/></div>
+      <div><RatingGenerator trigger ={rateTrigger} pricePW={pricePW} propertyNumBeds={numBeds} numBath={numBath} propertyURL={currentURL} propertyDescription={propertyDescription} propertyAddress={address}/></div>
       <br></br>
       {!isFavourited && <div> <button className="buttonStyle" onClick={handleNewFavSave}>Save Property</button> </div>}
     </div>
