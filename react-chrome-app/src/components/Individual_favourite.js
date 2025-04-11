@@ -16,8 +16,8 @@ function Individual_favourite({id, link, name, deleteFavourite}) {
 
     return (
         <div>
-            <div>
-                <button onClick={goToLink}>{name}</button>
+            <div className='individualFavourite'>
+                <button onClick={goToLink} className='nameButton'>{name}</button>
                 <button className = "emojiButton" onClick={() => deleteFavourite(id)}>     🗑️</button>
             </div>
         </div>

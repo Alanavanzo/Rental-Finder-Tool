@@ -33,10 +33,10 @@ function Add_favourite({addFavourite}) {
                         type="text" 
                         placeholder={"Enter property name ... "}
                         value = {userNewFavouriteName}
-                        style={{ width: '170px', padding: '1px' , marginRight: '5px'}}
+                        className = 'propertyInputFieldLong'
                         onChange={handleNewFavouriteName} 
                     />
-                    <button onClick={handleNewName}>next</button>
+                    <button onClick={handleNewName} className='vibrantButton'>next</button>
                 </div> 
             
             
@@ -45,10 +45,10 @@ function Add_favourite({addFavourite}) {
                     type="text" 
                     placeholder={"Enter property link ... "}
                     value = {userNewFavouriteLink}
-                    style={{ width: '170px', height: '120px', padding: '1px' , marginRight: '5px'}}
+                    className='propertyInputFieldLong'
                     onChange={handleNewFavourite} 
                 />
-                <button onClick={handleNewFavSave}>Add</button>
+                <button onClick={handleNewFavSave} className='vibrantButton'>Add</button>
                 </div>}
         </div>
     );

@@ -1,8 +1,23 @@
 import React from 'react';
+import { useEffect, useState } from 'react';
 import Listings from './DomainListings';
 import IndividualDomainRating from '../components/AutomaticDomainRating';
 
-const Minimized_view = () => {
+const ScrollRatings = () => {
+    const [isDomainScroll, setDomainScroll] = useState(false)
+    useEffect(() => {
+        const current_domain = window.location.hostname; // get the hostname
+        const current_path = window.location.pathname; // get the pathname
+      
+        console.log("The current domain is: " + current_domain);
+        console.log("The current path is: " + current_path);
+      
+        // Check if the domain is 'www.domain.com.au' and the path starts with '/rent'
+        if (current_domain === 'www.domain.com.au' && current_path.startsWith('/rent')) {
+          console.log('The page is a property page under rent.');
+          setDomainScroll(true)
+        }
+      }, []);
   /*
   // Create an empty array to store the listings data
   const listings = [];
@@ -43,23 +58,12 @@ const Minimized_view = () => {
     console.log(`Price: ${listing.price}`);
   });
 */
-    // Now add the word "hello" to each corresponding listing div
-    /*
-    const listingsOnPage = document.querySelectorAll("#skip-link-content > div.css-e9rrvx > div.css-1vf6p5n > ul > li");
-
-    // Loop through each listing and add the word "hello"
-    listingsOnPage.forEach((listing) => {
-       const listingId = listing.getAttribute('data-testid');  // or another way to get the ID from the listing
-        const newElement = document.createElement('p');  // Create a new <p> element
-        newElement.textContent = listingId;  // Set the text content to "hello"
-        listing.appendChild(newElement);  // Append the new <p> element to the listing
-    });
-    */
 
   return (
     <div >
+      {isDomainScroll && <Listings/>}
     </div>
   );
 };
 
-export default Minimized_view;
+export default ScrollRatings;
