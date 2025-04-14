@@ -85,7 +85,14 @@ const Rate = () => {
     if(listingData && Object.keys(listingData).length > 0){
       console.log(listingData)
       console.log("Retrieved listing data from Domain API")
-      setPricePW(listingData.priceDetails.price)
+      console.log("Price is ...", listingData.priceDetails.price)
+      if(listingData.priceDetails.price){
+        setPricePW(listingData.priceDetails.price)
+      }
+      else{
+        const priceDetailsString = JSON.stringify(listingData.priceDetails);
+        setPricePW(parseInt(priceDetailsString.match(/\$([\d,]+)/)[1].replace(/,/g, ''), 10))
+      }
       setDescription(listingData.description);
       setNumBeds(listingData.bedrooms)
       setNumBath(listingData.bathrooms)

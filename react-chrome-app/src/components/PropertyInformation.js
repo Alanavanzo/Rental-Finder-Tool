@@ -6,8 +6,6 @@ const PropertyInformation = ({trigger, desc, beds, price, bath, propertyAddress,
     // Initialize state with props if available, otherwise fallback to default values
 
     console.log("inside property info")
-    console.log("price - ", price)
-    console.log("desc", desc)
     
     const [propertyInput, setPropertyInput] = useState(desc || '');
     const [address, setAddress] = useState(propertyAddress || '');
