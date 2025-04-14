@@ -72,7 +72,7 @@ const Rate = () => {
   }, [favouriteList]);
   
   function handleNewFavSave() {
-      addFavourite(currentURL, propertyTitle);
+      addFavourite(currentURL, address);
       setIsFavourited(true)
   }
 

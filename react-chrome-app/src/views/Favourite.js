@@ -9,7 +9,9 @@ const Favourite = () => {
         if (favouriteListLocal == null) return []
 
         return JSON.parse(favouriteListLocal)
+
     });
+    console.log(favouriteList)
 
     useEffect(() => {
         localStorage.setItem("favouriteListStored", JSON.stringify(favouriteList));
