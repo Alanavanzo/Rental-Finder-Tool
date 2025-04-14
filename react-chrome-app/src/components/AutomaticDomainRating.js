@@ -12,6 +12,7 @@ const IndividualDomainRating = ({propertyID}) => {
     const [bedrooms, setBedrooms] = useState();
     const [bathrooms, setBathrooms] = useState();
     const [propertyDescription, setPropertyDescription] = useState();
+    const [address, setAddress] = useState();
 
     const [trigger, setTrigger] = useState(null);
     const [noRating, setNoRating] = useState(null);
@@ -30,12 +31,19 @@ const IndividualDomainRating = ({propertyID}) => {
     useEffect(() => {
       if(listingData && Object.keys(listingData).length > 0){
         console.log("Retrieved listing data from Domain API")
-        setPrice(listingData.priceDetails.price)
+        if(listingData.priceDetails.price){
+          setPrice(listingData.priceDetails.price)
+        }
+        else{
+          const priceDetailsString = JSON.stringify(listingData.priceDetails);
+          setPrice(parseInt(priceDetailsString.match(/\$([\d,]+)/)[1].replace(/,/g, ''), 10))
+        }
         setPropertyDescription(listingData.description);
         setBedrooms(listingData.bedrooms)
         setBathrooms(listingData.bathrooms)
         setDisplayRating(true); 
-        setTrigger(true)
+        setTrigger(true);
+        setAddress(listingData.addressParts.displayAddress);
         //const address = result.addressParts.displayAddress;const geolocation = result.geoLocation;//const carspaces = result.carspaces;//const propertyType = result.propertyTypes[0]; 
       }
     }, [listingData])
@@ -58,8 +66,10 @@ const IndividualDomainRating = ({propertyID}) => {
 
   return (
     <div >
-      { displayRating && <div><RatingGenerator trigger ={true} pricePW={price} propertyNumBeds={bedrooms} numBath={bathrooms} propertyDescription={propertyDescription}/></div>}
-      { noRating && <div>Try again later for rating ! </div>}
+      { /*displayRating && */
+      <div><RatingGenerator pricePW={price} propertyNumBeds={bedrooms} numBath={bathrooms} propertyDescription={propertyDescription} propertyAddress={address} automaticRating={true}/></div>
+      }
+      {/* noRating && <div>Try again later for rating ! </div>*/}
   </div>
   );
 };

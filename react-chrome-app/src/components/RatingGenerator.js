@@ -16,7 +16,7 @@ rental search pages.
 Note that all use effects require checking trigger is not null, as this indicates it is not page load
 In all other cases, the trigger is pulled when "generate rating" is selected
 */
-const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDescription, propertyURL, propertyAddress, detailedRating = false}) => {
+const RatingGenerator = ({trigger=null, pricePW, propertyNumBeds, numBath, propertyDescription, propertyURL, propertyAddress, detailedRating = false, automaticRating=false}) => {
     const halfStarURL = chrome.runtime.getURL(halfStar);
     const fullStarURL = chrome.runtime.getURL(fullStar);
     const emptyStarURL = chrome.runtime.getURL(emptyStar);
@@ -28,6 +28,7 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
     const [loading, setLoading] = useState(false)
     const [sameResponse, setSameResponse] = useState(false)
 
+    const [localTrigger, setLocalTrigger] = useState(trigger)
 
     const [checkRatingListCount, setCheckRatingListCount] = useState(0);
     const [ratingsExists, setRatingExists] = useState(false);
@@ -49,6 +50,13 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
         return JSON.parse(ratingsListLocal)
     });
     */
+
+    useEffect(() => {
+      if(trigger != null){
+        setLocalTrigger(trigger)
+      }
+    }, [trigger]);
+
     useEffect(() => {
       const ratingsListLocal = localStorage.getItem("ratingsListStored")
         if (ratingsListLocal != null){
@@ -80,10 +88,12 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
           }
         else{
           console.log("no rating found")
+          if(automaticRating){
+            setLocalTrigger(true)
+          }
         }
         setCheckRatingListCount(checkRatingListCount+1)
         localStorage.setItem("ratingsListStored", JSON.stringify(ratingsList));
-        console.log("hello - printing ratings list")
         console.log(ratingsList)
       }
     }, [ratingsList]);
@@ -97,6 +107,7 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
               {id: crypto.randomUUID(), score: rating, property: propertyAddress}
           ]
       })
+      console.log(ratingsList)
       }
       else{
           return ("cannotAdd")        // cannot add .. return original list 
@@ -109,16 +120,16 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
 
       // TODO - only generate rating if not in storage 
     useEffect(() => {
-        if (trigger != null){
+        if (localTrigger != null){
           console.log("Generating rating ...")
           generateRating(); //---> instead do use effect so it is only called after property details are retrieved from google maps API
         }
-    }, [trigger]);
+    }, [localTrigger]);
 
     // this needs to run if the rating changes OR if the generate rating button was selected but the score stays the same
     useEffect(() => {  
-      if (trigger != null || ratingsExists){  
-        console.log("show rating is tre")
+      if (localTrigger != null || ratingsExists){  
+        console.log("show rating is true")
         setLoading(false)
         setShowRating(true)
       }
@@ -126,12 +137,13 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
 
     // this only needs to run if the rating score changes 
     useEffect(() => {    
-      if (trigger != null || ratingsExists){
+      if (localTrigger != null || ratingsExists){
         if(userRatingResponse){
           console.log("The score is: " + userRatingResponse)
           setRating(setRatingStars(userRatingResponse))
           console.log(propertyAddress)
           if(propertyAddress){
+            console.log("Storing the rating ... ")
             storeRating(propertyAddress,userRatingResponse)
           } 
         }
@@ -186,8 +198,8 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
         // TODO pass in whethe the property meets requirement sand change API to call to max 2/5 stars if no meets requirements 
         const userYesNoAnswers = localStorage.getItem('userYesNoAnswers');
         const userScaleAnswers = localStorage.getItem('scaleAnswers');
-        const interactiveQuizAnswers = JSON.parse(localStorage.getItem('quizUserPreferences'))
-        console.log(JSON.parse(localStorage.getItem('quizUserPreferences')))  // TODO remove -- confirming that they render
+        const interactiveQuizAnswers = JSON.parse(localStorage.getItem('quizUserPreferences'))  
+        console.log(JSON.parse(localStorage.getItem('quizUserPreferences')))  // TODO remove -- these are printing
         
         
         const data = await getUserRating(propertyDescription, `I like gardens, my budget is $${String(budget)} per week. Here are my answers to a survey, they should tell you more about my preferences: ${String(userYesNoAnswers)}. And these are more answrs to a survey, indicating how much I care about certain features: ${String(userScaleAnswers)}. I require ${String(numBeds)} bedrooms.I love cooking`);

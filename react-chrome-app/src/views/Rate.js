@@ -32,6 +32,13 @@ const Rate = () => {
 
   const [isFavourited, setIsFavourited] = useState()
 
+  const [ratingsList, setRatingsList] = useState();
+
+  const ratingsListLocal = localStorage.getItem("ratingsListStored")
+  if (ratingsListLocal != null){
+    setRatingsList(JSON.parse(ratingsListLocal))
+  }
+
   // if property ID is generated, call CallDomain
   useEffect(() => {
     if(propertyID){
