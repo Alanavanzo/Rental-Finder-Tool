@@ -16,7 +16,7 @@ rental search pages.
 Note that all use effects require checking trigger is not null, as this indicates it is not page load
 In all other cases, the trigger is pulled when "generate rating" is selected
 */
-const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDescription, propertyURL, propertyAddress}) => {
+const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDescription, propertyURL, propertyAddress, detailedRating = false}) => {
     const halfStarURL = chrome.runtime.getURL(halfStar);
     const fullStarURL = chrome.runtime.getURL(fullStar);
     const emptyStarURL = chrome.runtime.getURL(emptyStar);
@@ -28,8 +28,14 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
     const [loading, setLoading] = useState(false)
     const [sameResponse, setSameResponse] = useState(false)
 
+
     const [checkRatingListCount, setCheckRatingListCount] = useState(0);
     const [ratingsExists, setRatingExists] = useState(false);
+
+    const [showDetailedRating, setShowDetailedRating] = useState(false)
+    const [sustainabilityScore, setSustainabilityScore] = useState(-1)
+    const [locationScore, setLocationScore] = useState(-1)
+    const [facilityScore, setFacilityScore] = useState(-1)
 
 
     // JUST ADDED
@@ -49,6 +55,16 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
           setRatingsList(JSON.parse(ratingsListLocal))
         }
     }, [propertyAddress]);
+
+    useEffect(() => {
+      if (
+        locationScore !== -1 &&
+        sustainabilityScore !== -1 &&
+        facilityScore !== -1
+      ) {
+        setShowDetailedRating(true);
+      }
+    }, [locationScore, sustainabilityScore, facilityScore]);
 
     useEffect(() => {
       if(ratingsList != []){
@@ -171,23 +187,29 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
         const userYesNoAnswers = localStorage.getItem('userYesNoAnswers');
         const userScaleAnswers = localStorage.getItem('scaleAnswers');
         const interactiveQuizAnswers = JSON.parse(localStorage.getItem('quizUserPreferences'))
-        console.log(JSON.parse(localStorage.getItem('quizUserPreferences')))  // TODO remove -- confirming that they render 
+        console.log(JSON.parse(localStorage.getItem('quizUserPreferences')))  // TODO remove -- confirming that they render
+        
+        
         const data = await getUserRating(propertyDescription, `I like gardens, my budget is $${String(budget)} per week. Here are my answers to a survey, they should tell you more about my preferences: ${String(userYesNoAnswers)}. And these are more answrs to a survey, indicating how much I care about certain features: ${String(userScaleAnswers)}. I require ${String(numBeds)} bedrooms.I love cooking`);
-        if (data == userRatingResponse){
+        const json_data = JSON.parse(data);
+
+        // Now extract values
+        const { rating: scoreRating, location, facilities, sustainability } = json_data;
+        if(detailedRating){
+          setSustainabilityScore(sustainability)
+          setLocationScore(location)
+          setFacilityScore(facilities)
+        }
+        
+        if (scoreRating == userRatingResponse){
           setSameResponse(!sameResponse)
         }
         else{
-          setUserRatingResponse(data); // Set the response message from the API
+          setUserRatingResponse(scoreRating); // Set the response message from the API
         }
       } catch (error) {
         setRating("Error generating rating :( enter more info or try again later");
       }
-      // If it's a thumbs up, they have rating points to lose based on preferences, at a minimum of 2.5 points 
-      // if thumbs down, they have rating points to gain at a maximum of 2.5 points 
-      // may be better to do percentage rather than stars 
-
-      /* Use a location API to implement rating based on the rest of the preferences being treated equally */
-      
     }
   
   
@@ -199,6 +221,13 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
       {showRating == true && <div>
       {/*<h2>{thumbsUp ? '👍' : '👎'}</h2>*/}
       <h2>{rating}</h2></div>
+      }
+      {showDetailedRating == true && 
+        <div>
+          <h4>Location: {locationScore}/5</h4>
+          <h4>Facilities: {facilityScore}/5</h4>
+          <h4>Sustainability: {sustainabilityScore}/5</h4>
+        </div>
       }
     </div>
   );
