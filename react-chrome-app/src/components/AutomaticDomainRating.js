@@ -42,8 +42,8 @@ const IndividualDomainRating = ({propertyID}) => {
         setBedrooms(listingData.bedrooms)
         setBathrooms(listingData.bathrooms)
         setDisplayRating(true); 
-        setTrigger(true);
         setAddress(listingData.addressParts.displayAddress);
+        setTrigger(true);
         //const address = result.addressParts.displayAddress;const geolocation = result.geoLocation;//const carspaces = result.carspaces;//const propertyType = result.propertyTypes[0]; 
       }
     }, [listingData])
