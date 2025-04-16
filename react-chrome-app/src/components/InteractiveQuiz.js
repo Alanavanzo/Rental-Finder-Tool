@@ -87,21 +87,31 @@ function InteractiveQuiz() {
       ) : currentQuestion ? (
         <div>
           <h3>{currentQuestion.question}</h3>
-          <ul>
-            {currentQuestion.options.map((option, idx) => (
-              <li key={idx}>
-                <button
-                  onClick={() => handleAnswer(option)}
-                  style={{
-                    backgroundColor: userAnswer === option ? '#d3eafd' : '', // Highlight if selected
-                    fontWeight: userAnswer === option ? 'bold' : 'normal' // Bold if selected
-                  }}
-                >
-                  {option}
-                </button>
-              </li>
-            ))}
-          </ul>
+          {currentQuestion.type === 'multiple' ? (
+            <ul>
+              {currentQuestion.options.map((option, idx) => (
+                <li key={idx}>
+                  <button
+                    onClick={() => handleAnswer(option)}
+                    style={{
+                      backgroundColor: userAnswer === option ? '#d3eafd' : '',
+                      fontWeight: userAnswer === option ? 'bold' : 'normal'
+                    }}
+                  >
+                    {option}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div>
+              <input
+                type={currentQuestion.type}
+                value={userAnswer}
+                onChange={(e) => handleAnswer(e.target.value)}
+              />
+            </div>
+          )}
           <button onClick={nextQuestion} disabled={!userAnswer}>
             {currentQuestionIndex + 1 === quizQuestions.length ? "Finish" : "Next"}
           </button>
