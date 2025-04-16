@@ -78,6 +78,15 @@ function Requirements () {
     localStorage.setItem('userBudgetMaxStored', userBudgetMax);
     localStorage.setItem('userNumBedsStored', userNumBeds);
     localStorage.setItem('extraRequirementsStored', JSON.stringify(extraRequirements)); // save as JSON
+    const userRequirements = {
+      budgetMax: userBudgetMax,
+      propertyType: userPropertyType,
+      numBeds: userNumBeds,
+      extras: extraRequirements
+    };
+  
+    // Save the entire object as a JSON string
+    localStorage.setItem('userRequirements', JSON.stringify(userRequirements));
     setRequirements('false');
   };
 

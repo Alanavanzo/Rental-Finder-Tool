@@ -43,11 +43,13 @@ const Favourite = () => {
 
   return (
     <div>
-        <h1>Favourites</h1>
+        <span className='topicHeader'>Add a New Favourite!</span>
         <br></br>
         <div>
             <Add_favourite addFavourite={addFavourite}/>
         </div>
+        <br></br>
+        <span className='topicHeader'>Your Favourites</span>
         <br></br>
             <div className="row">
 

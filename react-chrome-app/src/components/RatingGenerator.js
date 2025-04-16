@@ -196,13 +196,13 @@ const RatingGenerator = ({trigger=null, pricePW, propertyNumBeds, numBath, prope
 
       try {
         // TODO pass in whethe the property meets requirement sand change API to call to max 2/5 stars if no meets requirements 
+        // pull this data on opening rating generator 
         const userYesNoAnswers = localStorage.getItem('userYesNoAnswers');
         const userScaleAnswers = localStorage.getItem('scaleAnswers');
-        const interactiveQuizAnswers = JSON.parse(localStorage.getItem('quizUserPreferences'))  
-        console.log(JSON.parse(localStorage.getItem('quizUserPreferences')))  // TODO remove -- these are printing
+        const interactiveQuizAnswers = localStorage.getItem('quizUserPreferences')
+        const userRequirements = localStorage.getItem('userRequirements')
         
-        
-        const data = await getUserRating(propertyDescription, `I like gardens, my budget is $${String(budget)} per week. Here are my answers to a survey, they should tell you more about my preferences: ${String(userYesNoAnswers)}. And these are more answrs to a survey, indicating how much I care about certain features: ${String(userScaleAnswers)}. I require ${String(numBeds)} bedrooms.I love cooking`);
+        const data = await getUserRating(propertyDescription, `My budget is $${String(budget)} per week. My requirements are: $${String(userRequirements)}. Here are my answers to a survey, they should tell you more about my preferences: ${String(interactiveQuizAnswers)}. I require ${String(numBeds)} bedrooms.`);
         const json_data = JSON.parse(data);
 
         // Now extract values
