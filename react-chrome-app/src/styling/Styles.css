@@ -12,6 +12,30 @@
     font-family: 'Monaco', Monospace;
     text-align: center;
   }
+
+  .h1{
+    color: #333;
+    font-family: 'Roboto', sans-serif;
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center; 
+  }
+
+  .topicHeader{
+    color: #333;
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center; 
+  }
+
+  .h3{
+    color: #333;
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center; 
+  }
 /*
   .quizField {
     color: rgb(0, 0, 0); 
@@ -21,12 +45,21 @@
   }
 
 */
+
 .quizField {
-  color: #333; /* Darker text color for better readability */
-  font-family: 'Roboto', sans-serif; /* Clean, modern font */
-  text-align: center;
+  color: #333;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: left; /* Align text to the left */
   margin-top: 20px;
   padding: 20px; /* Adds space inside the element */
+}
+
+.extra-requirements-dropdown{
+  color: #333;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
 }
 
 .propertyFieldWrapper {
@@ -215,3 +248,37 @@
   background-color: transparent; /* Remove default background */
   outline: none; /* Remove the outline on focus */
 }
+
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.info-icon {
+  font-size: 16px;
+  color: #555;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  background-color: #333;
+  color: #fff;
+  text-align: left;
+  border-radius: 4px;
+  padding: 6px 8px;
+  position: absolute;
+  z-index: 1;
+  width: 200px;
+  bottom: 125%; /* Position it above the icon */
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.tooltip-container:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+

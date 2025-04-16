@@ -88,7 +88,8 @@ function Requirements () {
         return <button className="vibrantButton" onClick={goToRequirements} >View Requirements</button>;
       } else {
         return <div>
-      <h2>Requirements </h2>
+      <span className = "topicHeader">Requirements </span>
+      <br></br>
       <span className = "quizField">Budget: </span>
       <input 
         type="number" 
@@ -101,10 +102,9 @@ function Requirements () {
       <br></br>
       <span className = "quizField">Rental Type: </span>
       <input 
-        type="number" 
+        type="string" 
         className="quizInlineInput"
         style={{ width: '50px', padding: '1px' }}
-        placeholder={"max"}
         value={userPropertyType} 
         onChange={handleChangePropertyType} 
       />
