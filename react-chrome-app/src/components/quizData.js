@@ -28,7 +28,7 @@ const quizQuestions = [
     {
       question: "What's your ideal neighbourhood vibe?",
       type: "multiple",
-      options: ["quiet and rediential", "lively and urban", "family-friendly", "trendy/artsy", "nature-oriented"],
+      options: ["quiet and residential", "lively and urban", "family-friendly", "trendy/artsy", "nature-oriented"],
     },
     {
       question: "What's neighbourhoods do you visit a lot?",

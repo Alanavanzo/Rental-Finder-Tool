@@ -93,17 +93,19 @@ app.get('/api/searchRequest', async (req, res) => {
 });
 
 
-app.get('/api/search', async (req, res) => {
-  const query = "Schools near 320 Macarthur Avenue Hamilton"
-  console.log("inside backend search request to google places ")
-  try {
-    console.log("Fetching result")
-    const result = await searchTextQuery(query); 
-    console.log("Result is", result)
-    res.json(result); 
-  } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ error: 'Failed to process request' });
+app.post('/api/search', async (req, res) => {
+  const { locationInput } = req.body; // Get the messages from the request body
+  console.log("Server received messages:", locationInput);
+  //const query = "Schools near 320 Macarthur Avenue Hamilton"
+  if(locationInput){
+    try {
+      const result = await searchTextQuery(locationInput); 
+      console.log("Result is", result)
+      res.json(result); 
+    } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Failed to process request' });
+    }
   }
 });
 

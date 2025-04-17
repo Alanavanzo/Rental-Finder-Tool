@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { getChatResponse } from "../api/openai";
+import { getPlacesSearchResponse } from "../api/googlePlaces";
 
 const ChatComponent = () => {
   const [userInput, setUserInput] = useState("");
@@ -26,30 +27,14 @@ const ChatComponent = () => {
   };
 
   const handleSubmit2 = async (event) => {
-    console.log("Sending request to backend for google places API...");
     event.preventDefault();
-    console.log("Sending request to backend for google places API...");
     try {
-      // Make a POST request to your backend with the userInput in the body
-      const response2 = await fetch(`http://localhost:3001/api/search`, {
-        method: "GET", 
-        headers: {
-          "Content-Type": "application/json",
-        }
-      });
-      console.log(response2)
-      if (!response2.ok) {
-        throw new Error("Error fetching data from backend");
-      }
-      const data = await response2.json();
-      console.log("Google places response received, printing next ...")
-      console.log(data)
-      setPlacesResponse(data)
-      //return data.message; // Assuming the response from backend contains a 'message'
+      const data = await getPlacesSearchResponse(searchQuery);  // Pass userInput directly
+      setResponse(data); // Set the response message from the API
     } catch (error) {
-      setPlacesResponse("error getting response")
-      console.error("Error in getChatResponse:", error);
-      throw error; // Propagate the error to be handled by the caller
+      setResponse("Error getting response from backend google places API.");
+    } finally {
+      setLoading(false);  
     }
   };
 
