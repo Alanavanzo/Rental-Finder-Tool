@@ -59,7 +59,7 @@ const RatingGenerator = ({trigger=null, pricePW, propertyNumBeds, numBath, prope
 
     useEffect(() => {
       const ratingsListLocal = localStorage.getItem("ratingsListStored")
-        if (ratingsListLocal != null){
+        if (ratingsListLocal != null && ratingsListLocal!= []){  // second bit just added
           setRatingsList(JSON.parse(ratingsListLocal))
         }
     }, [propertyAddress]);
@@ -75,7 +75,7 @@ const RatingGenerator = ({trigger=null, pricePW, propertyNumBeds, numBath, prope
     }, [locationScore, sustainabilityScore, facilityScore]);
 
     useEffect(() => {
-      if(ratingsList != []){
+      if(ratingsList != [] && ratingsList.length != 0){ // just added this 
         console.log("checking if a rating for this property has been generated")
         console.log(ratingsList)
         console.log(propertyAddress)
@@ -93,7 +93,7 @@ const RatingGenerator = ({trigger=null, pricePW, propertyNumBeds, numBath, prope
           }
         }
         setCheckRatingListCount(checkRatingListCount+1)
-        localStorage.setItem("ratingsListStored", JSON.stringify(ratingsList));
+        localStorage.setItem("ratingsListStored", JSON.stringify(ratingsList));   // TODO - is this even needed here???
         console.log(ratingsList)
       }
     }, [ratingsList]);
@@ -108,6 +108,7 @@ const RatingGenerator = ({trigger=null, pricePW, propertyNumBeds, numBath, prope
           ]
       })
       console.log(ratingsList)
+      localStorage.setItem("ratingsListStored", JSON.stringify(ratingsList));
       }
       else{
           return ("cannotAdd")        // cannot add .. return original list 
