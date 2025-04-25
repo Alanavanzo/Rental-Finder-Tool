@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import LocationInfo from './LocationInfo';
 import { getRatingValues, getUserRating } from "../api/openai";
+/*
 import halfStar from '../styling/images/halfStar.png';
 import fullStar from '../styling/images/fullStar.png';
 import emptyStar from '../styling/images/emptyStar.png';
+*/
+import StarRating from './StarRating';
 
 /*
 A function which generates a property rating relative the the user.
@@ -16,23 +19,14 @@ rental search pages.
 Note that all use effects require checking trigger is not null, as this indicates it is not page load
 In all other cases, the trigger is pulled when "generate rating" is selected
 */
-const RatingGenerator = ({trigger=null, pricePW, propertyNumBeds, numBath, propertyDescription, propertyURL, propertyAddress, detailedRating = false, automaticRating=false}) => {
-    const halfStarURL = chrome.runtime.getURL(halfStar);
-    const fullStarURL = chrome.runtime.getURL(fullStar);
-    const emptyStarURL = chrome.runtime.getURL(emptyStar);
-
-    const [rating, setRating] = useState();
-    const [thumbsUp, setThumbsUp] = useState();
+const RatingGenerator = ({trigger=null, pricePW, propertyNumBeds, numBath, propertyDescription, propertyURL, propertyAddress, propertyID, detailedRating = false, automaticRating=false}) => {
     const [userRatingResponse, setUserRatingResponse] = useState()
     const [showRating, setShowRating] = useState(false)
     const [loading, setLoading] = useState(false)
     const [sameResponse, setSameResponse] = useState(false)
-
     const [localTrigger, setLocalTrigger] = useState(trigger)
-
     const [checkRatingListCount, setCheckRatingListCount] = useState(0);
     const [ratingsExists, setRatingExists] = useState(false);
-
     const [showDetailedRating, setShowDetailedRating] = useState(false)
     const [sustainabilityScore, setSustainabilityScore] = useState(-1)
     const [locationScore, setLocationScore] = useState(-1)
@@ -40,29 +34,20 @@ const RatingGenerator = ({trigger=null, pricePW, propertyNumBeds, numBath, prope
 
 
     // JUST ADDED
-    const [ratingsList, setRatingsList] = useState([]);
-    /*
+    //const [ratingsList, setRatingsList] = useState([]);
     const [ratingsList, setRatingsList] = useState(() => {
     
       const ratingsListLocal = localStorage.getItem("ratingsListStored")
-        if (ratingsListLocal == null) return []
+        if (ratingsListLocal == null && ratingsListLocal!= []) return []
     
         return JSON.parse(ratingsListLocal)
     });
-    */
 
     useEffect(() => {
       if(trigger != null){
         setLocalTrigger(trigger)
       }
     }, [trigger]);
-
-    useEffect(() => {
-      const ratingsListLocal = localStorage.getItem("ratingsListStored")
-        if (ratingsListLocal != null && ratingsListLocal!= []){  // second bit just added
-          setRatingsList(JSON.parse(ratingsListLocal))
-        }
-    }, [propertyAddress]);
 
     useEffect(() => {
       if (
@@ -79,7 +64,7 @@ const RatingGenerator = ({trigger=null, pricePW, propertyNumBeds, numBath, prope
         console.log("checking if a rating for this property has been generated")
         console.log(ratingsList)
         console.log(propertyAddress)
-        const foundItem = ratingsList.find(ing => ing.property === propertyAddress);
+        const foundItem = ratingsList.find(ing => ing.property === propertyAddress || ing.property === propertyID);
         if(foundItem){
           const existingScore = foundItem.score;
           console.log("Found item with score:", existingScore);
@@ -89,7 +74,7 @@ const RatingGenerator = ({trigger=null, pricePW, propertyNumBeds, numBath, prope
         else{
           console.log("no rating found")
           if(automaticRating){
-            setLocalTrigger(true)
+            setLocalTrigger(true) // only generate rating if no rating is found 
           }
         }
         setCheckRatingListCount(checkRatingListCount+1)
@@ -98,28 +83,28 @@ const RatingGenerator = ({trigger=null, pricePW, propertyNumBeds, numBath, prope
       }
     }, [ratingsList]);
 
+    // TODO override existing rating if a different rating is stored 
     function storeRating(propertyAddress, rating) {
-      const isFoundInThisList = ratingsList.some(ing => ing.property === propertyAddress); // will be true if link is already in list  
+      const isFoundInThisList = ratingsList.find(ing => ing.property === propertyAddress || ing.property === propertyID);
+      const propID = propertyID ?? propertyAddress; // store by ID if available, otherwise use address
+      //isFoundInThisList = ratingsList.some(ing => ing.property === propertyAddress); // will be true if link is already in list  
       if(!isFoundInThisList){
       setRatingsList((currentRatings) => {
           return [
               ...currentRatings,
-              {id: crypto.randomUUID(), score: rating, property: propertyAddress}
+              {id: crypto.randomUUID(), score: rating, property: propID}
+              //{id: crypto.randomUUID(), score: rating, property: propertyAddress}
           ]
       })
       console.log(ratingsList)
       localStorage.setItem("ratingsListStored", JSON.stringify(ratingsList));
       }
       else{
-          return ("cannotAdd")        // cannot add .. return original list 
+          return ("cannot store rating")        // cannot add .. return original list 
       }
       }
 
-      // Added above .. need to store by ID and also work out how to override existing rating if it there 
-      // TODO -- if a rating already exists just display that instead of generating rating 
-      //function findExistingRating 
-
-      // TODO - only generate rating if not in storage 
+      // only generates rating if not in storage (pulls local trigger)
     useEffect(() => {
         if (localTrigger != null){
           console.log("Generating rating ...")
@@ -134,52 +119,19 @@ const RatingGenerator = ({trigger=null, pricePW, propertyNumBeds, numBath, prope
         setLoading(false)
         setShowRating(true)
       }
-    }, [rating, sameResponse]);
+    }, [userRatingResponse, sameResponse]);// CHANGED THIS ON 25/4 as moving stars to seperate file [rating, sameResponse]);
+    // now rating no changing here as this is handled by other file .. so score being updated is the indicator 
 
-    // this only needs to run if the rating score changes 
     useEffect(() => {    
       if (localTrigger != null || ratingsExists){
-        if(userRatingResponse){
-          console.log("The score is: " + userRatingResponse)
-          setRating(setRatingStars(userRatingResponse))
-          console.log(propertyAddress)
-          if(propertyAddress){
-            console.log("Storing the rating ... ")
-            storeRating(propertyAddress,userRatingResponse)
-          } 
+        if(userRatingResponse && (propertyAddress || propertyID)){
+          storeRating(propertyAddress,userRatingResponse)
         }
         else{
-          console.log("rating couldnt be generated :(")
-          setRating("Error generating rating :( enter more info or try again later");
+          console.log("rating couldnt be generated :(") //setRating("Error generating rating :( enter more info or try again later");
         }
       }
-    }, [userRatingResponse]);
-
-
-    function setRatingStars(score) {
-      let fullStars = Math.floor(score);  // Get the full stars
-      let halfStar = (score % 1 >= 0.5) ? 1 : 0;  // Add a half star if score >= 0.5
-      let emptyStars = 5 - fullStars - halfStar;
-  
-      let stars = [];       // Create an array of image elements for each star
-  
-      // Add full stars
-      for (let i = 0; i < fullStars; i++) {
-        stars.push(<img key={`full-${i}`} src={fullStarURL} alt="Full Star" />);
-      }
-  
-      // Add half star
-      if (halfStar) {
-        stars.push(<img key="half" src={halfStarURL} alt="Half Star" />);
-      }
-  
-      // Add empty stars
-      for (let i = 0; i < emptyStars; i++) {
-        stars.push(<img key={`empty-${i}`} src={emptyStarURL} alt="Empty Star" />);
-      }
-  
-      return stars;
-    }
+    }, [userRatingResponse]); // this only needs to run if the rating score changes 
 
     const generateRating = async () => {
       setShowRating(false)
@@ -187,33 +139,18 @@ const RatingGenerator = ({trigger=null, pricePW, propertyNumBeds, numBath, prope
       console.log("inside rating function")
       const budget = localStorage.getItem('userBudgetMaxStored');
       const numBeds = localStorage.getItem('userNumBedsStored');
-
-      if (pricePW > budget && numBeds > propertyNumBeds){
-        setThumbsUp(false);
-      }
-      else{
-        setThumbsUp(true)
-      }
-
       try {
-        // TODO pass in whethe the property meets requirement sand change API to call to max 2/5 stars if no meets requirements 
-        // pull this data on opening rating generator 
-        const userYesNoAnswers = localStorage.getItem('userYesNoAnswers');
-        const userScaleAnswers = localStorage.getItem('scaleAnswers');
         const interactiveQuizAnswers = localStorage.getItem('quizUserPreferences')
         const userRequirements = localStorage.getItem('userRequirements')
-        
         const data = await getUserRating(propertyDescription, `My budget is $${String(budget)} per week. My requirements are: $${String(userRequirements)}. Here are my answers to a survey, they should tell you more about my preferences: ${String(interactiveQuizAnswers)}. I require ${String(numBeds)} bedrooms.`);
         const json_data = JSON.parse(data);
 
-        // Now extract values
-        const { rating: scoreRating, location, facilities, sustainability } = json_data;
+        const { rating: scoreRating, location, facilities, sustainability } = json_data;  // extract values
         if(detailedRating){
           setSustainabilityScore(sustainability)
           setLocationScore(location)
           setFacilityScore(facilities)
         }
-        
         if (scoreRating == userRatingResponse){
           setSameResponse(!sameResponse)
         }
@@ -221,7 +158,7 @@ const RatingGenerator = ({trigger=null, pricePW, propertyNumBeds, numBath, prope
           setUserRatingResponse(scoreRating); // Set the response message from the API
         }
       } catch (error) {
-        setRating("Error generating rating :( enter more info or try again later");
+        console.log(("Error generating rating :( enter more info or try again later"))  //setRating("Error generating rating :( enter more info or try again later");
       }
     }
   
@@ -229,11 +166,14 @@ const RatingGenerator = ({trigger=null, pricePW, propertyNumBeds, numBath, prope
   return (
     <div>
       <br></br>
-      {/*<LocationInfo/> {/* this is just for testing purposes .. will remove later */}
       {loading == true && <div> loading ... </div> }
-      {showRating == true && <div>
-      {/*<h2>{thumbsUp ? '👍' : '👎'}</h2>*/}
-      <h2>{rating}</h2></div>
+      {showRating == true && 
+        <div>
+          {/*<h2>{rating}</h2>*/}
+          <StarRating
+            score={userRatingResponse}
+          />
+        </div>
       }
       {showDetailedRating == true && 
         <div>
@@ -246,5 +186,4 @@ const RatingGenerator = ({trigger=null, pricePW, propertyNumBeds, numBath, prope
   );
 };
 
-// Export the component
 export default RatingGenerator;

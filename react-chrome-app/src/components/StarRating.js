@@ -6,7 +6,7 @@ import emptyStar from '../styling/images/emptyStar.png';
 /*
 This component takes a score as input and returns the rating as stars out of 5 
 */
-const StarRating = ({score = 0}) => {
+const StarRating = ({score}) => {
     const halfStarURL = chrome.runtime.getURL(halfStar);
     const fullStarURL = chrome.runtime.getURL(fullStar);
     const emptyStarURL = chrome.runtime.getURL(emptyStar);
@@ -14,7 +14,9 @@ const StarRating = ({score = 0}) => {
     const [rating, setRating] = useState();
 
     useEffect(() => {
-      setRating(setRatingStars(score))
+      if(score){
+        setRating(setRatingStars(score))
+      }
     }, [score]);
 
     function setRatingStars(score) {
@@ -42,11 +44,15 @@ const StarRating = ({score = 0}) => {
       return stars;
     }
   
-  return (
-    <div>
-      <h2>{rating}</h2>
-    </div>
-  );
+    return score ? (
+      <div>
+        <h2>{rating}</h2>
+      </div>
+    ) : (
+      <div>
+        No rating available - try again later!
+      </div>
+    );
 };
 
 export default StarRating;

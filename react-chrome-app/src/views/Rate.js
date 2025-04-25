@@ -40,7 +40,6 @@ const Rate = () => {
   }, [propertyID]);
 
   useEffect(() => {
-    /// TODO grab url as we will pass this into the AI 
     const current_domain = window.location.hostname;  // get hostname 
     console.log("the current domain is: " + current_domain);
     const url = window.location.href
@@ -210,7 +209,7 @@ const Rate = () => {
       </header>
       <div><PropertyInformation trigger ={PItrigger} desc = {propertyDescription} beds = {numBeds} price = {pricePW} bath={numBath} propertyAddress={address} cars={carSpaces} propType={propertyType}/></div>
       <button className="vibrantButton" onClick={pullRatingTrigger}>Generate Rating</button>
-      <div><RatingGenerator trigger ={rateTrigger} pricePW={pricePW} propertyNumBeds={numBeds} numBath={numBath} propertyURL={currentURL} propertyDescription={propertyDescription} propertyAddress={address} detailedRating={true}/></div>
+      <div><RatingGenerator trigger ={rateTrigger} pricePW={pricePW} propertyNumBeds={numBeds} numBath={numBath} propertyURL={currentURL} propertyDescription={propertyDescription} propertyAddress={address} detailedRating={true} propertyID={propertyID}/></div>
       <br></br>
       {!isFavourited && <div> <button className="buttonStyle" onClick={handleNewFavSave}>Save Property</button> </div>}
     </div>

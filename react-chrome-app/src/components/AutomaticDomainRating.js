@@ -56,11 +56,11 @@ const IndividualDomainRating = ({propertyID, ratingList}) => {
     }, [listingData])
 
     useEffect(() => {
-      if(address && (ratingList != [] && ratingList.length != 0)){ // only go in when address is not null
+      if(propertyID || address && (ratingList != [] && ratingList.length != 0)){ // only go in when address is not null
         console.log("checking if a rating for this property has been generated")
         console.log(ratingList)
         console.log(address)
-        const foundItem = ratingList.find(ing => ing.property === address);
+        const foundItem = ratingList.find(ing => ing.property === address || ing.property === propertyID);
         if(foundItem){
           const existingScore = foundItem.score;
           console.log("Found item with score:", existingScore);
@@ -72,7 +72,7 @@ const IndividualDomainRating = ({propertyID, ratingList}) => {
           setRatingExists(false)
         }
       }
-    }, [address]);  
+    }, []);  
     
   const callDomainForID = async () => {
     //const result = await getListingData(propertyID)
@@ -102,6 +102,7 @@ const IndividualDomainRating = ({propertyID, ratingList}) => {
             propertyDescription={propertyDescription}
             propertyAddress={address}
             automaticRating={true}
+            propertyID={propertyID}
           />
         </div>
       ) : (
