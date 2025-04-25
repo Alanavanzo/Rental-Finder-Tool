@@ -142,9 +142,12 @@ const RatingGenerator = ({trigger=null, pricePW, propertyNumBeds, numBath, prope
       try {
         const interactiveQuizAnswers = localStorage.getItem('quizUserPreferences')
         const userRequirements = localStorage.getItem('userRequirements')
+        console.log("about to send prompt to OPEN AI")
         const data = await getUserRating(propertyDescription, `My budget is $${String(budget)} per week. My requirements are: $${String(userRequirements)}. Here are my answers to a survey, they should tell you more about my preferences: ${String(interactiveQuizAnswers)}. I require ${String(numBeds)} bedrooms.`);
-        const json_data = JSON.parse(data);
-
+        console.log("data retrieved from OPEN AI", data)
+        const cleaned = data.replace(/```json|```/g, '').trim();
+        const json_data = JSON.parse(cleaned);//JSON.parse(data);
+        console.log("printing json data when trying to grab a rating", json_data)
         const { rating: scoreRating, location, facilities, sustainability } = json_data;  // extract values
         if(detailedRating){
           setSustainabilityScore(sustainability)
