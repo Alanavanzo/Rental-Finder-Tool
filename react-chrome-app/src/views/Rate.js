@@ -90,14 +90,34 @@ const Rate = () => {
       }
       else{
         const priceDetailsString = JSON.stringify(listingData.priceDetails);
-        setPricePW(parseInt(priceDetailsString.match(/\$([\d,]+)/)[1].replace(/,/g, ''), 10))
+        const match = priceDetailsString.match(/\$([\d,]+)/);
+        //setPricePW(parseInt(priceDetailsString.match(/\$([\d,]+)/)[1].replace(/,/g, ''), 10))
+        if (match && match[1]) {
+          setPricePW(parseInt(match[1].replace(/,/g, ''), 10));
+        } else {
+          console.warn("No price found in priceDetails");
+          setPricePW(null); // or 0 or some fallback
+        }
       }
-      setDescription(listingData.description);
-      setNumBeds(listingData.bedrooms)
-      setNumBath(listingData.bathrooms)
-      setAddress(listingData.addressParts.displayAddress)
-      setCarSpaces(listingData.carspaces)
-      setPropertyType(listingData.propertyTypes[0])
+      if (listingData.description){
+        setDescription(listingData.description);
+      }
+      if (listingData.bedrooms){
+        setNumBeds(listingData.bedrooms)
+      }
+      if (listingData.bathrooms){
+        setNumBath(listingData.bathrooms)
+      }
+      if (listingData.addressParts.displayAddress){
+        setAddress(listingData.addressParts.displayAddress)
+      }
+      if (listingData.carSpaces){
+        setCarSpaces(listingData.carspaces)
+      }
+      if (listingData.propertyTypes[0]){
+        setPropertyType(listingData.propertyTypes[0])
+      }
+      console.log("set values from listing data")
       // TODO add property type 
           // TODO add car spaces and pets 
           //const address = result.addressParts.displayAddress;const geolocation = result.geoLocation;//const carspaces = result.carspaces;//const propertyType = result.propertyTypes[0]; 
