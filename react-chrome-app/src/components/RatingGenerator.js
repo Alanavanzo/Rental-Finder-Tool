@@ -19,7 +19,7 @@ rental search pages.
 Note that all use effects require checking trigger is not null, as this indicates it is not page load
 In all other cases, the trigger is pulled when "generate rating" is selected
 */
-const RatingGenerator = ({trigger=null, pricePW, propertyNumBeds, numBath, propertyDescription, propertyURL, propertyAddress, propertyID, detailedRating = false, automaticRating=false}) => {
+const RatingGenerator = ({trigger=null, pricePW, propertyNumBeds, numBath, propertyDescription, propertyURL, propertyAddress, propertyID, detailedRating = false, automaticRating=false, propertyDetails="not provided"}) => {
     const [userRatingResponse, setUserRatingResponse] = useState()
     const [showRating, setShowRating] = useState(false)
     const [loading, setLoading] = useState(false)
@@ -136,18 +136,17 @@ const RatingGenerator = ({trigger=null, pricePW, propertyNumBeds, numBath, prope
     const generateRating = async () => {
       setShowRating(false)
       setLoading(true)
-      console.log("inside rating function")
-      const budget = localStorage.getItem('userBudgetMaxStored');
-      const numBeds = localStorage.getItem('userNumBedsStored');
+      console.log("inside generate rating function")
       try {
         const interactiveQuizAnswers = localStorage.getItem('quizUserPreferences')
         const userRequirements = localStorage.getItem('userRequirements')
+        console.log(propertyDetails)
         console.log("about to send prompt to OPEN AI")
-        const data = await getUserRating(propertyDescription, `My budget is $${String(budget)} per week. My requirements are: $${String(userRequirements)}. Here are my answers to a survey, they should tell you more about my preferences: ${String(interactiveQuizAnswers)}. I require ${String(numBeds)} bedrooms.`);
+        //const data = await getUserRating(propertyDescription, `My budget is $${String(budget)} per week. My requirements are: $${String(userRequirements)}. Here are my answers to a survey, they should tell you more about my preferences: ${String(interactiveQuizAnswers)}. I require ${String(numBeds)} bedrooms.`);
+        const data = await getUserRating(propertyDescription, `This is the property info: ${String(propertyDetails)}.My requirements are: ${String(userRequirements)}. Here are my answers to a survey, they should tell you more about my preferences: ${String(interactiveQuizAnswers)}.`);
         console.log("data retrieved from OPEN AI", data)
         const cleaned = data.replace(/```json|```/g, '').trim();
         const json_data = JSON.parse(cleaned);//JSON.parse(data);
-        console.log("printing json data when trying to grab a rating", json_data)
         const { rating: scoreRating, location, facilities, sustainability } = json_data;  // extract values
         if(detailedRating){
           setSustainabilityScore(sustainability)

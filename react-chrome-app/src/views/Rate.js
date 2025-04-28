@@ -17,6 +17,7 @@ const Rate = () => {
   const [propertyID, setPropertyID] = useState();
   const [carSpaces, setCarSpaces] = useState();
   const [propertyType, setPropertyType] = useState();
+  const [propertyDetails, setPropertyDetails] = useState();
 
   const [listingData, setListingData] = useState({});
 
@@ -190,6 +191,7 @@ const Rate = () => {
     const savedPricePW = localStorage.getItem('pricePWStored');
     const savedNumBeds = localStorage.getItem('numBedsPIStored')
     const savedPropertyDesc = localStorage.getItem('propertyInputStored')
+    const savedPropertyDetails = localStorage.getItem('propertyDetailsStored')
 
     if (savedPricePW) {
       setPricePW(savedPricePW);
@@ -216,6 +218,9 @@ const Rate = () => {
     else{
       setRateTrigger(!rateTrigger);
     }
+    if(savedPropertyDetails){
+      setPropertyDetails(savedPropertyDetails)
+    }
 
   };
 
@@ -229,7 +234,7 @@ const Rate = () => {
       </header>
       <div><PropertyInformation trigger ={PItrigger} desc = {propertyDescription} beds = {numBeds} price = {pricePW} bath={numBath} propertyAddress={address} cars={carSpaces} propType={propertyType}/></div>
       <button className="vibrantButton" onClick={pullRatingTrigger}>Generate Rating</button>
-      <div><RatingGenerator trigger ={rateTrigger} pricePW={pricePW} propertyNumBeds={numBeds} numBath={numBath} propertyURL={currentURL} propertyDescription={propertyDescription} propertyAddress={address} detailedRating={true} propertyID={propertyID}/></div>
+      <div><RatingGenerator trigger ={rateTrigger} pricePW={pricePW} propertyNumBeds={numBeds} numBath={numBath} propertyURL={currentURL} propertyDescription={propertyDescription} propertyAddress={address} detailedRating={true} propertyID={propertyID} propertyDetails={propertyDetails}/></div>
       <br></br>
       {!isFavourited && <div> <button className="buttonStyle" onClick={handleNewFavSave}>Save Property</button> </div>}
     </div>

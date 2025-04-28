@@ -22,6 +22,8 @@ const IndividualDomainRating = ({propertyID, ratingList}) => {
     const [ratingExists, setRatingExists] = useState(null)
     const [propertyScore, setScore] = useState(0);
 
+    const [propertyDetails, setPropertyDetails] = useState();
+
     
 
     // TODO - this check should only be needed from where we end up calling this from
@@ -50,10 +52,27 @@ const IndividualDomainRating = ({propertyID, ratingList}) => {
         setBathrooms(listingData.bathrooms)
         setDisplayRating(true); 
         setAddress(listingData.addressParts.displayAddress);
-        setTrigger(true);
+        //setPropertyDetails(propertyDetails)
+        //setTrigger(true);
         //const address = result.addressParts.displayAddress;const geolocation = result.geoLocation;//const carspaces = result.carspaces;//const propertyType = result.propertyTypes[0]; 
       }
     }, [listingData])
+  
+    useEffect(() => {
+      // TODO add variables 
+      if (address){
+      const tempPropertyDetails = {
+        pricePW: price,
+        address: address,
+        numBeds: bedrooms,
+        //propertyType: propertyType,
+        numBath: bathrooms,
+        //carSpaces: carSpaces
+      };
+      setPropertyDetails(JSON.stringify(tempPropertyDetails))
+      setTrigger(true);
+    }
+    }, [address])
 
     useEffect(() => {
       if(propertyID || address && (ratingList != [] && ratingList.length != 0)){ // only go in when address is not null
@@ -89,11 +108,11 @@ const IndividualDomainRating = ({propertyID, ratingList}) => {
     }
   }
 
-
+// note that I just added trigger below 
   return (
     <div>
     {
-      ratingExists == false ? (
+      trigger && ratingExists == false ? (
         <div>
           <RatingGenerator
             pricePW={price}
@@ -103,6 +122,7 @@ const IndividualDomainRating = ({propertyID, ratingList}) => {
             propertyAddress={address}
             automaticRating={true}
             propertyID={propertyID}
+            propertyDetails={propertyDetails}
           />
         </div>
       ) : (

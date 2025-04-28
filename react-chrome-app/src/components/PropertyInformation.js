@@ -42,6 +42,19 @@ const PropertyInformation = ({trigger, desc, beds, price, bath, propertyAddress,
       localStorage.setItem('propertyInputStored', propertyInput);
       localStorage.setItem('petFriendlyStored', petFriendly);
       localStorage.setItem('numBathStored', numBath);
+
+      const propertyDetails = {
+        pricePW: pricePW,
+        address: address,
+        numBeds: numBedsPI,
+        propertyType: propertyType,
+        petFriendly: petFriendly,
+        numBath: numBath,
+        carSpaces: carSpaces
+      };
+      
+      localStorage.setItem('propertyDetailsStored', JSON.stringify(propertyDetails));
+
       console.log("property info has been updated in local storage");
 
       // TODO add property type and car spaces
