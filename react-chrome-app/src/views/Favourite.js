@@ -11,7 +11,15 @@ const Favourite = () => {
         return JSON.parse(favouriteListLocal)
 
     });
-    console.log(favouriteList)
+    //console.log(favouriteList)
+
+    const [ratingsList] = useState(() => {
+    
+      const ratingsListLocal = localStorage.getItem("ratingsListStored")
+        if (ratingsListLocal == null && ratingsListLocal!= []) return []
+    
+        return JSON.parse(ratingsListLocal)
+    });    
 
     useEffect(() => {
         localStorage.setItem("favouriteListStored", JSON.stringify(favouriteList));
@@ -62,6 +70,7 @@ const Favourite = () => {
                     link = {favourite.link}
                     name = {favourite.name}
                     deleteFavourite={deleteFavourite}
+                    ratingsList={ratingsList}
                         />
                             )
                     })}

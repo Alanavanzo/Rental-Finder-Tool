@@ -92,7 +92,7 @@ const RatingGenerator = ({trigger=null, pricePW, propertyNumBeds, numBath, prope
       setRatingsList((currentRatings) => {
           return [
               ...currentRatings,
-              {id: crypto.randomUUID(), score: rating, property: propID}
+              {id: crypto.randomUUID(), score: rating, property: propID, address: propertyAddress}
               //{id: crypto.randomUUID(), score: rating, property: propertyAddress}
           ]
       })
