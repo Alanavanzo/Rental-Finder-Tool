@@ -15,6 +15,8 @@ const IndividualDomainRating = ({propertyID, ratingList}) => {
     const [bathrooms, setBathrooms] = useState();
     const [propertyDescription, setPropertyDescription] = useState();
     const [address, setAddress] = useState(null);
+    const [propertyType, setPropertyType] = useState();
+    const [carSpaces, setCarSpaces] = useState();
 
     const [trigger, setTrigger] = useState(null);
     const [noRating, setNoRating] = useState(null);
@@ -25,9 +27,6 @@ const IndividualDomainRating = ({propertyID, ratingList}) => {
     const [propertyDetails, setPropertyDetails] = useState();
 
     
-
-    // TODO - this check should only be needed from where we end up calling this from
-    // note it will be called in a loop
     useEffect(() => {
       const current_domain = window.location.hostname;  // get hostname 
       console.log("the current domain is: " + current_domain);
@@ -37,9 +36,10 @@ const IndividualDomainRating = ({propertyID, ratingList}) => {
       }
     }, []);
 
+    // only enter of listing data has been retrieved 
     useEffect(() => {
       if(listingData && Object.keys(listingData).length > 0){
-        console.log("Retrieved listing data from Domain API")
+        console.log("Retrieved listing data from Domain API - ", listingData)
         if(listingData.priceDetails.price){
           setPrice(listingData.priceDetails.price)
         }
@@ -51,23 +51,27 @@ const IndividualDomainRating = ({propertyID, ratingList}) => {
         setBedrooms(listingData.bedrooms)
         setBathrooms(listingData.bathrooms)
         setDisplayRating(true); 
+        if (listingData.carSpaces){
+          setCarSpaces(listingData.carspaces)
+        }
+        if (listingData.propertyTypes[0]){
+          setPropertyType(listingData.propertyTypes[0])
+        }
         setAddress(listingData.addressParts.displayAddress);
-        //setPropertyDetails(propertyDetails)
-        //setTrigger(true);
         //const address = result.addressParts.displayAddress;const geolocation = result.geoLocation;//const carspaces = result.carspaces;//const propertyType = result.propertyTypes[0]; 
       }
     }, [listingData])
   
+    // enter once address has been filled 
     useEffect(() => {
-      // TODO add variables 
       if (address){
       const tempPropertyDetails = {
         pricePW: price,
         address: address,
         numBeds: bedrooms,
-        //propertyType: propertyType,
+        propertyType: propertyType,
         numBath: bathrooms,
-        //carSpaces: carSpaces
+        carSpaces: carSpaces
       };
       setPropertyDetails(JSON.stringify(tempPropertyDetails))
       setTrigger(true);
@@ -76,9 +80,7 @@ const IndividualDomainRating = ({propertyID, ratingList}) => {
 
     useEffect(() => {
       if(propertyID || address && (ratingList != [] && ratingList.length != 0)){ // only go in when address is not null
-        console.log("checking if a rating for this property has been generated")
-        console.log(ratingList)
-        console.log(address)
+        console.log("checking if a rating for this property has been generated in this rating list - ", ratingList)
         const foundItem = ratingList.find(ing => ing.property === address || ing.property === propertyID);
         if(foundItem){
           const existingScore = foundItem.score;
@@ -94,21 +96,17 @@ const IndividualDomainRating = ({propertyID, ratingList}) => {
     }, []);  
     
   const callDomainForID = async () => {
-    //const result = await getListingData(propertyID)
-    //setListingData(JSON.parse(result))
     try {
       const result = await getListingData(propertyID);
-      // If no error, proceed with result
-      setListingData(JSON.parse(result));
+      setListingData(JSON.parse(result));       // If no error, proceed with result
     } catch (error) {
-      // If an error occurs, it will be caught here
       console.log('Failed to fetch listing data from Domain API:', error);
-      setListingData(null); // You can choose to handle the error by setting the state to null or another fallback
+      setListingData(null);
       setNoRating(true);
     }
   }
 
-// note that I just added trigger below 
+// trigger added to ensure ratingGenerator only called once all property data has been pulled 
   return (
     <div>
     {
