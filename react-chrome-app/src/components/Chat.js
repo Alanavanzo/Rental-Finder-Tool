@@ -10,9 +10,11 @@ const ChatComponent = () => {
   const [response, setResponse] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const [messages, setMessages] = useState([
-    { role: "system", content: `You are a helpful assistant. Here is some backround info about me. My requirements are: ${String(userRequirements)}. Here are my answers to a survey, they should tell you more about my preferences: ${String(interactiveQuizAnswers)}.` }
-  ]);
+  const fresh_convo = [{ role: "system", content: `You are a helpful assistant. Here is some backround info about me. My requirements are: ${String(userRequirements)}. Here are my answers to a survey, they should tell you more about my preferences: ${String(interactiveQuizAnswers)}.` }]
+  const [messages, setMessages] = useState(
+    fresh_convo
+    //{ role: "system", content: `You are a helpful assistant. Here is some backround info about me. My requirements are: ${String(userRequirements)}. Here are my answers to a survey, they should tell you more about my preferences: ${String(interactiveQuizAnswers)}.` }
+  );
   
   const handleSubmit = async (event) => {
     const userMessage = { role: "user", content: userInput };
@@ -24,6 +26,11 @@ const ChatComponent = () => {
       return updatedMessages;  // Return the updated state to React
     });
 
+    setUserInput("");
+  };
+
+  const resetConversation = async (event) => {
+    setMessages(fresh_convo);
     setUserInput("");
   };
 
@@ -110,6 +117,10 @@ const ChatComponent = () => {
         />
         <button type="submit">Submit</button>
       </form>
+      <br></br>
+      <div>
+      <button onClick={resetConversation}>New Convo</button>
+      </div>
     
       {/*loading && (
         <div style={{ width: '100%', backgroundColor: '#f3f3f3', padding: '5px', marginTop: '10px' }}>
