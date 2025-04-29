@@ -16,23 +16,25 @@ export const getOpenAIResponse = async (messages) => {
       const completion = await openai.chat.completions.create({
         model: "gpt-4o-mini",
         store: true,
-        messages: [
-          { "role": "user", "content": messages },
-        ],
+        messages: messages,
+        //messages: [
+        //  { "role": "user", "content": messages },
+        //],
       });
   
       // Log the completion to see what it returns
       console.log(completion);
-      console.log(completion.choices);
+      console.log(completion.choices[0].message);
   
       // Extract the message content
-      const messageContent = completion.choices[0].message.content;
+      //const messageContent = completion.choices[0].message.content;
   
       // Return the message content
-      return messageContent;  // Return the message instead of printing it
+      return completion.choices[0].message;  // Return the message instead of printing it
   
     } catch (error) {
       // Handle any errors
+      console.log(messages)
       console.error("Error retrieving message:", error);
       return "Error occurred while fetching the message";
     }
@@ -46,6 +48,7 @@ export const getOpenAIRating = async (messages) => {
       // Request to OpenAI's chat completions API
       const completion = await openai.chat.completions.create({
         model: "gpt-4o-mini",
+        //response_format: "json",
         store: true,
         messages: [
           { 
