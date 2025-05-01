@@ -5,17 +5,18 @@ import { getChatResponse } from "../api/openai";
 const ChatComponent = () => {
   const [interactiveQuizAnswers, setIntQuizAnsws] = useState(localStorage.getItem('quizUserPreferences'));
   const [userRequirements, setUserReqs] = useState(localStorage.getItem('userRequirements'));
-
   const [userInput, setUserInput] = useState("");
-  const [response, setResponse] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const fresh_convo = [{ role: "system", content: `You are a helpful assistant. Here is some backround info about me. My requirements are: ${String(userRequirements)}. Here are my answers to a survey, they should tell you more about my preferences: ${String(interactiveQuizAnswers)}.` }]
-/*
-  const [messages, setMessages] = useState(
-    fresh_convo
-    );
-  */
+  const fresh_convo = [
+    { role: "system", 
+      content: `You are a helpful assistant. Here is some backround info about me. My requirements are: ${String(userRequirements)}. Here are my answers to a survey, they should tell you more about my preferences: ${String(interactiveQuizAnswers)}.` },
+    {
+      role: "assistant",
+      content: "Hi there! I'm here to help you find the perfect property based on your preferences. Feel free to ask me anything — I already know what you're looking for!"
+    }
+  ]
+
   const [messages, setMessages] = useState(() => {
     const stored = localStorage.getItem('chatMessages');
     return stored ? JSON.parse(stored) : fresh_convo;
@@ -117,34 +118,60 @@ const ChatComponent = () => {
           </div>
           )}
       </div>
-      <form onSubmit={handleSubmit}>
+      <form 
+        onSubmit={handleSubmit}
+        style={{ 
+          display: "flex", 
+          alignItems: "center", 
+          gap: "10px", 
+          marginTop: "20px" 
+        }}
+      >
         <input 
           type="text" 
           value={userInput} 
           onChange={(e) => setUserInput(e.target.value)} 
           placeholder="Ask me something..." 
+          style={{
+            flex: 1,
+            padding: "10px",
+            fontSize: "16px",
+            borderRadius: "5px",
+            border: "1px solid #ccc"
+          }}
         />
-        <button type="submit">Submit</button>
+        <button 
+          type="submit"
+          style={{
+            padding: "10px 15px",
+            fontSize: "18px",
+            borderRadius: "5px",
+            backgroundColor: "#4CAF50",
+            color: "#fff",
+            border: "none",
+            cursor: "pointer"
+          }}
+        >
+          🚀
+        </button>
       </form>
-      <br></br>
-      <div>
-      <button onClick={resetConversation}>New Convo</button>
+
+      {/* Place this outside the form */}
+      <div style={{ marginTop: "10px" }}>
+        <button 
+          onClick={resetConversation}
+          style={{
+            padding: "10px 15px",
+            fontSize: "16px",
+            borderRadius: "5px",
+            border: "none",
+            cursor: "pointer"
+          }}
+        >
+          🔄
+        </button>
       </div>
-    
-      {/*loading && (
-        <div style={{ width: '100%', backgroundColor: '#f3f3f3', padding: '5px', marginTop: '10px' }}>
-          <div
-            style={{
-              width: '100%',
-              height: '10px',
-              backgroundColor: '#4caf50',
-              animation: 'loading 2s infinite',
-            }}
-          ></div>
-        </div>
-      )*/}
-        
-      {/*response && <div>Response: {response}</div>*/}
+
     </div>
   );
 
