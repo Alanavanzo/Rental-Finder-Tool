@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { getChatResponse } from "../api/openai";
 //import { getPlacesSearchResponse } from "../api/googlePlaces";
 
@@ -11,11 +11,20 @@ const ChatComponent = () => {
   const [loading, setLoading] = useState(false);
 
   const fresh_convo = [{ role: "system", content: `You are a helpful assistant. Here is some backround info about me. My requirements are: ${String(userRequirements)}. Here are my answers to a survey, they should tell you more about my preferences: ${String(interactiveQuizAnswers)}.` }]
+/*
   const [messages, setMessages] = useState(
     fresh_convo
-    //{ role: "system", content: `You are a helpful assistant. Here is some backround info about me. My requirements are: ${String(userRequirements)}. Here are my answers to a survey, they should tell you more about my preferences: ${String(interactiveQuizAnswers)}.` }
-  );
-  
+    );
+  */
+  const [messages, setMessages] = useState(() => {
+    const stored = localStorage.getItem('chatMessages');
+    return stored ? JSON.parse(stored) : fresh_convo;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('chatMessages', JSON.stringify(messages));
+  }, [messages]);
+
   const handleSubmit = async (event) => {
     const userMessage = { role: "user", content: userInput };
     event.preventDefault();
