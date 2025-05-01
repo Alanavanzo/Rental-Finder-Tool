@@ -28,7 +28,6 @@ export const getPlacesSearchResponse = async (locationInput) => {
 
 // Function to interact with the backend to get a single chat response
 export const getNearbyLocations = async (geoLocation, type, radius) => {
-
   try {
       const response = await fetch(`${API_URL}/searchNearby`, {
         method: "POST", 

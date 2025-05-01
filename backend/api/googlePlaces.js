@@ -127,18 +127,12 @@ async function searchText(request) {
 }
 
 async function searchLocationsNearby(geoLocation, type, radius){
-  console.log("hello")
   const url = new URL('https://maps.googleapis.com/maps/api/place/nearbysearch/json');
   
   url.searchParams.append('location', geoLocation); // Latitude, Longitude
   url.searchParams.append('radius', radius.toString()); // Radius in meters (e.g., 8 km)
   url.searchParams.append('type', type); // Type of place (e.g., schools)
   
- /*
-  url.searchParams.append('location', '-27.4750933,153.0581462');
-  url.searchParams.append('radius', '8000');
-  url.searchParams.append('type', 'school');
-  */
   url.searchParams.append('key', apiKey); // Your Google Places API key
   console.log("URL -", url)
   try {

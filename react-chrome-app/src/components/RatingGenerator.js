@@ -137,10 +137,9 @@ const RatingGenerator = ({trigger=null, propertyDescription, propertyAddress, pr
     }, [userRatingResponse]); // this only needs to run if the rating score changes 
 
     const findSchools = async () => {
-      const searchQuery = `Please return schools within 8km of this geolocation: lat=${geolocation.latitude}, lng=${geolocation.longitude}.`;
       let simplifiedSchools; 
       try {
-        const rawSchoolResults = await getNearbyLocations('-27.4750933,153.0581462','school', 8000)//await getPlacesSearchResponse(searchQuery); 
+        const rawSchoolResults = await getNearbyLocations(`${geolocation.latitude},${geolocation.longitude}`,'school', 8000)//await getPlacesSearchResponse(searchQuery); 
         let schoolResults;
       
         // Check if rawSchoolResults is a string and needs to be parsed
@@ -177,7 +176,6 @@ const RatingGenerator = ({trigger=null, propertyDescription, propertyAddress, pr
 
       let schoolData;
 
-      // TODO only do find schools if schools in requirements 
       if (userRequirements && userRequirements.toLowerCase().includes('school')) {
         schoolData = await findSchools(); // You can await if it's async
       }
