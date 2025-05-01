@@ -17,6 +17,7 @@ const IndividualDomainRating = ({propertyID, ratingList}) => {
     const [address, setAddress] = useState(null);
     const [propertyType, setPropertyType] = useState();
     const [carSpaces, setCarSpaces] = useState();
+    const [geolocation, setGeolocation] = useState({});
 
     const [trigger, setTrigger] = useState(null);
     const [noRating, setNoRating] = useState(null);
@@ -58,6 +59,9 @@ const IndividualDomainRating = ({propertyID, ratingList}) => {
           setPropertyType(listingData.propertyTypes[0])
         }
         setAddress(listingData.addressParts.displayAddress);
+        if (listingData.geoLocation){
+          setGeolocation(listingData.geoLocation)
+        }
         //const address = result.addressParts.displayAddress;const geolocation = result.geoLocation;//const carspaces = result.carspaces;//const propertyType = result.propertyTypes[0]; 
       }
     }, [listingData])
@@ -113,14 +117,12 @@ const IndividualDomainRating = ({propertyID, ratingList}) => {
       trigger && ratingExists == false ? (
         <div>
           <RatingGenerator
-            pricePW={price}
-            propertyNumBeds={bedrooms}
-            numBath={bathrooms}
             propertyDescription={propertyDescription}
             propertyAddress={address}
             automaticRating={true}
             propertyID={propertyID}
             propertyDetails={propertyDetails}
+            geolocation={geolocation}
           />
         </div>
       ) : (

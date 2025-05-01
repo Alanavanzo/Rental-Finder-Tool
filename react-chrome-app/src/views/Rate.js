@@ -18,6 +18,7 @@ const Rate = () => {
   const [carSpaces, setCarSpaces] = useState();
   const [propertyType, setPropertyType] = useState();
   const [propertyDetails, setPropertyDetails] = useState();
+  const [geolocation, setGeolocation] = useState({});
 
   const [listingData, setListingData] = useState({});
 
@@ -118,20 +119,16 @@ const Rate = () => {
       if (listingData.propertyTypes[0]){
         setPropertyType(listingData.propertyTypes[0])
       }
+      console.log(listingData)
+      if (listingData.geoLocation){
+        setGeolocation(listingData.geoLocation)
+      }
       console.log("set values from listing data")
       // TODO add property type 
           // TODO add car spaces and pets 
           //const address = result.addressParts.displayAddress;const geolocation = result.geoLocation;//const carspaces = result.carspaces;//const propertyType = result.propertyTypes[0]; 
     }
   }, [listingData])
-
-  useEffect(() => {
-    console.log(pricePW);
-    console.log(propertyDescription);
-    console.log(numBath);
-    console.log(carSpaces)
-  }, [pricePW, propertyDescription, numBath, numBeds, carSpaces, propertyType]); // Depends on pricePW, propertyDescription, numBath
-
       
   const callDomainForID = async () => {
     console.log("inside call for Domain ID")
@@ -234,7 +231,7 @@ const Rate = () => {
       </header>
       <div><PropertyInformation trigger ={PItrigger} desc = {propertyDescription} beds = {numBeds} price = {pricePW} bath={numBath} propertyAddress={address} cars={carSpaces} propType={propertyType}/></div>
       <button className="vibrantButton" onClick={pullRatingTrigger}>Generate Rating</button>
-      <div><RatingGenerator trigger ={rateTrigger} pricePW={pricePW} propertyNumBeds={numBeds} numBath={numBath} propertyURL={currentURL} propertyDescription={propertyDescription} propertyAddress={address} detailedRating={true} propertyID={propertyID} propertyDetails={propertyDetails}/></div>
+      <div><RatingGenerator trigger ={rateTrigger} propertyDescription={propertyDescription} propertyAddress={address} detailedRating={true} propertyID={propertyID} propertyDetails={propertyDetails} geolocation={geolocation}/></div>
       <br></br>
       {!isFavourited && <div> <button className="buttonStyle" onClick={handleNewFavSave}>Save Property</button> </div>}
     </div>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import LocationInfo from './LocationInfo';
 import { getRatingValues, getUserRating } from "../api/openai";
+import { getPlacesSearchResponse, getNearbyLocations } from '../api/googlePlaces';
 /*
 import halfStar from '../styling/images/halfStar.png';
 import fullStar from '../styling/images/fullStar.png';
@@ -19,7 +20,7 @@ rental search pages.
 Note that all use effects require checking trigger is not null, as this indicates it is not page load
 In all other cases, the trigger is pulled when "generate rating" is selected
 */
-const RatingGenerator = ({trigger=null, pricePW, propertyNumBeds, numBath, propertyDescription, propertyURL, propertyAddress, propertyID, detailedRating = false, automaticRating=false, propertyDetails="not provided"}) => {
+const RatingGenerator = ({trigger=null, propertyDescription, propertyAddress, propertyID, detailedRating = false, automaticRating=false, propertyDetails="not provided", geolocation}) => {
     const [userRatingResponse, setUserRatingResponse] = useState()
     const [showRating, setShowRating] = useState(false)
     const [loading, setLoading] = useState(false)
@@ -31,6 +32,8 @@ const RatingGenerator = ({trigger=null, pricePW, propertyNumBeds, numBath, prope
     const [sustainabilityScore, setSustainabilityScore] = useState(-1)
     const [locationScore, setLocationScore] = useState(-1)
     const [facilityScore, setFacilityScore] = useState(-1)
+
+    console.log("printing geolocation - ", geolocation)
 
 
     // JUST ADDED
@@ -133,17 +136,65 @@ const RatingGenerator = ({trigger=null, pricePW, propertyNumBeds, numBath, prope
       }
     }, [userRatingResponse]); // this only needs to run if the rating score changes 
 
+    const findSchools = async () => {
+      const searchQuery = `Please return schools within 8km of this geolocation: lat=${geolocation.latitude}, lng=${geolocation.longitude}.`;
+      let simplifiedSchools; 
+      try {
+        const rawSchoolResults = await getNearbyLocations('-27.4750933,153.0581462','school', 8000)//await getPlacesSearchResponse(searchQuery); 
+        let schoolResults;
+      
+        // Check if rawSchoolResults is a string and needs to be parsed
+        if (typeof rawSchoolResults === 'string') {
+          schoolResults = JSON.parse(rawSchoolResults);
+        } else {
+          schoolResults = rawSchoolResults; // Use it directly if it's already an object
+        }
+
+        if (Array.isArray(schoolResults) && schoolResults.length > 0) {
+          simplifiedSchools = schoolResults.map(school => ({
+            name: school.name || "Unknown School",
+            rating: school.rating || "No rating",
+            userRatings: school.user_ratings_total || 0,
+            //placeId: school.place_id || "",  // Optional: used for linking to Google Maps
+          }));
+        } else {
+          console.log("No schools found within the given radius.");
+          simplifiedSchools = [];
+        }
+      } catch (error) {
+        simplifiedSchools = [];
+      } 
+      console.log("Returning simplifiedSchools:", simplifiedSchools);
+      return simplifiedSchools;
+    };
+
     const generateRating = async () => {
+      const userRequirements = localStorage.getItem('userRequirements')
+      const interactiveQuizAnswers = localStorage.getItem('quizUserPreferences')
       setShowRating(false)
       setLoading(true)
       console.log("inside generate rating function")
+
+      let schoolData;
+
+      // TODO only do find schools if schools in requirements 
+      if (userRequirements && userRequirements.toLowerCase().includes('school')) {
+        schoolData = await findSchools(); // You can await if it's async
+      }
+
+      console.log("school data - ", schoolData)
+      let schoolDataString = '';
+      
+      if (schoolData && Array.isArray(schoolData) && schoolData.length > 0) {
+        const schoolSummaries = schoolData.map(s => `${s.name} (Rating: ${s.rating || 'N/A'})`);
+        schoolDataString = ` Nearby schools include: ${schoolSummaries.join(', ')}.`;
+      }
+
       try {
-        const interactiveQuizAnswers = localStorage.getItem('quizUserPreferences')
-        const userRequirements = localStorage.getItem('userRequirements')
         console.log(propertyDetails)
         console.log("about to send prompt to OPEN AI")
         //const data = await getUserRating(propertyDescription, `My budget is $${String(budget)} per week. My requirements are: $${String(userRequirements)}. Here are my answers to a survey, they should tell you more about my preferences: ${String(interactiveQuizAnswers)}. I require ${String(numBeds)} bedrooms.`);
-        const data = await getUserRating(propertyDescription, `This is the property info: ${String(propertyDetails)}.My requirements are: ${String(userRequirements)}. Here are my answers to a survey, they should tell you more about my preferences: ${String(interactiveQuizAnswers)}.`);
+        const data = await getUserRating(propertyDescription, `This is the property info: ${String(propertyDetails)}.My requirements are: ${String(userRequirements)}. Here are my answers to a survey, they should tell you more about my preferences: ${String(interactiveQuizAnswers)}. ${schoolDataString}`);
         console.log("data retrieved from OPEN AI", data)
         const cleaned = data.replace(/```json|```/g, '').trim();
         const json_data = JSON.parse(cleaned);//JSON.parse(data);

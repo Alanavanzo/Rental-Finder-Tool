@@ -27,8 +27,7 @@ function Requirements () {
     "Furnished",
     "Close to Public Transport",
     "Air Conditioning",
-    "Close to Primary Schools",
-    "Close to High Schools"
+    "Schools nearby",
   ];
 
   useEffect(() => {
