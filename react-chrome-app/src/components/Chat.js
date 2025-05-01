@@ -157,19 +157,15 @@ const ChatComponent = () => {
       </form>
 
       {/* Place this outside the form */}
-      <div style={{ marginTop: "10px" }}>
+      <br></br>
+      <div className="tooltip-container">
         <button 
           onClick={resetConversation}
-          style={{
-            padding: "10px 15px",
-            fontSize: "16px",
-            borderRadius: "5px",
-            border: "none",
-            cursor: "pointer"
-          }}
+          className="info-icon"
         >
           🔄
         </button>
+        <div className="tooltip-text">Select to start a new convo😊</div>
       </div>
 
     </div>
