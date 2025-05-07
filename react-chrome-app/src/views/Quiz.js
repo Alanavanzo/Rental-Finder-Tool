@@ -8,8 +8,8 @@ const Quiz = () => {
   return (
     <div>
       <Requirements/>
-      <br></br>
-      <QuizInput />
+      {/*<br></br>
+      <QuizInput />*/}
       <br></br>
       <InteractiveQuiz/>
       <br></br>
