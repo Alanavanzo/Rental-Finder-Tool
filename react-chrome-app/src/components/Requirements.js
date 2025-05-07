@@ -14,6 +14,7 @@ function Requirements () {
   const [userPropertyType, setPropertyType] = useState('');
 
   const [userNumBeds, setNumBeds] = useState('');
+  const [location, setLocation] = useState('');
 
   const [extraRequirements, setExtraRequirements] = useState([]);
 
@@ -42,6 +43,16 @@ function Requirements () {
       setNumBeds(savedUserNumBeds);
     }
 
+    const savedLocation = localStorage.getItem('userLocationStored');
+    if (savedLocation) {
+      setLocation(savedLocation);
+    }
+
+    const savedPropertyType = localStorage.getItem('userPropertyTypeStored');
+    if (savedPropertyType) {
+      setPropertyType(savedPropertyType);
+    }
+
     const savedExtras = localStorage.getItem('extraRequirementsStored');
     if (savedExtras) {
       setExtraRequirements(JSON.parse(savedExtras)); // since it's stored as JSON string
@@ -65,6 +76,10 @@ function Requirements () {
     setNumBeds(e.target.value);
   };
 
+  const handleChangeLocation = (e) => {
+    setLocation(e.target.value);
+  };
+
   const handleExtraRequirementToggle = (requirement) => {
     setExtraRequirements(prev => {
       if (prev.includes(requirement)) {
@@ -78,11 +93,14 @@ function Requirements () {
   const handleSave = () => {
     localStorage.setItem('userBudgetMaxStored', userBudgetMax);
     localStorage.setItem('userNumBedsStored', userNumBeds);
+    localStorage.setItem('userLocationStored', location);
+    localStorage.setItem('userPropertyTypeStored', userPropertyType);
     localStorage.setItem('extraRequirementsStored', JSON.stringify(extraRequirements)); // save as JSON
     const userRequirements = {
       budgetMax: userBudgetMax,
       propertyType: userPropertyType,
       numBeds: userNumBeds,
+      location: location,
       extras: extraRequirements
     };
   
@@ -110,13 +128,30 @@ function Requirements () {
         onChange={handleChangeMaxBudget} 
       />
       <br></br>
-      <span className = "quizField">Rental Type: </span>
+      <p>
+        <span className = "quizField">Property Type: </span>
+        <select 
+          className="quizInlineInput"
+          style={{ width: '150px', padding: '4px' }}
+          value={userPropertyType}
+          onChange={handleChangePropertyType}
+          >
+          <option value="">Don't mind</option>
+          <option value="house">House</option>
+          <option value="apartment">Apartment</option>
+          <option value="townhouse">Townhouse</option>
+          <option value="studio">Studio</option>
+          <option value="villa">Villa</option>
+          <option value="duplex">Duplex</option>
+        </select>
+      </p>
+      <span className = "quizField">Location: </span>
       <input 
         type="string" 
         className="quizInlineInput"
         style={{ width: '50px', padding: '1px' }}
-        value={userPropertyType} 
-        onChange={handleChangePropertyType} 
+        value={location} 
+        onChange={handleChangeLocation} 
       />
       <br></br>
       <span className = "quizField">Min # bedrooms: </span>
