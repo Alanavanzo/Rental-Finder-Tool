@@ -229,11 +229,20 @@ const Rate = () => {
       <header>
         <div class="propertyTitle">{propertyTitle != '' && propertyTitle}</div>
       </header>
+      {!isFavourited && 
+      <div> 
+        <button 
+          className="buttonStyle" 
+          title="Click to add this property to your favourites"
+          onClick={handleNewFavSave}>⭐ save
+        </button> 
+      </div>
+      }
       <div><PropertyInformation trigger ={PItrigger} desc = {propertyDescription} beds = {numBeds} price = {pricePW} bath={numBath} propertyAddress={address} cars={carSpaces} propType={propertyType}/></div>
+      <br></br>
       <button className="vibrantButton" onClick={pullRatingTrigger}>Generate Rating</button>
       <div><RatingGenerator trigger ={rateTrigger} propertyDescription={propertyDescription} propertyAddress={address} detailedRating={true} propertyID={propertyID} propertyDetails={propertyDetails} geolocation={geolocation}/></div>
       <br></br>
-      {!isFavourited && <div> <button className="buttonStyle" onClick={handleNewFavSave}>Save Property</button> </div>}
     </div>
     )}
     </div>

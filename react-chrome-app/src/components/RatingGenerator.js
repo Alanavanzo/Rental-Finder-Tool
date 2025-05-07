@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import LocationInfo from './LocationInfo';
-import { getRatingValues, getUserRating } from "../api/openai";
-import { getPlacesSearchResponse, getNearbyLocations } from '../api/googlePlaces';
+import { getUserRating } from "../api/openai";
+import { getNearbyLocations } from '../api/googlePlaces';
+import SchoolList from './SchoolList';
 /*
 import halfStar from '../styling/images/halfStar.png';
 import fullStar from '../styling/images/fullStar.png';
@@ -32,6 +32,9 @@ const RatingGenerator = ({trigger=null, propertyDescription, propertyAddress, pr
     const [sustainabilityScore, setSustainabilityScore] = useState(-1)
     const [locationScore, setLocationScore] = useState(-1)
     const [facilityScore, setFacilityScore] = useState(-1)
+    const [ratingSummary, setRatingSummary] = useState("NA");
+    const [schoolsNearby, setSchoolsNearby] = useState(null);
+    const [showSchools, setShowSchools] = useState(false);
 
     console.log("printing geolocation - ", geolocation)
 
@@ -156,6 +159,7 @@ const RatingGenerator = ({trigger=null, propertyDescription, propertyAddress, pr
             userRatings: school.user_ratings_total || 0,
             //placeId: school.place_id || "",  // Optional: used for linking to Google Maps
           }));
+          setSchoolsNearby(simplifiedSchools)
         } else {
           console.log("No schools found within the given radius.");
           simplifiedSchools = [];
@@ -196,11 +200,12 @@ const RatingGenerator = ({trigger=null, propertyDescription, propertyAddress, pr
         console.log("data retrieved from OPEN AI", data)
         const cleaned = data.replace(/```json|```/g, '').trim();
         const json_data = JSON.parse(cleaned);//JSON.parse(data);
-        const { rating: scoreRating, location, facilities, sustainability } = json_data;  // extract values
+        const { rating: scoreRating, location, facilities, sustainability, summary } = json_data;  // extract values
         if(detailedRating){
           setSustainabilityScore(sustainability)
           setLocationScore(location)
           setFacilityScore(facilities)
+          setRatingSummary(summary)
         }
         if (scoreRating == userRatingResponse){
           setSameResponse(!sameResponse)
@@ -217,10 +222,9 @@ const RatingGenerator = ({trigger=null, propertyDescription, propertyAddress, pr
   return (
     <div>
       <br></br>
-      {loading == true && <div> loading ... </div> }
+      {loading == true && <div className='ratingField'> loading ... </div> }
       {showRating == true && 
         <div>
-          {/*<h2>{rating}</h2>*/}
           <StarRating
             score={userRatingResponse}
           />
@@ -228,9 +232,30 @@ const RatingGenerator = ({trigger=null, propertyDescription, propertyAddress, pr
       }
       {showDetailedRating == true && 
         <div>
-          <h4>Location: {locationScore}/5</h4>
-          <h4>Facilities: {facilityScore}/5</h4>
-          <h4>Sustainability: {sustainabilityScore}/5</h4>
+          <br></br>
+          <p className='ratingField'>
+            <strong>Location:</strong> {locationScore}/5
+          </p>
+          <p className='ratingField'>
+            <strong>Facilities:</strong> {facilityScore}/5
+          </p>
+          <p className='ratingField'>
+            <strong>Sustainability:</strong> {sustainabilityScore}/5
+          </p>
+          <br></br>
+          <p className='centeredSmallText'>{ratingSummary}</p>
+          <br></br>
+          {schoolsNearby && (
+            <>
+              <button 
+              className = 'buttonStyle' 
+              onClick={() => setShowSchools(prev => !prev)}
+              title='Display schools within an 8k radius'>
+                {showSchools ? 'Hide Schools' : 'Show Schools'}
+              </button>
+              {showSchools && <SchoolList schools={schoolsNearby} />}
+            </>
+          )}
         </div>
       }
     </div>

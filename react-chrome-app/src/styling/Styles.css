@@ -7,10 +7,25 @@
   }
 
   .buttonStyle {
-    outline-width: medium;
-    outline-color: navy;
-    font-family: 'Monaco', Monospace;
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f0f0f0;
+    color: #000;
     text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    outline: none;
+  }
+  
+  .buttonStyle:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .buttonStyle:active {
+    background-color: #d0d0d0;
   }
 
   .h1{
@@ -45,6 +60,28 @@
   }
 
 */
+
+.ratingField {
+  color: #333;
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  text-align: center; /* Align text to the left */
+}
+
+.centeredSmallText {
+  color: #333;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  text-align: center; /* Align text to the left */
+}
+
+.leftSmallText {
+  color: #333;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  text-align: left; /* Align text to the left */
+  padding: 8px 0 8px 12px; /* top: 8px, right: 0, bottom: 8px, left: 12px */
+}
 
 .quizField {
   color: #333;
