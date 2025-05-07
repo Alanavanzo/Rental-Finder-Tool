@@ -126,11 +126,32 @@ async function searchText(request) {
   }
 }
 
+async function searchLocationsNearby(geoLocation, type, radius){
+  const url = new URL('https://maps.googleapis.com/maps/api/place/nearbysearch/json');
+  
+  url.searchParams.append('location', geoLocation); // Latitude, Longitude
+  url.searchParams.append('radius', radius.toString()); // Radius in meters (e.g., 8 km)
+  url.searchParams.append('type', type); // Type of place (e.g., schools)
+  
+  url.searchParams.append('key', apiKey); // Your Google Places API key
+  console.log("URL -", url)
+  try {
+    const response = await axios.get(url.toString());
+    const places = response.data.results;
+    console.log('Found places:', places); // Log the found places
+    return JSON.stringify(places);  // React can handle strings or arrays but NOT objects
+  } catch (error) {
+    console.error('Error fetching places:', error.response ? error.response.data : error.message);
+  }
+}
+
 async function searchTextQuery(query) {
   // Construct the request URL with the simple text query
+  
   const url = new URL('https://maps.googleapis.com/maps/api/place/textsearch/json');
   url.searchParams.append('query', query);
   url.searchParams.append('key', apiKey);
+  console.log("search query - ", url)
 
   try {
     const response = await axios.get(url.toString());
@@ -143,7 +164,7 @@ async function searchTextQuery(query) {
 }
 
 // Export the function using ES Modules
-export { searchText, searchTextQuery, searchNearbyPlaces };
+export { searchText, searchTextQuery, searchNearbyPlaces, searchLocationsNearby };
 
 /*
 async function searchText() {

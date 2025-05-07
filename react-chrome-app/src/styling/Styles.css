@@ -7,10 +7,49 @@
   }
 
   .buttonStyle {
-    outline-width: medium;
-    outline-color: navy;
-    font-family: 'Monaco', Monospace;
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f0f0f0;
+    color: #000;
     text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    outline: none;
+  }
+  
+  .buttonStyle:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .buttonStyle:active {
+    background-color: #d0d0d0;
+  }
+
+  .h1{
+    color: #333;
+    font-family: 'Roboto', sans-serif;
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center; 
+  }
+
+  .topicHeader{
+    color: #333;
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center; 
+  }
+
+  .h3{
+    color: #333;
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center; 
   }
 /*
   .quizField {
@@ -21,12 +60,43 @@
   }
 
 */
+
+.ratingField {
+  color: #333;
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  text-align: center; /* Align text to the left */
+}
+
+.centeredSmallText {
+  color: #333;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  text-align: center; /* Align text to the left */
+}
+
+.leftSmallText {
+  color: #333;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  text-align: left; /* Align text to the left */
+  padding: 8px 0 8px 12px; /* top: 8px, right: 0, bottom: 8px, left: 12px */
+}
+
 .quizField {
-  color: #333; /* Darker text color for better readability */
-  font-family: 'Roboto', sans-serif; /* Clean, modern font */
-  text-align: center;
+  color: #333;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: left; /* Align text to the left */
   margin-top: 20px;
   padding: 20px; /* Adds space inside the element */
+}
+
+.extra-requirements-dropdown{
+  color: #333;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
 }
 
 .propertyFieldWrapper {
@@ -185,26 +255,27 @@
   transform: none; /* No transformation when disabled */
 }
 
+/*
 .individualFavourite {
   display: flex;
   width: 100%;
   justify-content: space-between;
-  margin-bottom: 10px; /* Adjust this to your desired space */
+  margin-bottom: 10px; 
 }
 
 .nameButton {
   width: 70%;
-  font-size: 16px; /* Text size */
-  padding: 12px 24px; /* Padding for size */
-  border: none; /* Remove default border */
-  border-radius: 8px; /* Rounded corners for a smooth look */
-  cursor: pointer; /* Pointer cursor on hover */
-  font-family: 'Arial', sans-serif; /* Consistent font for the button */
-  text-align: center; /* Center the text inside the button */
-  display: inline-block; /* Allow the button to be inline */
-  box-sizing: border-box; /* Ensure padding doesn’t affect width/height */
-  background-color: transparent; /* Remove default background */
-  outline: none; /* Remove the outline that appears on focus */
+  font-size: 16px; 
+  padding: 12px 24px; 
+  border: none; 
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Arial', sans-serif; 
+  text-align: center;
+  display: inline-block; 
+  box-sizing: border-box; 
+  background-color: transparent; 
+  outline: none; 
 }
 
 .emojiButton {
@@ -212,6 +283,108 @@
   border: none;
   padding: 2px;
   margin-bottom: 3px;
-  background-color: transparent; /* Remove default background */
-  outline: none; /* Remove the outline on focus */
+  background-color: transparent; 
+  outline: none; 
 }
+*/
+.individualFavourite {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(to right, #fdf6e3, #ffecd2);
+  padding: 14px 18px;
+  margin: 10px 0;
+  border: 2px dashed #fbbf24;
+  border-radius: 15px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+}
+
+.individualFavourite:hover {
+  background: linear-gradient(to right, #ffe8d6, #ffc6ff);
+  transform: scale(1.03);
+}
+
+.nameButton {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #6b21a8;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.nameButton:hover {
+  color: #d946ef;
+  text-decoration: underline;
+}
+
+.emojiButton {
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  color: #ef4444;
+  transition: transform 0.2s ease;
+}
+
+.emojiButton:hover {
+  transform: rotate(15deg) scale(1.1);
+}
+
+.ratingTag {
+  background-color: #fde68a;
+  color: #92400e;
+  padding: 2px 6px;
+  margin-left: 8px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.info-icon {
+  font-size: 16px;
+  color: #555;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  background-color: #333;
+  color: #fff;
+  text-align: left;
+  border-radius: 4px;
+  padding: 6px 8px;
+  position: absolute;
+  z-index: 1;
+  width: 200px;
+  bottom: 125%; /* Position it above the icon */
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.tooltip-container:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0.2;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+
+

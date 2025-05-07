@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import LocationInfo from './LocationInfo';
-import { getRatingValues, getUserRating } from "../api/openai";
+import { getUserRating } from "../api/openai";
+import { getNearbyLocations } from '../api/googlePlaces';
+import SchoolList from './SchoolList';
+/*
 import halfStar from '../styling/images/halfStar.png';
 import fullStar from '../styling/images/fullStar.png';
 import emptyStar from '../styling/images/emptyStar.png';
+*/
+import StarRating from './StarRating';
 
 /*
 A function which generates a property rating relative the the user.
@@ -16,46 +20,57 @@ rental search pages.
 Note that all use effects require checking trigger is not null, as this indicates it is not page load
 In all other cases, the trigger is pulled when "generate rating" is selected
 */
-const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDescription, propertyURL, propertyAddress}) => {
-    const halfStarURL = chrome.runtime.getURL(halfStar);
-    const fullStarURL = chrome.runtime.getURL(fullStar);
-    const emptyStarURL = chrome.runtime.getURL(emptyStar);
-
-    const [rating, setRating] = useState();
-    const [thumbsUp, setThumbsUp] = useState();
+const RatingGenerator = ({trigger=null, propertyDescription, propertyAddress, propertyID, detailedRating = false, automaticRating=false, propertyDetails="not provided", geolocation}) => {
     const [userRatingResponse, setUserRatingResponse] = useState()
     const [showRating, setShowRating] = useState(false)
     const [loading, setLoading] = useState(false)
     const [sameResponse, setSameResponse] = useState(false)
-
+    const [localTrigger, setLocalTrigger] = useState(trigger)
     const [checkRatingListCount, setCheckRatingListCount] = useState(0);
     const [ratingsExists, setRatingExists] = useState(false);
+    const [showDetailedRating, setShowDetailedRating] = useState(false)
+    const [sustainabilityScore, setSustainabilityScore] = useState(-1)
+    const [locationScore, setLocationScore] = useState(-1)
+    const [facilityScore, setFacilityScore] = useState(-1)
+    const [ratingSummary, setRatingSummary] = useState("NA");
+    const [schoolsNearby, setSchoolsNearby] = useState(null);
+    const [showSchools, setShowSchools] = useState(false);
+
+    console.log("printing geolocation - ", geolocation)
 
 
     // JUST ADDED
-    const [ratingsList, setRatingsList] = useState([]);
-    /*
+    //const [ratingsList, setRatingsList] = useState([]);
     const [ratingsList, setRatingsList] = useState(() => {
     
       const ratingsListLocal = localStorage.getItem("ratingsListStored")
-        if (ratingsListLocal == null) return []
+        if (ratingsListLocal == null && ratingsListLocal!= []) return []
     
         return JSON.parse(ratingsListLocal)
     });
-    */
-    useEffect(() => {
-      const ratingsListLocal = localStorage.getItem("ratingsListStored")
-        if (ratingsListLocal != null){
-          setRatingsList(JSON.parse(ratingsListLocal))
-        }
-    }, [propertyAddress]);
 
     useEffect(() => {
-      if(ratingsList != []){
+      if(trigger != null){
+        setLocalTrigger(trigger)
+      }
+    }, [trigger]);
+
+    useEffect(() => {
+      if (
+        locationScore !== -1 &&
+        sustainabilityScore !== -1 &&
+        facilityScore !== -1
+      ) {
+        setShowDetailedRating(true);
+      }
+    }, [locationScore, sustainabilityScore, facilityScore]);
+
+    useEffect(() => {
+      if(ratingsList != [] && ratingsList.length != 0){ // just added this 
         console.log("checking if a rating for this property has been generated")
         console.log(ratingsList)
         console.log(propertyAddress)
-        const foundItem = ratingsList.find(ing => ing.property === propertyAddress);
+        const foundItem = ratingsList.find(ing => ing.property === propertyAddress || ing.property === propertyID);
         if(foundItem){
           const existingScore = foundItem.score;
           console.log("Found item with score:", existingScore);
@@ -64,145 +79,187 @@ const RatingGenerator = ({trigger, pricePW, propertyNumBeds, numBath, propertyDe
           }
         else{
           console.log("no rating found")
+          if(automaticRating){
+            setLocalTrigger(true) // only generate rating if no rating is found 
+          }
         }
         setCheckRatingListCount(checkRatingListCount+1)
-        localStorage.setItem("ratingsListStored", JSON.stringify(ratingsList));
-        console.log("hello - printing ratings list")
+        localStorage.setItem("ratingsListStored", JSON.stringify(ratingsList));   // TODO - is this even needed here???
         console.log(ratingsList)
       }
     }, [ratingsList]);
 
+    // TODO override existing rating if a different rating is stored 
     function storeRating(propertyAddress, rating) {
-      const isFoundInThisList = ratingsList.some(ing => ing.property === propertyAddress); // will be true if link is already in list  
+      const isFoundInThisList = ratingsList.find(ing => ing.property === propertyAddress || ing.property === propertyID);
+      const propID = propertyID ?? propertyAddress; // store by ID if available, otherwise use address
+      //isFoundInThisList = ratingsList.some(ing => ing.property === propertyAddress); // will be true if link is already in list  
       if(!isFoundInThisList){
       setRatingsList((currentRatings) => {
           return [
               ...currentRatings,
-              {id: crypto.randomUUID(), score: rating, property: propertyAddress}
+              {id: crypto.randomUUID(), score: rating, property: propID, address: propertyAddress}
+              //{id: crypto.randomUUID(), score: rating, property: propertyAddress}
           ]
       })
+      console.log(ratingsList)
+      localStorage.setItem("ratingsListStored", JSON.stringify(ratingsList));
       }
       else{
-          return ("cannotAdd")        // cannot add .. return original list 
+          return ("cannot store rating")        // cannot add .. return original list 
       }
       }
 
-      // Added above .. need to store by ID and also work out how to override existing rating if it there 
-      // TODO -- if a rating already exists just display that instead of generating rating 
-      //function findExistingRating 
-
-      // TODO - only generate rating if not in storage 
+      // only generates rating if not in storage (pulls local trigger)
     useEffect(() => {
-        if (trigger != null){
+        if (localTrigger != null){
           console.log("Generating rating ...")
           generateRating(); //---> instead do use effect so it is only called after property details are retrieved from google maps API
         }
-    }, [trigger]);
+    }, [localTrigger]);
 
     // this needs to run if the rating changes OR if the generate rating button was selected but the score stays the same
     useEffect(() => {  
-      if (trigger != null || ratingsExists){  
-        console.log("show rating is tre")
+      if (localTrigger != null || ratingsExists){  
+        console.log("show rating is true")
         setLoading(false)
         setShowRating(true)
       }
-    }, [rating, sameResponse]);
+    }, [userRatingResponse, sameResponse]);// CHANGED THIS ON 25/4 as moving stars to seperate file [rating, sameResponse]);
+    // now rating no changing here as this is handled by other file .. so score being updated is the indicator 
 
-    // this only needs to run if the rating score changes 
     useEffect(() => {    
-      if (trigger != null || ratingsExists){
-        if(userRatingResponse){
-          console.log("The score is: " + userRatingResponse)
-          setRating(setRatingStars(userRatingResponse))
-          console.log(propertyAddress)
-          if(propertyAddress){
-            storeRating(propertyAddress,userRatingResponse)
-          } 
+      if (localTrigger != null || ratingsExists){
+        if(userRatingResponse && (propertyAddress || propertyID)){
+          storeRating(propertyAddress,userRatingResponse)
         }
         else{
-          console.log("rating couldnt be generated :(")
-          setRating("Error generating rating :( enter more info or try again later");
+          console.log("rating couldnt be generated :(") //setRating("Error generating rating :( enter more info or try again later");
         }
       }
-    }, [userRatingResponse]);
+    }, [userRatingResponse]); // this only needs to run if the rating score changes 
 
+    const findSchools = async () => {
+      let simplifiedSchools; 
+      try {
+        const rawSchoolResults = await getNearbyLocations(`${geolocation.latitude},${geolocation.longitude}`,'school', 8000)//await getPlacesSearchResponse(searchQuery); 
+        let schoolResults;
+      
+        // Check if rawSchoolResults is a string and needs to be parsed
+        if (typeof rawSchoolResults === 'string') {
+          schoolResults = JSON.parse(rawSchoolResults);
+        } else {
+          schoolResults = rawSchoolResults; // Use it directly if it's already an object
+        }
 
-    function setRatingStars(score) {
-      let fullStars = Math.floor(score);  // Get the full stars
-      let halfStar = (score % 1 >= 0.5) ? 1 : 0;  // Add a half star if score >= 0.5
-      let emptyStars = 5 - fullStars - halfStar;
-  
-      let stars = [];       // Create an array of image elements for each star
-  
-      // Add full stars
-      for (let i = 0; i < fullStars; i++) {
-        stars.push(<img key={`full-${i}`} src={fullStarURL} alt="Full Star" />);
-      }
-  
-      // Add half star
-      if (halfStar) {
-        stars.push(<img key="half" src={halfStarURL} alt="Half Star" />);
-      }
-  
-      // Add empty stars
-      for (let i = 0; i < emptyStars; i++) {
-        stars.push(<img key={`empty-${i}`} src={emptyStarURL} alt="Empty Star" />);
-      }
-  
-      return stars;
-    }
+        if (Array.isArray(schoolResults) && schoolResults.length > 0) {
+          simplifiedSchools = schoolResults.map(school => ({
+            name: school.name || "Unknown School",
+            rating: school.rating || "No rating",
+            userRatings: school.user_ratings_total || 0,
+            //placeId: school.place_id || "",  // Optional: used for linking to Google Maps
+          }));
+          setSchoolsNearby(simplifiedSchools)
+        } else {
+          console.log("No schools found within the given radius.");
+          simplifiedSchools = [];
+        }
+      } catch (error) {
+        simplifiedSchools = [];
+      } 
+      console.log("Returning simplifiedSchools:", simplifiedSchools);
+      return simplifiedSchools;
+    };
 
     const generateRating = async () => {
+      const userRequirements = localStorage.getItem('userRequirements')
+      const interactiveQuizAnswers = localStorage.getItem('quizUserPreferences')
       setShowRating(false)
       setLoading(true)
-      console.log("inside rating function")
-      const budget = localStorage.getItem('userBudgetMaxStored');
-      const numBeds = localStorage.getItem('userNumBedsStored');
+      console.log("inside generate rating function")
 
-      if (pricePW > budget && numBeds > propertyNumBeds){
-        setThumbsUp(false);
+      let schoolData;
+
+      if (userRequirements && userRequirements.toLowerCase().includes('school')) {
+        schoolData = await findSchools(); // You can await if it's async
       }
-      else{
-        setThumbsUp(true)
+
+      console.log("school data - ", schoolData)
+      let schoolDataString = '';
+      
+      if (schoolData && Array.isArray(schoolData) && schoolData.length > 0) {
+        const schoolSummaries = schoolData.map(s => `${s.name} (Rating: ${s.rating || 'N/A'})`);
+        schoolDataString = ` Nearby schools include: ${schoolSummaries.join(', ')}.`;
       }
 
       try {
-        // TODO pass in whethe the property meets requirement sand change API to call to max 2/5 stars if no meets requirements 
-        const userYesNoAnswers = localStorage.getItem('userYesNoAnswers');
-        const userScaleAnswers = localStorage.getItem('scaleAnswers');
-        const interactiveQuizAnswers = JSON.parse(localStorage.getItem('quizUserPreferences'))
-        console.log(JSON.parse(localStorage.getItem('quizUserPreferences')))  // TODO remove -- confirming that they render 
-        const data = await getUserRating(propertyDescription, `I like gardens, my budget is $${String(budget)} per week. Here are my answers to a survey, they should tell you more about my preferences: ${String(userYesNoAnswers)}. And these are more answrs to a survey, indicating how much I care about certain features: ${String(userScaleAnswers)}. I require ${String(numBeds)} bedrooms.I love cooking`);
-        if (data == userRatingResponse){
+        console.log(propertyDetails)
+        console.log("about to send prompt to OPEN AI")
+        //const data = await getUserRating(propertyDescription, `My budget is $${String(budget)} per week. My requirements are: $${String(userRequirements)}. Here are my answers to a survey, they should tell you more about my preferences: ${String(interactiveQuizAnswers)}. I require ${String(numBeds)} bedrooms.`);
+        const data = await getUserRating(propertyDescription, `This is the property info: ${String(propertyDetails)}.My requirements are: ${String(userRequirements)}. Here are my answers to a survey, they should tell you more about my preferences: ${String(interactiveQuizAnswers)}. ${schoolDataString}`);
+        console.log("data retrieved from OPEN AI", data)
+        const cleaned = data.replace(/```json|```/g, '').trim();
+        const json_data = JSON.parse(cleaned);//JSON.parse(data);
+        const { rating: scoreRating, location, facilities, sustainability, summary } = json_data;  // extract values
+        if(detailedRating){
+          setSustainabilityScore(sustainability)
+          setLocationScore(location)
+          setFacilityScore(facilities)
+          setRatingSummary(summary)
+        }
+        if (scoreRating == userRatingResponse){
           setSameResponse(!sameResponse)
         }
         else{
-          setUserRatingResponse(data); // Set the response message from the API
+          setUserRatingResponse(scoreRating); // Set the response message from the API
         }
       } catch (error) {
-        setRating("Error generating rating :( enter more info or try again later");
+        console.log(("Error generating rating :( enter more info or try again later"))  //setRating("Error generating rating :( enter more info or try again later");
       }
-      // If it's a thumbs up, they have rating points to lose based on preferences, at a minimum of 2.5 points 
-      // if thumbs down, they have rating points to gain at a maximum of 2.5 points 
-      // may be better to do percentage rather than stars 
-
-      /* Use a location API to implement rating based on the rest of the preferences being treated equally */
-      
     }
   
   
   return (
     <div>
       <br></br>
-      {/*<LocationInfo/> {/* this is just for testing purposes .. will remove later */}
-      {loading == true && <div> loading ... </div> }
-      {showRating == true && <div>
-      {/*<h2>{thumbsUp ? '👍' : '👎'}</h2>*/}
-      <h2>{rating}</h2></div>
+      {loading == true && <div className='ratingField'> loading ... </div> }
+      {showRating == true && 
+        <div>
+          <StarRating
+            score={userRatingResponse}
+          />
+        </div>
+      }
+      {showDetailedRating == true && 
+        <div>
+          <br></br>
+          <p className='ratingField'>
+            <strong>Location:</strong> {locationScore}/5
+          </p>
+          <p className='ratingField'>
+            <strong>Facilities:</strong> {facilityScore}/5
+          </p>
+          <p className='ratingField'>
+            <strong>Sustainability:</strong> {sustainabilityScore}/5
+          </p>
+          <br></br>
+          <p className='centeredSmallText'>{ratingSummary}</p>
+          <br></br>
+          {schoolsNearby && (
+            <>
+              <button 
+              className = 'buttonStyle' 
+              onClick={() => setShowSchools(prev => !prev)}
+              title='Display schools within an 8k radius'>
+                {showSchools ? 'Hide Schools' : 'Show Schools'}
+              </button>
+              {showSchools && <SchoolList schools={schoolsNearby} />}
+            </>
+          )}
+        </div>
       }
     </div>
   );
 };
 
-// Export the component
 export default RatingGenerator;

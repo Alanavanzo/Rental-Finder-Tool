@@ -7,15 +7,16 @@ const Quiz = () => {
 
   return (
     <div>
-      <header>
-        <h3>This data will help us understand your unique preferences and requirements, so that we can help evaluate whether properties are suitable for you 😊</h3>
-        <br></br>
-      </header>
       <Requirements/>
-      <br></br>
-      <QuizInput />
+      {/*<br></br>
+      <QuizInput />*/}
       <br></br>
       <InteractiveQuiz/>
+      <br></br>
+      <div className="tooltip-container">
+        <span className="info-icon">ℹ️</span>
+        <div className="tooltip-text">This data will help us understand your unique preferences and requirements, so that we can help evaluate whether properties are suitable for you 😊</div>
+      </div>
     </div>
   );
 };

@@ -57,9 +57,15 @@ export const getRatingValues = async (userInput) => {
 
 
 export const getUserRating = async (propertyInput, userData) => {
-  const prompt = `This is some info about be: ${String(userData)}. Here are the details for a property I am looking at: ${String(propertyInput)}. Based on this property and the info about me, please give a rating out of 5 to signify how much I would like this property. Try to look at the description factually as the write has positive bias towards the property. Please respond only with a rating out of 5 (no additional text), which should be a rating which relfects what I have given you. Note that I only want ratings in increments of 0.5`;
-  console.log("sending prompt ... ")
-  //console.log("PROMPT: " + prompt)
+  //const prompt = `This is some info about be: ${String(userData)}. Here are the details for a property I am looking at: ${String(propertyInput)}. Based on this property and the info about me, please give a rating out of 5 to signify how much I would like this property. Try to look at the description factually as the write has positive bias towards the property. Please respond only with a rating out of 5 (no additional text), which should be a rating which relfects what I have given you. Note that I only want ratings in increments of 0.5`;
+  const prompt = `${String(userData)}. Here is the description as listed on the rental website: ${String(propertyInput)}. 
+  Based on this property and the info about me, please give a rating out of 5 to signify how much I would like this property. Try to look at the 
+  description factually as the writing has positive bias towards the property. Please respond only with a dict that have the overall rating mapped to "rating". 
+  And then other keys of "summary" which has value of 50 words explaining the personalised rating, then location, facilities and sustainability with ratings out of 5 that helped get the overall rating. 
+  In summary, the response dict should have the following keys: rating, location, facilities, sustainability, summary. The overall rating must reflect the information I have given you. Note that I only want ratings in increments of 0.5`;
+
+  console.log("Sending PROMPT: " + prompt)
+
   try {
     // Make a POST request to your backend with the userInput in the body
     const response = await fetch(`${API_URL}/ratingpost`, {

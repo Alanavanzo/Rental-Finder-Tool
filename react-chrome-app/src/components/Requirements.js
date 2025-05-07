@@ -11,16 +11,26 @@ function Requirements () {
 
   const [userBudgetMax, setInputValue] = useState('');
 
-  const [userBudgetMin, setBudgetMin] = useState('');
+  const [userPropertyType, setPropertyType] = useState('');
 
   const [userNumBeds, setNumBeds] = useState('');
 
+  const [extraRequirements, setExtraRequirements] = useState([]);
+
+  const [showExtraRequirements, setShowExtraRequirements] = useState(false)
+
+  const availableExtras = [
+    "Pet Friendly",
+    "Smoke Friendly",
+    "Communal Pool",
+    "Backyard",
+    "Furnished",
+    "Close to Public Transport",
+    "Air Conditioning",
+    "Schools nearby",
+  ];
 
   useEffect(() => {
-    const savedMinBudget = localStorage.getItem('userBudgetMinStored');
-    if (savedMinBudget) {
-      setBudgetMin(savedMinBudget);
-    }
 
     const savedMaxBudget = localStorage.getItem('userBudgetMaxStored');
     if (savedMaxBudget) {
@@ -32,28 +42,52 @@ function Requirements () {
       setNumBeds(savedUserNumBeds);
     }
 
+    const savedExtras = localStorage.getItem('extraRequirementsStored');
+    if (savedExtras) {
+      setExtraRequirements(JSON.parse(savedExtras)); // since it's stored as JSON string
+    }
+
   }, []);
 
   const goToRequirements = () => {
     setRequirements('true');
   };
 
-  const handleChangeMinBudget = (e) => {
-    setBudgetMin(e.target.value);
-  };
-
   const handleChangeMaxBudget = (e) => {
     setInputValue(e.target.value);
+  };
+
+  const handleChangePropertyType = (e) => {
+    setPropertyType(e.target.value);
   };
 
   const handleChangeBeds = (e) => {
     setNumBeds(e.target.value);
   };
 
+  const handleExtraRequirementToggle = (requirement) => {
+    setExtraRequirements(prev => {
+      if (prev.includes(requirement)) {
+        return prev.filter(item => item !== requirement);
+      } else {
+        return [...prev, requirement];
+      }
+    });
+  };
+
   const handleSave = () => {
-    localStorage.setItem('userBudgetMinStored', userBudgetMin);
     localStorage.setItem('userBudgetMaxStored', userBudgetMax);
     localStorage.setItem('userNumBedsStored', userNumBeds);
+    localStorage.setItem('extraRequirementsStored', JSON.stringify(extraRequirements)); // save as JSON
+    const userRequirements = {
+      budgetMax: userBudgetMax,
+      propertyType: userPropertyType,
+      numBeds: userNumBeds,
+      extras: extraRequirements
+    };
+  
+    // Save the entire object as a JSON string
+    localStorage.setItem('userRequirements', JSON.stringify(userRequirements));
     setRequirements('false');
   };
 
@@ -64,17 +98,9 @@ function Requirements () {
         return <button className="vibrantButton" onClick={goToRequirements} >View Requirements</button>;
       } else {
         return <div>
-            {/* TODO for budget, check that Min is less than max */}
-      <h2>Requirements </h2>
+      <span className = "topicHeader">Requirements </span>
+      <br></br>
       <span className = "quizField">Budget: </span>
-      <input 
-        type="number" 
-        className="quizNumInput"
-        style={{ width: '50px', padding: '1px' , marginRight: '10px'}}
-        placeholder={"min"}
-        value={userBudgetMin} 
-        onChange={handleChangeMinBudget} 
-      />
       <input 
         type="number" 
         className="quizInlineInput"
@@ -82,6 +108,15 @@ function Requirements () {
         placeholder={"max"}
         value={userBudgetMax} 
         onChange={handleChangeMaxBudget} 
+      />
+      <br></br>
+      <span className = "quizField">Rental Type: </span>
+      <input 
+        type="string" 
+        className="quizInlineInput"
+        style={{ width: '50px', padding: '1px' }}
+        value={userPropertyType} 
+        onChange={handleChangePropertyType} 
       />
       <br></br>
       <span className = "quizField">Min # bedrooms: </span>
@@ -92,6 +127,20 @@ function Requirements () {
         value={userNumBeds} 
         onChange={handleChangeBeds} 
       />
+      <br></br>
+      <span className = "quizField">Extra Requirements: </span>
+      <div className="extra-requirements-dropdown">
+            {availableExtras.map((item, index) => (
+              <label key={index} style={{ display: 'block', margin: '4px 0' }}>
+                <input
+                  type="checkbox"
+                  checked={extraRequirements.includes(item)}
+                  onChange={() => handleExtraRequirementToggle(item)}
+                />
+                {` ${item}`}
+              </label>
+            ))}
+      </div>
       <button className = "saveButton" onClick={handleSave}>Update Requirements</button>
         </div>;
       }

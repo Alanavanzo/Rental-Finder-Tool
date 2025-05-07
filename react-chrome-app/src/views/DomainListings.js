@@ -3,6 +3,12 @@ import IndividualDomainRating from '../components/AutomaticDomainRating';
 import ReactDOM from 'react-dom';  // Import ReactDOM to render inside an existing DOM
 
 const Listings = () => {
+  const [ratingsList, setRatingsList] = useState(() => {
+    const ratingsListLocal = localStorage.getItem("ratingsListStored")
+      if (ratingsListLocal == null) return [] 
+      return JSON.parse(ratingsListLocal)
+  });
+
   const [listings, setListings] = useState([]);
   const [start, setStart] = useState(0);
   const [finish, setFinish] = useState(3);
@@ -41,7 +47,7 @@ const Listings = () => {
         if (targetElement) {  // Only create the portal if the target element exists
           return ReactDOM.createPortal(
             <div style={{ fontSize: '0.8em', width: '80%', padding: '10px' }}>
-              <IndividualDomainRating propertyID={listing.id}/>
+              <IndividualDomainRating propertyID={listing.id} ratingList={ratingsList}/>
             </div>
             ,
             targetElement // The DOM element where the portal will be inserted

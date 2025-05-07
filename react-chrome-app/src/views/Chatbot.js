@@ -5,9 +5,8 @@ const Chatbot = () => {
 
   return (
     <div>
-        <p>Chat with me!</p>
+        {/*<span className='topicHeader'>Chat with me about your rental queries!</span>*/}
         <ChatComponent/>
-        <p>Stay tuned .. chatbot coming soon</p>
     </div>
   );
 };

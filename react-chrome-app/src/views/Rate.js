@@ -17,6 +17,8 @@ const Rate = () => {
   const [propertyID, setPropertyID] = useState();
   const [carSpaces, setCarSpaces] = useState();
   const [propertyType, setPropertyType] = useState();
+  const [propertyDetails, setPropertyDetails] = useState();
+  const [geolocation, setGeolocation] = useState({});
 
   const [listingData, setListingData] = useState({});
 
@@ -40,7 +42,6 @@ const Rate = () => {
   }, [propertyID]);
 
   useEffect(() => {
-    /// TODO grab url as we will pass this into the AI 
     const current_domain = window.location.hostname;  // get hostname 
     console.log("the current domain is: " + current_domain);
     const url = window.location.href
@@ -72,7 +73,7 @@ const Rate = () => {
   }, [favouriteList]);
   
   function handleNewFavSave() {
-      addFavourite(currentURL, propertyTitle);
+      addFavourite(currentURL, address);
       setIsFavourited(true)
   }
 
@@ -85,26 +86,49 @@ const Rate = () => {
     if(listingData && Object.keys(listingData).length > 0){
       console.log(listingData)
       console.log("Retrieved listing data from Domain API")
-      setPricePW(listingData.priceDetails.price)
-      setDescription(listingData.description);
-      setNumBeds(listingData.bedrooms)
-      setNumBath(listingData.bathrooms)
-      setAddress(listingData.addressParts.displayAddress)
-      setCarSpaces(listingData.carspaces)
-      setPropertyType(listingData.propertyTypes[0])
+      console.log("Price is ...", listingData.priceDetails.price)
+      if(listingData.priceDetails.price){
+        setPricePW(listingData.priceDetails.price)
+      }
+      else{
+        const priceDetailsString = JSON.stringify(listingData.priceDetails);
+        const match = priceDetailsString.match(/\$([\d,]+)/);
+        //setPricePW(parseInt(priceDetailsString.match(/\$([\d,]+)/)[1].replace(/,/g, ''), 10))
+        if (match && match[1]) {
+          setPricePW(parseInt(match[1].replace(/,/g, ''), 10));
+        } else {
+          console.warn("No price found in priceDetails");
+          setPricePW(null); // or 0 or some fallback
+        }
+      }
+      if (listingData.description){
+        setDescription(listingData.description);
+      }
+      if (listingData.bedrooms){
+        setNumBeds(listingData.bedrooms)
+      }
+      if (listingData.bathrooms){
+        setNumBath(listingData.bathrooms)
+      }
+      if (listingData.addressParts.displayAddress){
+        setAddress(listingData.addressParts.displayAddress)
+      }
+      if (listingData.carSpaces){
+        setCarSpaces(listingData.carspaces)
+      }
+      if (listingData.propertyTypes[0]){
+        setPropertyType(listingData.propertyTypes[0])
+      }
+      console.log(listingData)
+      if (listingData.geoLocation){
+        setGeolocation(listingData.geoLocation)
+      }
+      console.log("set values from listing data")
       // TODO add property type 
           // TODO add car spaces and pets 
           //const address = result.addressParts.displayAddress;const geolocation = result.geoLocation;//const carspaces = result.carspaces;//const propertyType = result.propertyTypes[0]; 
     }
   }, [listingData])
-
-  useEffect(() => {
-    console.log(pricePW);
-    console.log(propertyDescription);
-    console.log(numBath);
-    console.log(carSpaces)
-  }, [pricePW, propertyDescription, numBath, numBeds, carSpaces, propertyType]); // Depends on pricePW, propertyDescription, numBath
-
       
   const callDomainForID = async () => {
     console.log("inside call for Domain ID")
@@ -164,6 +188,7 @@ const Rate = () => {
     const savedPricePW = localStorage.getItem('pricePWStored');
     const savedNumBeds = localStorage.getItem('numBedsPIStored')
     const savedPropertyDesc = localStorage.getItem('propertyInputStored')
+    const savedPropertyDetails = localStorage.getItem('propertyDetailsStored')
 
     if (savedPricePW) {
       setPricePW(savedPricePW);
@@ -190,6 +215,9 @@ const Rate = () => {
     else{
       setRateTrigger(!rateTrigger);
     }
+    if(savedPropertyDetails){
+      setPropertyDetails(savedPropertyDetails)
+    }
 
   };
 
@@ -201,11 +229,20 @@ const Rate = () => {
       <header>
         <div class="propertyTitle">{propertyTitle != '' && propertyTitle}</div>
       </header>
+      {!isFavourited && 
+      <div> 
+        <button 
+          className="buttonStyle" 
+          title="Click to add this property to your favourites"
+          onClick={handleNewFavSave}>⭐ save
+        </button> 
+      </div>
+      }
       <div><PropertyInformation trigger ={PItrigger} desc = {propertyDescription} beds = {numBeds} price = {pricePW} bath={numBath} propertyAddress={address} cars={carSpaces} propType={propertyType}/></div>
-      <button className="vibrantButton" onClick={pullRatingTrigger}>Generate Rating</button>
-      <div><RatingGenerator trigger ={rateTrigger} pricePW={pricePW} propertyNumBeds={numBeds} numBath={numBath} propertyURL={currentURL} propertyDescription={propertyDescription} propertyAddress={address}/></div>
       <br></br>
-      {!isFavourited && <div> <button className="buttonStyle" onClick={handleNewFavSave}>Save Property</button> </div>}
+      <button className="vibrantButton" onClick={pullRatingTrigger}>Generate Rating</button>
+      <div><RatingGenerator trigger ={rateTrigger} propertyDescription={propertyDescription} propertyAddress={address} detailedRating={true} propertyID={propertyID} propertyDetails={propertyDetails} geolocation={geolocation}/></div>
+      <br></br>
     </div>
     )}
     </div>
