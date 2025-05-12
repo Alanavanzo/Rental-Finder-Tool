@@ -2,7 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import { getOpenAIResponse } from './api/openai.js';  
-import { searchLocationsNearby, searchText, searchTextQuery } from './api/googlePlaces.js';
+import { getGeolocation, searchLocationsNearby, searchText, searchTextQuery } from './api/googlePlaces.js';
 import { getOpenAIRating } from './api/openai.js'; 
 import { getListingDetails } from './api/domain.js';
 
@@ -100,6 +100,21 @@ app.post('/api/search', async (req, res) => {
   if(locationInput){
     try {
       const result = await searchTextQuery(locationInput); 
+      console.log("Result is", result)
+      res.json(result); 
+    } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Failed to process request' });
+    }
+  }
+});
+
+app.post('/api/convertAddress', async (req, res) => {
+  const { address } = req.body; // Get the messages from the request body
+  console.log("server received request for search Nearby - ", req.body)
+  if(address){
+    try {
+      const result = await getGeolocation(address); 
       console.log("Result is", result)
       res.json(result); 
     } catch (error) {

@@ -18,7 +18,7 @@ const quizQuestions = [
     {
       question: "What do you like to do in your spare time?",
       type: "multiple",
-      options: ["Hang out at home", "Gardening", "Cooking", "Exploring outdoors", "Going our to eat"],
+      options: ["Hang out at home", "Gardening", "Cooking", "Exploring outdoors", "Going out to eat"],
     },
     {
       question: "Do you value walkability or easy access to public transport?",

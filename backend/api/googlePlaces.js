@@ -126,6 +126,24 @@ async function searchText(request) {
   }
 }
 
+
+async function getGeolocation(address){
+  const url = new URL('https://maps.googleapis.com/maps/api/geocode/json');
+  
+  url.searchParams.append('address', address); // Latitude, Longitude
+  url.searchParams.append('key', apiKey); // Your Google Places API key
+
+  console.log("URL -", url)
+  try {
+    const response = await axios.get(url.toString());
+    const geolocation = response.data.results[0];
+    console.log('Found geolocation:', geolocation.geometry.location); // Log the found places
+    return `${geolocation.geometry.location.lat},${geolocation.geometry.location.lng}`;  // React can handle strings or arrays but NOT objects
+  } catch (error) {
+    console.error('Error retrieving geolocation', error.response ? error.response.data : error.message);
+  }
+}
+
 async function searchLocationsNearby(geoLocation, type, radius){
   const url = new URL('https://maps.googleapis.com/maps/api/place/nearbysearch/json');
   
@@ -164,7 +182,7 @@ async function searchTextQuery(query) {
 }
 
 // Export the function using ES Modules
-export { searchText, searchTextQuery, searchNearbyPlaces, searchLocationsNearby };
+export { searchText, searchTextQuery, searchNearbyPlaces, searchLocationsNearby, getGeolocation };
 
 /*
 async function searchText() {

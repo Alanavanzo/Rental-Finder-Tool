@@ -142,7 +142,8 @@ const RatingGenerator = ({trigger=null, propertyDescription, propertyAddress, pr
     const findSchools = async () => {
       let simplifiedSchools; 
       try {
-        const rawSchoolResults = await getNearbyLocations(`${geolocation.latitude},${geolocation.longitude}`,'school', 8000)//await getPlacesSearchResponse(searchQuery); 
+        //const rawSchoolResults = await getNearbyLocations(`${geolocation.latitude},${geolocation.longitude}`,'school', 8000)//await getPlacesSearchResponse(searchQuery); 
+        const rawSchoolResults = await getNearbyLocations(geolocation,'school', 8000)//await getPlacesSearchResponse(searchQuery); 
         let schoolResults;
       
         // Check if rawSchoolResults is a string and needs to be parsed

@@ -2,23 +2,24 @@ import React, { useEffect, useState } from 'react';
 import PropertyInformation from '../components/PropertyInformation';
 import RatingGenerator from '../components/RatingGenerator';
 import { getListingData } from "../api/domain.js";
+import { getGeolocation } from '../api/googlePlaces';
 
 const Rate = () => {
 
   const [propertyTitle, setTitle] = useState('');
-  const [numBeds, setNumBeds] = useState(1);
-  const [numBath, setNumBath] = useState(1);
+  const [numBeds, setNumBeds] = useState(null);
+  const [numBath, setNumBath] = useState(null);
   const [propertyDescription, setDescription] = useState();
-  const [address, setAddress] = useState();
-  const [pricePW, setPricePW] = useState(0);
+  const [address, setAddress] = useState(null);
+  const [pricePW, setPricePW] = useState(null);
   const [PItrigger, setPITrigger] = useState(false);
   const [rateTrigger, setRateTrigger] = useState(null);
   const [currentURL, setCurrentURL] = useState('');
   const [propertyID, setPropertyID] = useState();
-  const [carSpaces, setCarSpaces] = useState();
-  const [propertyType, setPropertyType] = useState();
+  const [carSpaces, setCarSpaces] = useState(null);
+  const [propertyType, setPropertyType] = useState(null);
   const [propertyDetails, setPropertyDetails] = useState();
-  const [geolocation, setGeolocation] = useState({});
+  const [geolocation, setGeolocation] = useState("");//useState({});
 
   const [listingData, setListingData] = useState({});
 
@@ -121,7 +122,8 @@ const Rate = () => {
       }
       console.log(listingData)
       if (listingData.geoLocation){
-        setGeolocation(listingData.geoLocation)
+        //setGeolocation(listingData.geoLocation)
+        setGeolocation(`${listingData.geoLocation.latitude},${listingData.geoLocation.longitude}`)
       }
       console.log("set values from listing data")
       // TODO add property type 
@@ -178,7 +180,7 @@ const Rate = () => {
   }, [propertyTitle, pricePW, currentURL, numBeds, numBath, address, propertyDescription]); // This will run when propertyTitle changes
   
   // currently PI and RG and storing and retrieiving values simultaneously so you need to click twice .. need to fix .. not a big deal rn 
-  const pullRatingTrigger = () => {
+  const pullRatingTrigger = async () => {
     setPITrigger(!PItrigger);
 
     // could potentially do a use effect here so we automatically update price pw and num beds and then only setRateTrigger when the values are updated 
@@ -189,6 +191,22 @@ const Rate = () => {
     const savedNumBeds = localStorage.getItem('numBedsPIStored')
     const savedPropertyDesc = localStorage.getItem('propertyInputStored')
     const savedPropertyDetails = localStorage.getItem('propertyDetailsStored')
+    const savedAddress = localStorage.getItem('addressStored');
+    console.log("Stored address - ", localStorage.getItem('addressStored'))
+
+    if (savedAddress) {
+      setAddress(savedAddress);
+      if(geolocation == ""){
+        try {
+          const retrievedGeolocation = await getGeolocation(address);
+          console.log("this is the gelocation: ", retrievedGeolocation)
+          setGeolocation(retrievedGeolocation)
+        }
+        catch(error){
+          console.log("could not convert address to geolocation")
+        } 
+      }
+    }
 
     if (savedPricePW) {
       setPricePW(savedPricePW);
