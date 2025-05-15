@@ -37,6 +37,9 @@ const RatingGenerator = ({trigger=null, propertyDescription, propertyAddress, pr
     const [schoolsNearby, setSchoolsNearby] = useState(null);
     const [showSchools, setShowSchools] = useState(false);
     const [parksNearby, setParksNearby] = useState();
+    const [ptNearby, setPtNearby] = useState();
+    const [showParks, setShowParks] = useState(false);
+    const [showPt, setShowPt] = useState(false);
 
     console.log("printing geolocation - ", geolocation)
 
@@ -56,6 +59,26 @@ const RatingGenerator = ({trigger=null, propertyDescription, propertyAddress, pr
         setLocalTrigger(trigger)
       }
     }, [trigger]);
+
+    useEffect(() => {
+      const fetchPlaces = async () => {
+        if (geolocation && geolocation != "") {
+          try {
+            const parks = await findPlaces('park', 3000, geolocation);
+            setParksNearby(parks);  // Update state with the retrieved parks
+          } catch (error) {
+            console.log("Error fetching parks:", error);
+          }
+          try {
+            const pt= await findPlaces('transit_station', 3000, geolocation);
+            setPtNearby(pt);  // Update state with the retrieved parks
+          } catch (error) {
+            console.log("Error fetching PT:", error);
+          }
+        }
+      };
+      fetchPlaces();  // Call the async function
+    }, [geolocation]);
 
     useEffect(() => {
       if (
@@ -141,39 +164,6 @@ const RatingGenerator = ({trigger=null, propertyDescription, propertyAddress, pr
       }
     }, [userRatingResponse]); // this only needs to run if the rating score changes 
 
-    const findSchools = async () => {
-      let simplifiedSchools; 
-      try {
-        //const rawSchoolResults = await getNearbyLocations(`${geolocation.latitude},${geolocation.longitude}`,'school', 8000)//await getPlacesSearchResponse(searchQuery); 
-        const rawSchoolResults = await getNearbyLocations(geolocation,'school', 8000)//await getPlacesSearchResponse(searchQuery); 
-        let schoolResults;
-      
-        // Check if rawSchoolResults is a string and needs to be parsed
-        if (typeof rawSchoolResults === 'string') {
-          schoolResults = JSON.parse(rawSchoolResults);
-        } else {
-          schoolResults = rawSchoolResults; // Use it directly if it's already an object
-        }
-
-        if (Array.isArray(schoolResults) && schoolResults.length > 0) {
-          simplifiedSchools = schoolResults.map(school => ({
-            name: school.name || "Unknown School",
-            rating: school.rating || "No rating",
-            userRatings: school.user_ratings_total || 0,
-            //placeId: school.place_id || "",  // Optional: used for linking to Google Maps
-          }));
-          setSchoolsNearby(simplifiedSchools)
-        } else {
-          console.log("No schools found within the given radius.");
-          simplifiedSchools = [];
-        }
-      } catch (error) {
-        simplifiedSchools = [];
-      } 
-      console.log("Returning simplifiedSchools:", simplifiedSchools);
-      return simplifiedSchools;
-    };
-
     const generateRating = async () => {
       const userRequirements = localStorage.getItem('userRequirements')
       const interactiveQuizAnswers = localStorage.getItem('quizUserPreferences')
@@ -184,13 +174,8 @@ const RatingGenerator = ({trigger=null, propertyDescription, propertyAddress, pr
       let schoolData;
 
       if (userRequirements && userRequirements.toLowerCase().includes('school') && geolocation) {
-        schoolData = await findSchools(); // You can await if it's async
-      }
-      if (geolocation)
-      {
-        const parks = await findPlaces('park', 3000, geolocation); // Await the result
-        console.log("parks are as folllows ", parks)
-        setParksNearby(parks); // Set the parksNearby state once data is retrieved
+        schoolData = await findPlaces('school', 8000, geolocation);//findSchools(); // You can await if it's async
+        setSchoolsNearby(schoolData)
       }
 
       console.log("school data - ", schoolData)
@@ -263,11 +248,27 @@ const RatingGenerator = ({trigger=null, propertyDescription, propertyAddress, pr
                 {showSchools ? 'Hide Schools' : 'Show Schools'}
               </button>
               {showSchools && <FacilitiesList schools={schoolsNearby} type="schools" />}
-              <FacilitiesList schools={parksNearby} type="parks" />
             </>
           )}
         </div>
       }
+      <br></br>
+      <button 
+        className = 'buttonStyle' 
+        onClick={() => setShowParks(prev => !prev)}
+        title='Display parks within a 3k radius'>
+        {showParks ? 'Hide Parks' : 'Show Parks'}
+      </button>
+      {showParks && <FacilitiesList schools={parksNearby} type="parks" />}
+      <br></br>
+      <br></br>
+      <button 
+        className = 'buttonStyle' 
+        onClick={() => setShowPt(prev => !prev)}
+        title='Display pt within a 2k radius'>
+        {showPt ? 'Hide PT' : 'Show PT'}
+      </button>
+      {showPt && <FacilitiesList schools={ptNearby} type="public transport" />}
     </div>
   );
 };
