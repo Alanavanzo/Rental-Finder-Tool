@@ -1,7 +1,7 @@
 import React from 'react';
 
-const SchoolList = ({ schools }) => {
-  if (!schools || schools.length === 0) return <p>No schools available.</p>;
+const FacilitiesList = ({ schools, type }) => {
+  if (!schools || schools.length === 0) return <p>No {type} available.</p>;
 
   return (
     <div>
@@ -18,4 +18,4 @@ const SchoolList = ({ schools }) => {
   );
 };
 
-export default SchoolList;
+export default FacilitiesList;

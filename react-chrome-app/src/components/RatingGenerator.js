@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { getUserRating } from "../api/openai";
 import { getNearbyLocations } from '../api/googlePlaces';
-import SchoolList from './SchoolList';
-import FacilitiesList from './NearbyFacilities';
+import FacilitiesList from './FacilitiesList';
+import findPlaces from './NearbyFacilities';
 /*
 import halfStar from '../styling/images/halfStar.png';
 import fullStar from '../styling/images/fullStar.png';
@@ -141,31 +141,6 @@ const RatingGenerator = ({trigger=null, propertyDescription, propertyAddress, pr
       }
     }, [userRatingResponse]); // this only needs to run if the rating score changes 
 
-    const findPlaces = async (placeType, dist) => {
-      let simplifiedPlace; 
-      try {
-        const rawPlaceResults = await getNearbyLocations(geolocation,placeType, dist)
-        let placeResults;
-        if (typeof rawPlaceResults === 'string') {
-          placeResults = JSON.parse(rawPlaceResults);
-        } else {
-          placeResults = rawPlaceResults; 
-        }
-        if (Array.isArray(placeResults) && placeResults.length > 0) {
-          simplifiedPlace = placeResults.map(place => ({
-            name: place.name || "Unknown",
-            rating: place.rating || "No rating",
-          }));
-        } else {
-          console.log("No places found within the given radius.");
-          simplifiedPlace = [];
-        }
-      } catch (error) {
-        simplifiedPlace = [];
-      } 
-      return simplifiedPlace;
-    };
-
     const findSchools = async () => {
       let simplifiedSchools; 
       try {
@@ -213,7 +188,9 @@ const RatingGenerator = ({trigger=null, propertyDescription, propertyAddress, pr
       }
       if (geolocation)
       {
-        setParksNearby(findPlaces('park', 3000))
+        const parks = await findPlaces('park', 3000, geolocation); // Await the result
+        console.log("parks are as folllows ", parks)
+        setParksNearby(parks); // Set the parksNearby state once data is retrieved
       }
 
       console.log("school data - ", schoolData)
@@ -285,7 +262,8 @@ const RatingGenerator = ({trigger=null, propertyDescription, propertyAddress, pr
               title='Display schools within an 8k radius'>
                 {showSchools ? 'Hide Schools' : 'Show Schools'}
               </button>
-              {showSchools && <SchoolList schools={schoolsNearby} />}
+              {showSchools && <FacilitiesList schools={schoolsNearby} type="schools" />}
+              <FacilitiesList schools={parksNearby} type="parks" />
             </>
           )}
         </div>
