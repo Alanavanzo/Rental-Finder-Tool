@@ -187,17 +187,29 @@ const RatingGenerator = ({trigger=null, propertyDescription, propertyAddress, pr
 
       console.log("school data - ", schoolData)
       let schoolDataString = '';
+      let parkDataString = '';
+      let foodDataString = '';
       
       if (schoolData && Array.isArray(schoolData) && schoolData.length > 0) {
         const schoolSummaries = schoolData.map(s => `${s.name} (Rating: ${s.rating || 'N/A'})`);
         schoolDataString = ` Nearby schools include: ${schoolSummaries.join(', ')}.`;
       }
 
+      if (parksNearby && Array.isArray(parksNearby)) {
+        const parkSummaries = parksNearby.map(s => `${s.name} (Rating: ${s.rating || 'N/A'})`);
+        parkDataString = ` Nearby parks include: ${parkSummaries.join(', ')}.`;
+      }
+
+      if (foodNearby && Array.isArray(foodNearby)) {
+        const foodSummaries = foodNearby.map(s => `${s.name} (Rating: ${s.rating || 'N/A'})`);
+        foodDataString = ` Nearby cafes, bars and restaurants include: ${foodSummaries.join(', ')}.`;
+      }
+
       try {
         console.log(propertyDetails)
         console.log("about to send prompt to OPEN AI")
         //const data = await getUserRating(propertyDescription, `My budget is $${String(budget)} per week. My requirements are: $${String(userRequirements)}. Here are my answers to a survey, they should tell you more about my preferences: ${String(interactiveQuizAnswers)}. I require ${String(numBeds)} bedrooms.`);
-        const data = await getUserRating(propertyDescription, `This is the property info: ${String(propertyDetails)}.My requirements are: ${String(userRequirements)}. Here are my answers to a survey, they should tell you more about my preferences: ${String(interactiveQuizAnswers)}. ${schoolDataString}`);
+        const data = await getUserRating(propertyDescription, `This is the property info: ${String(propertyDetails)}. ${schoolDataString}. ${parkDataString}. ${foodDataString}.My requirements are: ${String(userRequirements)}. Here are my answers to a survey, they should tell you more about my preferences: ${String(interactiveQuizAnswers)}.`);
         console.log("data retrieved from OPEN AI", data)
         const cleaned = data.replace(/```json|```/g, '').trim();
         const json_data = JSON.parse(cleaned);//JSON.parse(data);
