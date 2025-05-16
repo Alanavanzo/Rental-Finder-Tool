@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { getNearbyLocations } from '../api/googlePlaces';
+import { getNearbyLocations, getNearbyLocationsKeyword } from '../api/googlePlaces';
 
-    const findPlaces = async (placeType, dist, geolocation) => {
+    const findPlaces = async (placeType, dist, geolocation, searchType) => {
       let simplifiedPlace; 
       try {
-        const rawPlaceResults = await getNearbyLocations(geolocation,placeType, dist)
+        let rawPlaceResults;
+        if (searchType == "keyword"){
+          rawPlaceResults = await getNearbyLocationsKeyword(geolocation,placeType, dist)
+        }
+        else{
+          rawPlaceResults = await getNearbyLocations(geolocation,placeType, dist)
+        }
         let placeResults;
         if (typeof rawPlaceResults === 'string') {
           placeResults = JSON.parse(rawPlaceResults);

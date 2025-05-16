@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { getUserRating } from "../api/openai";
-import { getNearbyLocations } from '../api/googlePlaces';
 import FacilitiesList from './FacilitiesList';
 import findPlaces from './NearbyFacilities';
 /*
@@ -40,6 +39,8 @@ const RatingGenerator = ({trigger=null, propertyDescription, propertyAddress, pr
     const [ptNearby, setPtNearby] = useState();
     const [showParks, setShowParks] = useState(false);
     const [showPt, setShowPt] = useState(false);
+    const [foodNearby, setFoodNearby] = useState();
+    const [showFood, setShowFood] = useState(false);
 
     console.log("printing geolocation - ", geolocation)
 
@@ -70,8 +71,14 @@ const RatingGenerator = ({trigger=null, propertyDescription, propertyAddress, pr
             console.log("Error fetching parks:", error);
           }
           try {
-            const pt= await findPlaces('transit_station', 3000, geolocation);
+            const pt= await findPlaces('bus_station', 2000, geolocation);
             setPtNearby(pt);  // Update state with the retrieved parks
+          } catch (error) {
+            console.log("Error fetching PT:", error);
+          }
+          try {
+            const food = await findPlaces('cafe|restaurant|bar', 3000, geolocation, "keyword");
+            setFoodNearby(food);  
           } catch (error) {
             console.log("Error fetching PT:", error);
           }
@@ -269,6 +276,15 @@ const RatingGenerator = ({trigger=null, propertyDescription, propertyAddress, pr
         {showPt ? 'Hide PT' : 'Show PT'}
       </button>
       {showPt && <FacilitiesList schools={ptNearby} type="public transport" />}
+      <br></br>
+      <br></br>
+      <button 
+        className = 'buttonStyle' 
+        onClick={() => setShowFood(prev => !prev)}
+        title='Display cafes, bars and rest within a 2k radius'>
+        {showFood ? 'Hide Food' : 'Show Food'}
+      </button>
+      {showFood && <FacilitiesList schools={foodNearby} type="cafes, bar & commerce" />}
     </div>
   );
 };
