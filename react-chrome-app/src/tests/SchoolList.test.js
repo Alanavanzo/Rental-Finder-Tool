@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import SchoolList from '../components/SchoolList';
+import SchoolList from '../components/FacilitiesList';
 
 describe('SchoolList Component', () => {
     test('shows "No schools available" when no schools are passed', () => {

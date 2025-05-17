@@ -117,22 +117,20 @@ function Requirements () {
       } else {
         return <div>
       <span className = "topicHeader">Requirements </span>
-      <br></br>
-      <span className = "quizField">Budget: </span>
-      <input 
-        type="number" 
-        className="quizInlineInput"
-        style={{ width: '50px', padding: '1px' }}
-        placeholder={"max"}
-        value={userBudgetMax} 
-        onChange={handleChangeMaxBudget} 
-      />
-      <br></br>
-      <p>
+      <div className="requirementFieldWrapper">
+        <span className = "quizField">Budget: </span>
+        <input 
+          type="number" 
+          className="quizInputField"
+          placeholder={"max"}
+          value={userBudgetMax} 
+          onChange={handleChangeMaxBudget} 
+        />
+      </div>
+      <div className="requirementFieldWrapper">
         <span className = "quizField">Property Type: </span>
         <select 
-          className="quizInlineInput"
-          style={{ width: '150px', padding: '4px' }}
+          className="propertyInputFieldLong"
           value={userPropertyType}
           onChange={handleChangePropertyType}
           >
@@ -144,25 +142,26 @@ function Requirements () {
           <option value="villa">Villa</option>
           <option value="duplex">Duplex</option>
         </select>
-      </p>
+      </div>
+      <div className="requirementFieldWrapper">
       <span className = "quizField">Location: </span>
       <input 
         type="string" 
-        className="quizInlineInput"
-        style={{ width: '50px', padding: '1px' }}
+        className="quizInputField"
         value={location} 
         onChange={handleChangeLocation} 
       />
-      <br></br>
+      </div>
+      <div className="requirementFieldWrapper">
       <span className = "quizField">Min # bedrooms: </span>
       <input
         type="number" 
-        className="quizNumInput" 
-        style={{ width: '50px', padding: '1px' }}
+        className="quizInputField"
         value={userNumBeds} 
         onChange={handleChangeBeds} 
       />
-      <br></br>
+      </div>
+      <div className="requirementFieldWrapper">
       <span className = "quizField">Extra Requirements: </span>
       <div className="extra-requirements-dropdown">
             {availableExtras.map((item, index) => (
@@ -176,7 +175,8 @@ function Requirements () {
               </label>
             ))}
       </div>
-      <button className = "saveButton" onClick={handleSave}>Update Requirements</button>
+      </div>
+      <button className = "buttonStyle" onClick={handleSave}>Update Requirements</button>
         </div>;
       }
     })()}
