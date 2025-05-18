@@ -73,16 +73,21 @@ function InteractiveQuiz() {
         </button>
       ) : showResult ? (
         <div>
+          <span className = "topicHeader">Quiz</span>
           <h2>Your Preferences Summary</h2>
+          <div style={{ textAlign: 'left' }}>
           <ul>
             {userResponses.map((response, idx) => (
               <li key={idx}>
-                <strong>{response.question}</strong><br />
-                <span>{response.userAnswer}</span>
+                <div className="requirementFieldWrapper">
+                  <strong className = "quizField">{response.question}</strong>
+                  <span className="quizInputField">{response.userAnswer}</span>
+                </div>
               </li>
             ))}
           </ul>
-          <button onClick={resetQuiz}>Close Quiz</button>
+          </div>
+          <button class="buttonStyle" onClick={resetQuiz}>Close Quiz</button>
         </div>
       ) : currentQuestion ? (
         <div>
@@ -106,13 +111,15 @@ function InteractiveQuiz() {
           ) : (
             <div>
               <input
+                className="quizInputField"
                 type={currentQuestion.type}
                 value={userAnswer}
                 onChange={(e) => handleAnswer(e.target.value)}
               />
             </div>
           )}
-          <button onClick={nextQuestion} disabled={!userAnswer}>
+          <br></br>
+          <button class="buttonStyle" onClick={nextQuestion} disabled={!userAnswer}>
             {currentQuestionIndex + 1 === quizQuestions.length ? "Finish" : "Next"}
           </button>
         </div>
