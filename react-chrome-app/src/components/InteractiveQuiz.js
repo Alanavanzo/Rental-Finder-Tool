@@ -91,6 +91,7 @@ function InteractiveQuiz() {
         </div>
       ) : currentQuestion ? (
         <div>
+          <span className = "topicHeader">Quiz</span>
           <h3>{currentQuestion.question}</h3>
           {currentQuestion.type === 'multiple' ? (
             <ul>
