@@ -31,7 +31,7 @@ function Add_favourite({addFavourite}) {
                 <div>
                     <input 
                         type="text" 
-                        placeholder={"Enter property name ... "}
+                        placeholder={"Enter property address ... "}
                         value = {userNewFavouriteName}
                         className = 'propertyInputFieldLong'
                         onChange={handleNewFavouriteName} 

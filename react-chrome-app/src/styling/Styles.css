@@ -234,8 +234,8 @@
 .vibrantButton {
   background-color: #4CAF50; /* Vibrant green background */
   color: white; /* White text color */
-  font-size: 16px; /* Text size */
-  padding: 12px 24px; /* Padding for size */
+  font-size: 14px;       /* Smaller font */
+  padding: 8px 16px;     /* Smaller padding */
   border: none; /* Remove default border */
   border-radius: 8px; /* Rounded corners for a smooth look */
   cursor: pointer; /* Pointer cursor on hover */
@@ -244,6 +244,7 @@
   text-align: center; /* Center the text inside the button */
   display: inline-block; /* Allow the button to be inline */
   box-sizing: border-box; /* Ensure padding doesn’t affect width/height */
+  margin-left: 12px;     /* 👈 Adds space between this and the item to the left */
 }
 
 /* Hover effect for vibrant button */
@@ -272,38 +273,6 @@
   transform: none; /* No transformation when disabled */
 }
 
-/*
-.individualFavourite {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  margin-bottom: 10px; 
-}
-
-.nameButton {
-  width: 70%;
-  font-size: 16px; 
-  padding: 12px 24px; 
-  border: none; 
-  border-radius: 8px;
-  cursor: pointer;
-  font-family: 'Arial', sans-serif; 
-  text-align: center;
-  display: inline-block; 
-  box-sizing: border-box; 
-  background-color: transparent; 
-  outline: none; 
-}
-
-.emojiButton {
-  width: 30%;
-  border: none;
-  padding: 2px;
-  margin-bottom: 3px;
-  background-color: transparent; 
-  outline: none; 
-}
-*/
 .individualFavourite {
   display: flex;
   align-items: center;
@@ -311,9 +280,8 @@
   background: linear-gradient(to right, #fdf6e3, #ffecd2);
   padding: 14px 18px;
   margin: 10px 0;
-  border: 2px dashed #fbbf24;
+  border: 2px dashed rgb(172, 164, 164);/* #fbbf24;*/
   border-radius: 15px;
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease-in-out;
 }
 
@@ -325,22 +293,22 @@
 .nameButton {
   background: none;
   border: none;
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #6b21a8;
+  font-size: 1rem;
+  font-weight: normal;
+  color:rgb(38, 38, 38);
   cursor: pointer;
   transition: color 0.2s ease;
 }
 
 .nameButton:hover {
-  color: #d946ef;
+  color: rgb(102, 176, 232);
   text-decoration: underline;
 }
 
 .emojiButton {
   background: none;
   border: none;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   cursor: pointer;
   color: #ef4444;
   transition: transform 0.2s ease;
@@ -351,12 +319,19 @@
 }
 
 .ratingTag {
-  background-color: #fde68a;
   color: #92400e;
   padding: 2px 6px;
   margin-left: 8px;
   border-radius: 8px;
-  font-size: 0.9rem;
+  font-size: 1.3rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;  /* Stack star and rating vertically */
+  align-items: center;     /* Center horizontally */
+}
+
+.ratingItem {
+  text-align: center;
 }
 
 .tooltip-container {

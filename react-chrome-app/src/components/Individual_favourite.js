@@ -31,16 +31,30 @@ function Individual_favourite({id, link, name, deleteFavourite, ratingsList = []
 
     return (
         <div>
-            <div className='individualFavourite'>
-                <button 
+            <div className="individualFavourite">
+                {rating !== null && (
+                    <div className="ratingTag">
+                          <div className="ratingItem">⭐</div>
+                          <div className="ratingItem">{rating}</div>
+                    </div>
+                )}
+                <div className="textWrapper">
+                    <button 
                     onClick={goToLink} 
-                    className='nameButton' 
+                    className="nameButton" 
                     title={name}
-                >
-                    ✨ {name.split('-')[0].trim()}
-                    {rating !== null && <span className="ratingTag">⭐ {rating}</span>}
-                </button>
-                <button className = "emojiButton" onClick={() => deleteFavourite(id)}>     🗑️</button>
+                    >
+                    {name.split('-')[0].trim()}
+                    </button>
+                </div>
+                <div className="emojiWrapper">
+                    <button 
+                    className="emojiButton" 
+                    onClick={() => deleteFavourite(id)}
+                    >
+                    🗑️
+                    </button>
+                </div>
             </div>
         </div>
     );
