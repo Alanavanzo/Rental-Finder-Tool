@@ -50,9 +50,14 @@ const Rate = () => {
     setIsFavourited(favouriteList.some(ing => ing.link === url))
 
     if(current_domain == 'www.domain.com.au'){      // TODO also check that it is a property page
-      const parts = url.split('-');
-      const id = parts[parts.length - 1];
-      setPropertyID(id) // set property ID 
+      if (url && url.includes('-')) { 
+        const parts = url.split('-');
+        const id = parts[parts.length - 1];
+        setPropertyID(id) // set property ID 
+      }
+      else{
+        console.log("URL format is incorrect")
+      }
     }
 
   }, []);

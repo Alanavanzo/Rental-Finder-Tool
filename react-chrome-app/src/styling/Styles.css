@@ -230,8 +230,7 @@
   border-radius: 20%; /* Rounded corners */
 }
 
-/* General vibrant button style */
-.vibrantButton {
+.vibrantButtonSmall {
   background-color: #4CAF50; /* Vibrant green background */
   color: white; /* White text color */
   font-size: 14px;       /* Smaller font */
@@ -245,6 +244,22 @@
   display: inline-block; /* Allow the button to be inline */
   box-sizing: border-box; /* Ensure padding doesn’t affect width/height */
   margin-left: 12px;     /* 👈 Adds space between this and the item to the left */
+}
+
+/* General vibrant button style */
+.vibrantButton {
+  background-color: #4CAF50; /* Vibrant green background */
+  color: white; /* White text color */
+  font-size: 16px;       /* Smaller font */
+  padding: 12px 24px;     /* Smaller padding */
+  border: none; /* Remove default border */
+  border-radius: 8px; /* Rounded corners for a smooth look */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth hover transition */
+  font-family: 'Arial', sans-serif; /* Consistent font for the button */
+  text-align: center; /* Center the text inside the button */
+  display: inline-block; /* Allow the button to be inline */
+  box-sizing: border-box; /* Ensure padding doesn’t affect width/height */
 }
 
 /* Hover effect for vibrant button */

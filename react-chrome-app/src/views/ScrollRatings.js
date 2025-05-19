@@ -13,9 +13,14 @@ const ScrollRatings = () => {
         console.log("The current path is: " + current_path);
       
         // Check if the domain is 'www.domain.com.au' and the path starts with '/rent'
-        if (current_domain === 'www.domain.com.au' && current_path.startsWith('/rent')) {
-          console.log('The page is a property page under rent.');
-          setDomainScroll(true)
+        try{
+          if (current_domain === 'www.domain.com.au' && current_path.startsWith('/rent')) {
+            console.log('The page is a property page under rent.');
+            setDomainScroll(true)
+          }
+        }
+        catch(error){
+          console.log("couldnt inspect the domain and path names")
         }
       }, []);
   /*

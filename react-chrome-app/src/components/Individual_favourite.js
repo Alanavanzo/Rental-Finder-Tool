@@ -13,7 +13,7 @@ function Individual_favourite({id, link, name, deleteFavourite, ratingsList = []
       }, [visitLink]);
 
       useEffect(() => {
-        if (ratingsList != []){
+        if (ratingsList != [] && name){
             const matchedRating = ratingsList.find(item =>    // Try to find a rating where the address is included in the name
                 item.address && (name.toLowerCase().includes(item.address.toLowerCase()) || name.toLowerCase().includes(item.property.toLowerCase()))
             );
@@ -24,10 +24,11 @@ function Individual_favourite({id, link, name, deleteFavourite, ratingsList = []
         }
     }, [ratingsList]);
 
-      const goToLink = () => {
+    const goToLink = () => {
         setVisitLink(true)
-      }
-
+    }
+    
+    const nameToDisplay = (typeof name === 'string' && name.includes('-')) ? name.split('-')[0].trim() : name;
 
     return (
         <div>
@@ -44,7 +45,7 @@ function Individual_favourite({id, link, name, deleteFavourite, ratingsList = []
                     className="nameButton" 
                     title={name}
                     >
-                    {name.split('-')[0].trim()}
+                    {nameToDisplay}
                     </button>
                 </div>
                 <div className="emojiWrapper">
