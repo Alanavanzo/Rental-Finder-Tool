@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react';
-import SchoolList from '../components/FacilitiesList';
+import FacilitiesList from '../components/FacilitiesList';
 
 describe('SchoolList Component', () => {
     test('shows "No schools available" when no schools are passed', () => {
-      render(<SchoolList schools={[]} />);
-      expect(screen.getByText('No schools available.')).toBeTruthy();
+      render(<FacilitiesList schools={[]} type='schools' />);
+      expect(screen.getByText('No schools available')).toBeTruthy();
     });
   
     test('displays a list of schools with their ratings', () => {
@@ -13,7 +13,7 @@ describe('SchoolList Component', () => {
         { name: 'Riverside Academy', rating: 5 }
       ];
   
-      render(<SchoolList schools={mockSchools} />);
+      render(<FacilitiesList schools={mockSchools} />);
       
       // Check if school names and ratings are displayed
       mockSchools.forEach(school => {
@@ -23,7 +23,7 @@ describe('SchoolList Component', () => {
     });
   
     test('shows "No schools available" when schools is undefined', () => {
-      render(<SchoolList schools={undefined} />);
-      expect(screen.getByText('No schools available.')).toBeTruthy();
+      render(<FacilitiesList schools={undefined} type='schools' />);
+      expect(screen.getByText('No schools available')).toBeTruthy();
     });
   });

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from "./views/Navbar.js";
-import Minimized_view from './views/Minimized_view.js';
+import Minimized_view from './views/MinimizedView.js';
 import LogoComponent from './components/LogoDisplay.js'
 import { ReactDOM } from "react";
 import "./App.css"

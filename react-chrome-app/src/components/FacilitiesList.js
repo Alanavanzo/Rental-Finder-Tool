@@ -1,7 +1,7 @@
 import React from 'react';
 
 const FacilitiesList = ({ schools, type }) => {
-  if (!schools || schools.length === 0) return <p>No {type} available.</p>;
+  if (!schools || schools.length === 0) return <p>No {type} available</p>;
 
   return (
     <div>

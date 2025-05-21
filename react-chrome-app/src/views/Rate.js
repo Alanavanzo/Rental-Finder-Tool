@@ -257,7 +257,7 @@ const Rate = () => {
         <button 
           className="buttonStyle" 
           title="Click to add this property to your favourites"
-          onClick={handleNewFavSave}>⭐ save
+          onClick={handleNewFavSave}>⭐ fav
         </button> 
       </div>
       }
