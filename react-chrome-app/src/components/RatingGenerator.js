@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getUserRating } from "../api/openai";
-import { getNearbyLocations } from '../api/googlePlaces';
-import SchoolList from './SchoolList';
+import FacilitiesList from './FacilitiesList';
+import findPlaces from './NearbyFacilities';
 /*
 import halfStar from '../styling/images/halfStar.png';
 import fullStar from '../styling/images/fullStar.png';
@@ -35,6 +35,12 @@ const RatingGenerator = ({trigger=null, propertyDescription, propertyAddress, pr
     const [ratingSummary, setRatingSummary] = useState("NA");
     const [schoolsNearby, setSchoolsNearby] = useState(null);
     const [showSchools, setShowSchools] = useState(false);
+    const [parksNearby, setParksNearby] = useState();
+    const [ptNearby, setPtNearby] = useState();
+    const [showParks, setShowParks] = useState(false);
+    const [showPt, setShowPt] = useState(false);
+    const [foodNearby, setFoodNearby] = useState();
+    const [showFood, setShowFood] = useState(false);
 
     console.log("printing geolocation - ", geolocation)
 
@@ -54,6 +60,32 @@ const RatingGenerator = ({trigger=null, propertyDescription, propertyAddress, pr
         setLocalTrigger(trigger)
       }
     }, [trigger]);
+
+    useEffect(() => {
+      const fetchPlaces = async () => {
+        if (geolocation && geolocation != "") {
+          try {
+            const parks = await findPlaces('park', 3000, geolocation);
+            setParksNearby(parks);  // Update state with the retrieved parks
+          } catch (error) {
+            console.log("Error fetching parks:", error);
+          }
+          try {
+            const pt= await findPlaces('bus_station', 2000, geolocation);
+            setPtNearby(pt);  // Update state with the retrieved parks
+          } catch (error) {
+            console.log("Error fetching PT:", error);
+          }
+          try {
+            const food = await findPlaces('cafe|restaurant|bar', 3000, geolocation, "keyword");
+            setFoodNearby(food);  
+          } catch (error) {
+            console.log("Error fetching PT:", error);
+          }
+        }
+      };
+      fetchPlaces();  // Call the async function
+    }, [geolocation]);
 
     useEffect(() => {
       if (
@@ -139,38 +171,6 @@ const RatingGenerator = ({trigger=null, propertyDescription, propertyAddress, pr
       }
     }, [userRatingResponse]); // this only needs to run if the rating score changes 
 
-    const findSchools = async () => {
-      let simplifiedSchools; 
-      try {
-        const rawSchoolResults = await getNearbyLocations(`${geolocation.latitude},${geolocation.longitude}`,'school', 8000)//await getPlacesSearchResponse(searchQuery); 
-        let schoolResults;
-      
-        // Check if rawSchoolResults is a string and needs to be parsed
-        if (typeof rawSchoolResults === 'string') {
-          schoolResults = JSON.parse(rawSchoolResults);
-        } else {
-          schoolResults = rawSchoolResults; // Use it directly if it's already an object
-        }
-
-        if (Array.isArray(schoolResults) && schoolResults.length > 0) {
-          simplifiedSchools = schoolResults.map(school => ({
-            name: school.name || "Unknown School",
-            rating: school.rating || "No rating",
-            userRatings: school.user_ratings_total || 0,
-            //placeId: school.place_id || "",  // Optional: used for linking to Google Maps
-          }));
-          setSchoolsNearby(simplifiedSchools)
-        } else {
-          console.log("No schools found within the given radius.");
-          simplifiedSchools = [];
-        }
-      } catch (error) {
-        simplifiedSchools = [];
-      } 
-      console.log("Returning simplifiedSchools:", simplifiedSchools);
-      return simplifiedSchools;
-    };
-
     const generateRating = async () => {
       const userRequirements = localStorage.getItem('userRequirements')
       const interactiveQuizAnswers = localStorage.getItem('quizUserPreferences')
@@ -180,23 +180,36 @@ const RatingGenerator = ({trigger=null, propertyDescription, propertyAddress, pr
 
       let schoolData;
 
-      if (userRequirements && userRequirements.toLowerCase().includes('school')) {
-        schoolData = await findSchools(); // You can await if it's async
+      if (userRequirements && userRequirements.toLowerCase().includes('school') && geolocation) {
+        schoolData = await findPlaces('school', 8000, geolocation);//findSchools(); // You can await if it's async
+        setSchoolsNearby(schoolData)
       }
 
       console.log("school data - ", schoolData)
       let schoolDataString = '';
+      let parkDataString = '';
+      let foodDataString = '';
       
       if (schoolData && Array.isArray(schoolData) && schoolData.length > 0) {
         const schoolSummaries = schoolData.map(s => `${s.name} (Rating: ${s.rating || 'N/A'})`);
         schoolDataString = ` Nearby schools include: ${schoolSummaries.join(', ')}.`;
       }
 
+      if (parksNearby && Array.isArray(parksNearby)) {
+        const parkSummaries = parksNearby.map(s => `${s.name} (Rating: ${s.rating || 'N/A'})`);
+        parkDataString = ` Nearby parks include: ${parkSummaries.join(', ')}.`;
+      }
+
+      if (foodNearby && Array.isArray(foodNearby)) {
+        const foodSummaries = foodNearby.map(s => `${s.name} (Rating: ${s.rating || 'N/A'})`);
+        foodDataString = ` Nearby cafes, bars and restaurants include: ${foodSummaries.join(', ')}.`;
+      }
+
       try {
         console.log(propertyDetails)
         console.log("about to send prompt to OPEN AI")
         //const data = await getUserRating(propertyDescription, `My budget is $${String(budget)} per week. My requirements are: $${String(userRequirements)}. Here are my answers to a survey, they should tell you more about my preferences: ${String(interactiveQuizAnswers)}. I require ${String(numBeds)} bedrooms.`);
-        const data = await getUserRating(propertyDescription, `This is the property info: ${String(propertyDetails)}.My requirements are: ${String(userRequirements)}. Here are my answers to a survey, they should tell you more about my preferences: ${String(interactiveQuizAnswers)}. ${schoolDataString}`);
+        const data = await getUserRating(propertyDescription, `This is the property info: ${String(propertyDetails)}. ${schoolDataString}. ${parkDataString}. ${foodDataString}.My requirements are: ${String(userRequirements)}. Here are my answers to a survey, they should tell you more about my preferences: ${String(interactiveQuizAnswers)}.`);
         console.log("data retrieved from OPEN AI", data)
         const cleaned = data.replace(/```json|```/g, '').trim();
         const json_data = JSON.parse(cleaned);//JSON.parse(data);
@@ -253,11 +266,37 @@ const RatingGenerator = ({trigger=null, propertyDescription, propertyAddress, pr
               title='Display schools within an 8k radius'>
                 {showSchools ? 'Hide Schools' : 'Show Schools'}
               </button>
-              {showSchools && <SchoolList schools={schoolsNearby} />}
+              {showSchools && <FacilitiesList schools={schoolsNearby} type="schools" />}
             </>
           )}
         </div>
       }
+      <br></br>
+      <button 
+        className = 'buttonStyle' 
+        onClick={() => setShowParks(prev => !prev)}
+        title='Display parks within a 3k radius'>
+        {showParks ? 'Hide Parks' : 'Show Parks'}
+      </button>
+      {showParks && <FacilitiesList schools={parksNearby} type="parks" />}
+      <br></br>
+      <br></br>
+      <button 
+        className = 'buttonStyle' 
+        onClick={() => setShowPt(prev => !prev)}
+        title='Display pt within a 2k radius'>
+        {showPt ? 'Hide PT' : 'Show PT'}
+      </button>
+      {showPt && <FacilitiesList schools={ptNearby} type="public transport" />}
+      <br></br>
+      <br></br>
+      <button 
+        className = 'buttonStyle' 
+        onClick={() => setShowFood(prev => !prev)}
+        title='Display cafes, bars and rest within a 2k radius'>
+        {showFood ? 'Hide Food' : 'Show Food'}
+      </button>
+      {showFood && <FacilitiesList schools={foodNearby} type="cafes, bar & commerce" />}
     </div>
   );
 };

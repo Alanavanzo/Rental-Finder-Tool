@@ -21,6 +21,7 @@ const PropertyInformation = ({trigger, desc, beds, price, bath, propertyAddress,
     // additional values
     const [numBath, setNumBath] = useState(bath || 1);
 
+    /*
         // Effect to update state when props change
         useEffect(() => {
           setPropertyInput(desc || '');
@@ -31,7 +32,16 @@ const PropertyInformation = ({trigger, desc, beds, price, bath, propertyAddress,
           setCarSpaces(cars || 0);
           setPropertyType(propType || '');
       }, [desc, price, propertyAddress, beds, bath, cars]); // Only run when any of these props change
-  
+  */
+      useEffect(() => {
+        if (desc) setPropertyInput(desc);
+        if (propertyAddress) setAddress(propertyAddress);
+        if (price !== undefined && price !== null) setPricePW(price);
+        if (beds !== undefined && beds !== null) setNumBedsPI(beds);
+        if (bath !== undefined && bath !== null) setNumBath(bath);
+        if (cars !== undefined && cars !== null) setCarSpaces(cars);
+        if (propType) setPropertyType(propType);
+      }, [desc, price, propertyAddress, beds, bath, cars, propType]);
 
     // Effect to store the values in localStorage whenever they change
     useEffect(() => {
@@ -54,11 +64,8 @@ const PropertyInformation = ({trigger, desc, beds, price, bath, propertyAddress,
       };
       
       localStorage.setItem('propertyDetailsStored', JSON.stringify(propertyDetails));
-
-      console.log("property info has been updated in local storage");
-
-      // TODO add property type and car spaces
-    }, [pricePW, numBedsPI, location, propertyInput, petFriendly]);
+      console.log("property info has been updated in local storage: ", localStorage.getItem('propertyDetailsStored'));
+    }, [pricePW, numBedsPI, propertyInput, petFriendly, propertyType, carSpaces, address]);
 
     useEffect(() => {
       // store all values in local storage --> currently called everytime page reloads so will reset
@@ -71,6 +78,9 @@ const PropertyInformation = ({trigger, desc, beds, price, bath, propertyAddress,
         localStorage.setItem('petFriendlyStored', petFriendly);
         localStorage.setItem('numBathStored', numBath);
         console.log("property info has been updated in local storage");
+
+        console.log("stored address in property info: ", localStorage.setItem('addressStored', address))
+
 
               // TODO add property type and car spaces
     }, [trigger]);

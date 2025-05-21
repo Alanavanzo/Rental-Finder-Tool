@@ -83,20 +83,37 @@
   padding: 8px 0 8px 12px; /* top: 8px, right: 0, bottom: 8px, left: 12px */
 }
 
+.extra-requirements-dropdown{
+  color: #333;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+}
+
+.requirementFieldWrapper {
+  display: flex; /* Aligns the question and input side by side */
+  align-items: center; /* Vertically centers both the question and input */
+  gap: 10px; /* Adds space between the question and input */
+  margin-top: 5px; /* Space above the wrapper */
+  padding: 10px;
+}
+
 .quizField {
   color: #333;
   font-family: 'Roboto', sans-serif;
   font-size: 16px;
   font-weight: bold;
   text-align: left; /* Align text to the left */
-  margin-top: 20px;
-  padding: 20px; /* Adds space inside the element */
 }
 
-.extra-requirements-dropdown{
-  color: #333;
-  font-family: 'Roboto', sans-serif;
-  font-size: 16px;
+.quizInputField {
+  width: 80px; /* Set width of the input */
+  padding: 8px 12px; /* Padding for better spacing */
+  border: 1px solid #ddd;
+  border-radius: 8px; /* Rounded corners */
+  font-size: 14px; /* Input text size */
+  background-color: #f9f9f9; /* Light background */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  transition: border-color 0.3s ease; /* Smooth transition on focus */
 }
 
 .propertyFieldWrapper {
@@ -213,12 +230,28 @@
   border-radius: 20%; /* Rounded corners */
 }
 
+.vibrantButtonSmall {
+  background-color: #4CAF50; /* Vibrant green background */
+  color: white; /* White text color */
+  font-size: 14px;       /* Smaller font */
+  padding: 8px 16px;     /* Smaller padding */
+  border: none; /* Remove default border */
+  border-radius: 8px; /* Rounded corners for a smooth look */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth hover transition */
+  font-family: 'Arial', sans-serif; /* Consistent font for the button */
+  text-align: center; /* Center the text inside the button */
+  display: inline-block; /* Allow the button to be inline */
+  box-sizing: border-box; /* Ensure padding doesn’t affect width/height */
+  margin-left: 12px;     /* 👈 Adds space between this and the item to the left */
+}
+
 /* General vibrant button style */
 .vibrantButton {
   background-color: #4CAF50; /* Vibrant green background */
   color: white; /* White text color */
-  font-size: 16px; /* Text size */
-  padding: 12px 24px; /* Padding for size */
+  font-size: 16px;       /* Smaller font */
+  padding: 12px 24px;     /* Smaller padding */
   border: none; /* Remove default border */
   border-radius: 8px; /* Rounded corners for a smooth look */
   cursor: pointer; /* Pointer cursor on hover */
@@ -255,38 +288,6 @@
   transform: none; /* No transformation when disabled */
 }
 
-/*
-.individualFavourite {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  margin-bottom: 10px; 
-}
-
-.nameButton {
-  width: 70%;
-  font-size: 16px; 
-  padding: 12px 24px; 
-  border: none; 
-  border-radius: 8px;
-  cursor: pointer;
-  font-family: 'Arial', sans-serif; 
-  text-align: center;
-  display: inline-block; 
-  box-sizing: border-box; 
-  background-color: transparent; 
-  outline: none; 
-}
-
-.emojiButton {
-  width: 30%;
-  border: none;
-  padding: 2px;
-  margin-bottom: 3px;
-  background-color: transparent; 
-  outline: none; 
-}
-*/
 .individualFavourite {
   display: flex;
   align-items: center;
@@ -294,9 +295,8 @@
   background: linear-gradient(to right, #fdf6e3, #ffecd2);
   padding: 14px 18px;
   margin: 10px 0;
-  border: 2px dashed #fbbf24;
+  border: 2px dashed rgb(172, 164, 164);/* #fbbf24;*/
   border-radius: 15px;
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease-in-out;
 }
 
@@ -308,22 +308,22 @@
 .nameButton {
   background: none;
   border: none;
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #6b21a8;
+  font-size: 1rem;
+  font-weight: normal;
+  color:rgb(38, 38, 38);
   cursor: pointer;
   transition: color 0.2s ease;
 }
 
 .nameButton:hover {
-  color: #d946ef;
+  color: rgb(102, 176, 232);
   text-decoration: underline;
 }
 
 .emojiButton {
   background: none;
   border: none;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   cursor: pointer;
   color: #ef4444;
   transition: transform 0.2s ease;
@@ -334,12 +334,19 @@
 }
 
 .ratingTag {
-  background-color: #fde68a;
   color: #92400e;
   padding: 2px 6px;
   margin-left: 8px;
   border-radius: 8px;
-  font-size: 0.9rem;
+  font-size: 1.3rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;  /* Stack star and rating vertically */
+  align-items: center;     /* Center horizontally */
+}
+
+.ratingItem {
+  text-align: center;
 }
 
 .tooltip-container {

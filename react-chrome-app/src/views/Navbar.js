@@ -24,6 +24,16 @@ function Navbar ( {goHomeTrigger} ) {
     }
   }, [goHomeTrigger]);
 
+  useEffect(() => {
+    console.log("The current tab is: ", activeTab)
+    if(goHomeVal){
+      console.log("On the homepage")
+    }
+    else{
+      console.log("Not on the homepage")
+    }
+  }, [activeTab]);
+
   const handleTabClick = (tab) => {
     setActiveTab(tab);
     setHome(false)

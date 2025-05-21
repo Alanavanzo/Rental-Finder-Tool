@@ -14,6 +14,7 @@ function Requirements () {
   const [userPropertyType, setPropertyType] = useState('');
 
   const [userNumBeds, setNumBeds] = useState('');
+  const [location, setLocation] = useState('');
 
   const [extraRequirements, setExtraRequirements] = useState([]);
 
@@ -42,6 +43,16 @@ function Requirements () {
       setNumBeds(savedUserNumBeds);
     }
 
+    const savedLocation = localStorage.getItem('userLocationStored');
+    if (savedLocation) {
+      setLocation(savedLocation);
+    }
+
+    const savedPropertyType = localStorage.getItem('userPropertyTypeStored');
+    if (savedPropertyType) {
+      setPropertyType(savedPropertyType);
+    }
+
     const savedExtras = localStorage.getItem('extraRequirementsStored');
     if (savedExtras) {
       setExtraRequirements(JSON.parse(savedExtras)); // since it's stored as JSON string
@@ -65,6 +76,10 @@ function Requirements () {
     setNumBeds(e.target.value);
   };
 
+  const handleChangeLocation = (e) => {
+    setLocation(e.target.value);
+  };
+
   const handleExtraRequirementToggle = (requirement) => {
     setExtraRequirements(prev => {
       if (prev.includes(requirement)) {
@@ -78,11 +93,14 @@ function Requirements () {
   const handleSave = () => {
     localStorage.setItem('userBudgetMaxStored', userBudgetMax);
     localStorage.setItem('userNumBedsStored', userNumBeds);
+    localStorage.setItem('userLocationStored', location);
+    localStorage.setItem('userPropertyTypeStored', userPropertyType);
     localStorage.setItem('extraRequirementsStored', JSON.stringify(extraRequirements)); // save as JSON
     const userRequirements = {
       budgetMax: userBudgetMax,
       propertyType: userPropertyType,
       numBeds: userNumBeds,
+      location: location,
       extras: extraRequirements
     };
   
@@ -99,35 +117,51 @@ function Requirements () {
       } else {
         return <div>
       <span className = "topicHeader">Requirements </span>
-      <br></br>
-      <span className = "quizField">Budget: </span>
-      <input 
-        type="number" 
-        className="quizInlineInput"
-        style={{ width: '50px', padding: '1px' }}
-        placeholder={"max"}
-        value={userBudgetMax} 
-        onChange={handleChangeMaxBudget} 
-      />
-      <br></br>
-      <span className = "quizField">Rental Type: </span>
+      <div className="requirementFieldWrapper">
+        <span className = "quizField">Budget: </span>
+        <input 
+          type="number" 
+          className="quizInputField"
+          placeholder={"max"}
+          value={userBudgetMax} 
+          onChange={handleChangeMaxBudget} 
+        />
+      </div>
+      <div className="requirementFieldWrapper">
+        <span className = "quizField">Property Type: </span>
+        <select 
+          className="propertyInputFieldLong"
+          value={userPropertyType}
+          onChange={handleChangePropertyType}
+          >
+          <option value="">Don't mind</option>
+          <option value="house">House</option>
+          <option value="apartment">Apartment</option>
+          <option value="townhouse">Townhouse</option>
+          <option value="studio">Studio</option>
+          <option value="villa">Villa</option>
+          <option value="duplex">Duplex</option>
+        </select>
+      </div>
+      <div className="requirementFieldWrapper">
+      <span className = "quizField">Location: </span>
       <input 
         type="string" 
-        className="quizInlineInput"
-        style={{ width: '50px', padding: '1px' }}
-        value={userPropertyType} 
-        onChange={handleChangePropertyType} 
+        className="quizInputField"
+        value={location} 
+        onChange={handleChangeLocation} 
       />
-      <br></br>
+      </div>
+      <div className="requirementFieldWrapper">
       <span className = "quizField">Min # bedrooms: </span>
       <input
         type="number" 
-        className="quizNumInput" 
-        style={{ width: '50px', padding: '1px' }}
+        className="quizInputField"
         value={userNumBeds} 
         onChange={handleChangeBeds} 
       />
-      <br></br>
+      </div>
+      <div className="requirementFieldWrapper">
       <span className = "quizField">Extra Requirements: </span>
       <div className="extra-requirements-dropdown">
             {availableExtras.map((item, index) => (
@@ -141,7 +175,8 @@ function Requirements () {
               </label>
             ))}
       </div>
-      <button className = "saveButton" onClick={handleSave}>Update Requirements</button>
+      </div>
+      <button className = "buttonStyle" onClick={handleSave}>Update Requirements</button>
         </div>;
       }
     })()}

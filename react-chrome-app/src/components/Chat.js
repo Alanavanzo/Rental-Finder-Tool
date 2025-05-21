@@ -10,7 +10,7 @@ const ChatComponent = () => {
 
   const fresh_convo = [
     { role: "system", 
-      content: `You are a helpful assistant. Here is some backround info about me. My requirements are: ${String(userRequirements)}. Here are my answers to a survey, they should tell you more about my preferences: ${String(interactiveQuizAnswers)}.` },
+      content: `You are a helpful assistant. Here is some backround info about me. My requirements are: ${String(userRequirements)}. Here are my answers to a survey, they should tell you more about my preferences: ${String(interactiveQuizAnswers)}. Please answer in no more than 50 words unless asked to be more detailed` },
     {
       role: "assistant",
       content: "Hi there! I'm here to help you find the perfect property based on your preferences. Feel free to ask me anything - I already know what you're looking for!"
@@ -65,7 +65,7 @@ const ChatComponent = () => {
 
   return (
     <div>
-      <div style={{ marginTop: "20px", maxHeight: "60vh", overflowY: "auto" }}>
+      <div style={{ marginTop: "20px", maxHeight: "72vh", overflowY: "auto" }}>
         {messages
           .filter((msg) => msg.role !== "system") // hide the system message
           .map((msg, index) => (
