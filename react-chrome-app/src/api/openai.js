@@ -62,7 +62,7 @@ export const getUserRating = async (propertyInput, userData) => {
   Based on this property and the info about me, please give a rating out of 5 to signify how much I would like this property. Try to look at the 
   description factually as the writing has positive bias towards the property. Please respond only with a dict that have the overall rating mapped to "rating". 
   And then other keys of "summary" which has value of 50 words explaining the personalised rating, then location, facilities and sustainability with ratings out of 5 that helped get the overall rating. 
-  In summary, the response dict should have the following keys: rating, location, facilities, sustainability, summary. The overall rating must reflect the information I have given you. Note that I only want ratings in increments of 0.5`;
+  In summary, the response dict should have the following keys: rating, location, facilities, sustainability, summary. The overall rating must reflect the information I have given you and ratings of 4, 4.5 and 5 should be very particular. Note that I only want ratings in increments of 0.5`;
 
   console.log("Sending PROMPT: " + prompt)
 
