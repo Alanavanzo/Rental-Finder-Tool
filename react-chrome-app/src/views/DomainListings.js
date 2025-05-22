@@ -43,19 +43,59 @@ const Listings = () => {
       </button>
       {listings.slice(start, finish).map((listing) => {
         const targetElement = document.querySelector(`[data-testid="listing-${listing.id}"]`);   // Find the DOM element for the current listing
+        
+      if (targetElement) {
+        // Try to find the carousel (which contains the image)
+        const carousel = targetElement.querySelector('[data-testid="listing-card-price"]');//targetElement.querySelector('[data-testid="listing-card-carousel"]');
 
-        if (targetElement) {  // Only create the portal if the target element exists
+        let insertionPoint = targetElement; // default fallback
+
+        if (carousel) {
+          const existing = carousel.previousElementSibling;
+
+          if (!existing || !existing.classList.contains('injected-rating-container')) {
+            insertionPoint = document.createElement('div');
+            insertionPoint.className = 'injected-rating-container';
+            
+            // 🔥 Insert above the price
+            carousel.parentElement.insertBefore(insertionPoint, carousel);
+          } else {
+            // Already exists
+            insertionPoint = existing;
+          }
+          // Try to insert immediately after the carousel
+          /*
+          const afterCarousel = carousel.nextElementSibling;
+
+          if (afterCarousel && !afterCarousel.classList.contains('injected-rating-container')) {
+            insertionPoint = document.createElement('div');
+            insertionPoint.className = 'injected-rating-container';
+            carousel.parentElement.insertBefore(insertionPoint, afterCarousel);
+          } else if (!afterCarousel) {
+            // If there's no sibling at all, just append the insertion point after carousel
+            insertionPoint = document.createElement('div');
+            insertionPoint.className = 'injected-rating-container';
+            carousel.parentElement.appendChild(insertionPoint);
+          } else {
+            // Use the existing sibling as insertion point if it's already a container
+            insertionPoint = afterCarousel;
+          }
+          */
+        }
+      
+       // if (targetElement) {  // Only create the portal if the target element exists
+        if (insertionPoint) {
           return ReactDOM.createPortal(
-            <div style={{ fontSize: '0.8em', width: '80%', padding: '10px' }}>
+            <div style={{ fontSize: '0.8em', padding: '10px', transform: 'scale(0.8)', transformOrigin: 'top left'}}>
               <IndividualDomainRating propertyID={listing.id} ratingList={ratingsList}/>
             </div>
             ,
-            targetElement // The DOM element where the portal will be inserted
+            insertionPoint//targetElement // The DOM element where the portal will be inserted
           );
         } else {
           return null;
         }
-      })}
+  }})}
     </div>
   );
 };

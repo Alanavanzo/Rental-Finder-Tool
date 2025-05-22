@@ -209,7 +209,7 @@ const RatingGenerator = ({trigger=null, propertyDescription, propertyAddress, pr
         console.log(propertyDetails)
         console.log("about to send prompt to OPEN AI")
         //const data = await getUserRating(propertyDescription, `My budget is $${String(budget)} per week. My requirements are: $${String(userRequirements)}. Here are my answers to a survey, they should tell you more about my preferences: ${String(interactiveQuizAnswers)}. I require ${String(numBeds)} bedrooms.`);
-        const data = await getUserRating(propertyDescription, `This is the property info: ${String(propertyDetails)}. ${schoolDataString}. ${parkDataString}. ${foodDataString}.My requirements are: ${String(userRequirements)}. Here are my answers to a survey, they should tell you more about my preferences: ${String(interactiveQuizAnswers)}.`);
+        const data = await getUserRating(propertyDescription, `This is the property info: ${String(propertyDetails)}. ${schoolDataString}. ${parkDataString}. ${foodDataString}.My requirements are: ${String(userRequirements)} These matter the most - especially budget and number of bedrooms as a property is not suitable if it does not fit into these. Here are my answers to a survey, they should tell you more about my preferences: ${String(interactiveQuizAnswers)}.`);
         console.log("data retrieved from OPEN AI", data)
         const cleaned = data.replace(/```json|```/g, '').trim();
         const json_data = JSON.parse(cleaned);//JSON.parse(data);
@@ -269,34 +269,34 @@ const RatingGenerator = ({trigger=null, propertyDescription, propertyAddress, pr
               {showSchools && <FacilitiesList schools={schoolsNearby} type="schools" />}
             </>
           )}
+          <br></br>
+          <button 
+            className = 'buttonStyle' 
+            onClick={() => setShowParks(prev => !prev)}
+            title='Display parks within a 3k radius'>
+            {showParks ? 'Hide Parks' : 'Show Parks'}
+          </button>
+          {showParks && <FacilitiesList schools={parksNearby} type="parks" />}
+          <br></br>
+          <br></br>
+          <button 
+            className = 'buttonStyle' 
+            onClick={() => setShowPt(prev => !prev)}
+            title='Display pt within a 2k radius'>
+            {showPt ? 'Hide PT' : 'Show PT'}
+          </button>
+          {showPt && <FacilitiesList schools={ptNearby} type="public transport" />}
+          <br></br>
+          <br></br>
+          <button 
+            className = 'buttonStyle' 
+            onClick={() => setShowFood(prev => !prev)}
+            title='Display cafes, bars and rest within a 2k radius'>
+            {showFood ? 'Hide Food' : 'Show Food'}
+          </button>
+          {showFood && <FacilitiesList schools={foodNearby} type="cafes, bar & commerce" />}
         </div>
       }
-      <br></br>
-      <button 
-        className = 'buttonStyle' 
-        onClick={() => setShowParks(prev => !prev)}
-        title='Display parks within a 3k radius'>
-        {showParks ? 'Hide Parks' : 'Show Parks'}
-      </button>
-      {showParks && <FacilitiesList schools={parksNearby} type="parks" />}
-      <br></br>
-      <br></br>
-      <button 
-        className = 'buttonStyle' 
-        onClick={() => setShowPt(prev => !prev)}
-        title='Display pt within a 2k radius'>
-        {showPt ? 'Hide PT' : 'Show PT'}
-      </button>
-      {showPt && <FacilitiesList schools={ptNearby} type="public transport" />}
-      <br></br>
-      <br></br>
-      <button 
-        className = 'buttonStyle' 
-        onClick={() => setShowFood(prev => !prev)}
-        title='Display cafes, bars and rest within a 2k radius'>
-        {showFood ? 'Hide Food' : 'Show Food'}
-      </button>
-      {showFood && <FacilitiesList schools={foodNearby} type="cafes, bar & commerce" />}
     </div>
   );
 };
